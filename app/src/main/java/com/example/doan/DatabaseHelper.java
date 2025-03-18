@@ -3,14 +3,19 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "ODERcoffee.db";
+    private static final String DATABASE_NAME = "odercoffee.db";
     private static final int DATABASE_VERSION = 1;
 
     public DatabaseHelper(Context context) {
-        super(context, "ODERcoffee", null, 1);
+        super(context, "odercoffee", null, 1);
     }
 
     @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        String dbPath = db.getPath();
+        System.out.println("Database Path: " + dbPath);
+    }
     public void onCreate(SQLiteDatabase db) {
         //  Users
         db.execSQL("CREATE TABLE Users (" +
