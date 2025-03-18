@@ -9,9 +9,6 @@
     <!--Logo-->
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/logo"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,54 +22,11 @@
         android:text="Chất Lượng Khởi Nguồn Từ Đam Mê"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/brown"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@id/logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
-
-    <!--NAME-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/name_input_layout"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="#09111111"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp">
-
-        <!-- Icon name -->
-        <ImageView
-            android:id="@+id/name_icon"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:src="@drawable/user"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="12dp"/>
-
-        <!--name-->
-        <EditText
-            android:id="@+id/signup_name"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:hint="Nhập họ tên"
-            android:textSize="16sp"
-            android:background="@android:color/transparent"
-            android:inputType="text"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            app:layout_constraintStart_toEndOf="@id/name_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <!--SDT-->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,57 +34,12 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="#09111111"
-        app:layout_constraintTop_toBottomOf="@id/name_input_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp">
 
         <!-- Icon Điện thoại -->
-        <ImageView
-            android:id="@+id/phone"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:src="@drawable/mobile"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="12dp"/>
-
-        <!--sdt-->
-        <EditText
-            android:id="@+id/signup_phone"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:hint="Nhập số điện thoại"
-            android:textSize="16sp"
-            android:background="@android:color/transparent"
-            android:inputType="phone"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            app:layout_constraintStart_toEndOf="@id/phone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-    <!--MAIL-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/mail_input_layout"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="#09111111"
-        app:layout_constraintTop_toBottomOf="@id/phone_input_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp">
-
-        <!-- Icon mail -->
         <ImageView
             android:id="@+id/mail"
             android:layout_width="30dp"
@@ -141,15 +50,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="12dp"/>
 
-        <!--mail-->
         <EditText
-            android:id="@+id/signup_email"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:hint="Nhập email"
             android:textSize="16sp"
             android:background="@android:color/transparent"
-            android:inputType="textEmailAddress"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             app:layout_constraintStart_toEndOf="@id/mail"
@@ -158,17 +63,12 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <!-- Nut Dang Ky -->
     <Button
-        android:id="@+id/btn_signup"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:text="ĐĂNG KÝ"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:background="@drawable/background_button"
-        app:layout_constraintTop_toBottomOf="@id/mail_input_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
@@ -176,7 +76,6 @@
         android:layout_marginEnd="32dp"/>
 
 
-    <!-- Nut Tiếp tục như khách -->
     <TextView
         android:id="@+id/btn_continueguest"
         android:layout_width="wrap_content"
@@ -184,10 +83,8 @@
         android:text="TIẾP TỤC NHƯ KHÁCH"
         android:textColor="@color/dark_red"
         android:textStyle="bold"
-        android:textSize="15sp"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintTop_toBottomOf="@id/btn_signup"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
@@ -195,7 +92,6 @@
         android:layout_marginEnd="32dp"/>
 
         <LinearLayout
-            android:id="@+id/signup_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -205,13 +101,11 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
-                android:id="@+id/signup_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đã Có Tài Khoản?"
                 android:textSize="14sp"
                 android:textColor="#111"/>
-<!--Nut Dang Nhap -->
             <TextView
                 android:id="@+id/txt_signin"
                 android:layout_width="wrap_content"
@@ -220,6 +114,5 @@
                 android:textColor="@color/dark_red"
                 android:textStyle="bold"
                 android:textSize="15sp"
-                android:clickable="true" />
         </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
