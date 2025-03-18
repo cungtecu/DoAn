@@ -25,7 +25,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "phone TEXT UNIQUE, " +
                 "password TEXT NOT NULL, " +
                 "points INTEGER DEFAULT 0, " +
-                "role TEXT NOT NULL DEFAULT 'Customer' )");
+                "role_id INTEGER NOT NULL, " +
+                "reset_code TEXT, " +
+                "reset_expiry DATETIME, " +
+                "reset_status TEXT DEFAULT 'Unused', " +
+                "FOREIGN KEY (role_id) REFERENCES Roles(id) )");
 
         // Categories
         db.execSQL("CREATE TABLE Categories (" +
@@ -70,6 +74,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "description TEXT, " +
                 "date_added DATETIME DEFAULT CURRENT_TIMESTAMP, " +
                 "FOREIGN KEY (user_id) REFERENCES Users(id) )");
+// LICH SU
+        db.execSQL("CREATE TABLE PriceHistory (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "product_id INTEGER NOT NULL, " +
+                "old_price REAL NOT NULL, " +
+                "new_price REAL NOT NULL, " +
+                "changed_at DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+                "FOREIGN KEY (product_id) REFERENCES Products(id) ON DELETE CASCADE )");
 
         // Payments
         db.execSQL("CREATE TABLE Payments (" +
