@@ -45,7 +45,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp">
 
-        <!-- Icon phone -->
         <ImageView
             android:id="@+id/phone_icon"
             android:layout_width="30dp"
@@ -56,7 +55,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="12dp"/>
 
-        <!--Phone input-->
         <EditText
             android:id="@+id/signin_phone"
             android:layout_width="0dp"
@@ -98,7 +96,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="12dp"/>
 
-        <!--Password input-->
         <EditText
             android:id="@+id/signin_password"
             android:layout_width="0dp"
@@ -106,11 +103,9 @@
             android:hint="Nhập mật khẩu"
             android:textSize="16sp"
             android:background="@android:color/transparent"
-            android:inputType="textPassword"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             app:layout_constraintStart_toEndOf="@id/password_icon"
-            app:layout_constraintEnd_toStartOf="@id/eye_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -144,9 +139,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"/>
 
-
-
-    <!-- Quên mật khẩu -->
     <TextView
         android:id="@+id/txt_forgetpassword"
         android:layout_width="wrap_content"
@@ -161,7 +153,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"/>
 
-    <!-- Đăng ký tài khoản -->
     <LinearLayout
         android:id="@+id/layout_signin"
         android:layout_width="wrap_content"
@@ -179,10 +170,8 @@
             android:text="Khách Hàng Mới?"
             android:textSize="14sp"
             android:textColor="#111"/>
-
-        <!--Nut tao tai khoan-->
+<!--Nut tao tai khoan-->
         <TextView
-            android:id="@+id/txt_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" Tạo Một Tài Khoản "
