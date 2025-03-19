@@ -32,9 +32,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <!--NAME-->
+    <!--Phone-->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/name_input_layout"
+        android:id="@+id/phone_input_layout"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="#09111111"
@@ -47,49 +47,7 @@
 
         <!-- Icon name -->
         <ImageView
-            android:id="@+id/name_icon"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:src="@drawable/user"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="12dp"/>
-
-        <!--name-->
-        <EditText
-            android:id="@+id/signup_name"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:hint="Nhập họ tên"
-            android:textSize="16sp"
-            android:background="@android:color/transparent"
-            android:inputType="text"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            app:layout_constraintStart_toEndOf="@id/name_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!--SDT-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/phone_input_layout"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="#09111111"
-        app:layout_constraintTop_toBottomOf="@id/name_input_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp">
-
-        <!-- Icon Điện thoại -->
-        <ImageView
-            android:id="@+id/phone"
+            android:id="@+id/phone_icon"
             android:layout_width="30dp"
             android:layout_height="20dp"
             android:src="@drawable/mobile"
@@ -98,9 +56,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="12dp"/>
 
-        <!--sdt-->
+        <!--name-->
         <EditText
-            android:id="@+id/signup_phone"
+            android:id="@+id/signin_phone"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:hint="Nhập số điện thoại"
@@ -109,17 +67,16 @@
             android:inputType="phone"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            app:layout_constraintStart_toEndOf="@id/phone"
+            app:layout_constraintStart_toEndOf="@id/phone_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-    <!--MAIL-->
+    <!--Password-->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/mail_input_layout"
+        android:id="@+id/password_input_layout"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="#09111111"
@@ -130,96 +87,104 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp">
 
-        <!-- Icon mail -->
+        <!-- Icon password -->
         <ImageView
-            android:id="@+id/mail"
+            android:id="@+id/password_icon"
             android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:src="@drawable/communication"
+            android:layout_height="25dp"
+            android:src="@drawable/padlock"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="12dp"/>
 
-        <!--mail-->
+        <!--password-->
         <EditText
-            android:id="@+id/signup_email"
+            android:id="@+id/signin_password"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:hint="Nhập email"
+            android:hint="Nhập mật khẩu"
             android:textSize="16sp"
             android:background="@android:color/transparent"
-            android:inputType="textEmailAddress"
+            android:inputType="textVisiblePassword"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            app:layout_constraintStart_toEndOf="@id/mail"
+            app:layout_constraintStart_toEndOf="@id/password_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+        <!--Nut an hien mat khau-->
+        <ImageView
+            android:id="@+id/eye_icon"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:src="@drawable/hide_password"
+            android:clickable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="12dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <!-- Nut Dang Ky -->
+    <!-- Nút dang nhap -->
     <Button
-        android:id="@+id/btn_signup"
+        android:id="@+id/btn_signin"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:text="ĐĂNG KÝ"
+        android:text="ĐĂNG NHẬP"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:background="@drawable/background_button"
-        app:layout_constraintTop_toBottomOf="@id/mail_input_layout"
+        app:layout_constraintTop_toBottomOf="@id/txt_forgetpassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"/>
 
-
-    <!-- Nut Tiếp tục như khách -->
     <TextView
-        android:id="@+id/btn_continueguest"
+        android:id="@+id/txt_forgetpassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TIẾP TỤC NHƯ KHÁCH"
+        android:text=" Quên Mật Khẩu? "
         android:textColor="@color/dark_red"
         android:textStyle="bold"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintTop_toBottomOf="@id/btn_signup"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/password_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"/>
 
-        <LinearLayout
-            android:id="@+id/signup_login"
+    <LinearLayout
+        android:id="@+id/layout_signin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/sign_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:id="@+id/signup_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Đã Có Tài Khoản?"
-                android:textSize="14sp"
-                android:textColor="#111"/>
-<!--Nut Dang Nhap -->
-            <TextView
-                android:id="@+id/txt_signin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" Đăng nhập"
-                android:textColor="@color/dark_red"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:clickable="true" />
-        </LinearLayout>
+            android:text="Khách Hàng Mới?"
+            android:textSize="14sp"
+            android:textColor="#111"/>
+<!--Nut tao tai khoan-->
+        <TextView
+            android:id="@+id/txt_signin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Tạo Một Tài Khoản "
+            android:textColor="@color/dark_red"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:clickable="true" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
