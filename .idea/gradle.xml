@@ -13,7 +13,6 @@
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
-        <option name="gradleJvm" value="jbr-21" />
         <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
