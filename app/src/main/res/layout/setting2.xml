@@ -59,7 +59,8 @@
                     android:textSize="18sp"
                     android:textColor="@color/brown"
                     android:textStyle="bold"
-                    android:paddingBottom="8dp"/>
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"/>
 
                 <RelativeLayout
                     android:id="@+id/btn_delete_account"
@@ -100,7 +101,8 @@
                     android:textSize="18sp"
                     android:textColor="@color/brown"
                     android:textStyle="bold"
-                    android:paddingBottom="8dp"/>
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"/>
 
                 <RelativeLayout
                     android:id="@+id/btn_change_password"
