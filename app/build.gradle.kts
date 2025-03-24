@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id ("com.google.gms.google-services")
 }
 
 android {
@@ -32,7 +33,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -40,4 +40,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // --- Thư viện bạn đã có ---
+    implementation(libs.retrofit)
+    implementation(libs.gson.converter)
+    implementation(libs.firebase.auth)
+    implementation("com.android.volley:volley:1.2.1")
+
 }

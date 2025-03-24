@@ -40,6 +40,9 @@
 
         <!-- SignupActivity -->
         <activity android:name=".SignupActivity" />
+        <!-- RegisterActivity -->
+        <activity android:name=".RegisterActivity"/>
+
 
     </application>
 

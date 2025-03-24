@@ -45,6 +45,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp">
 
+        <!-- Icon name -->
         <ImageView
             android:id="@+id/phone_icon"
             android:layout_width="30dp"
@@ -55,6 +56,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="12dp"/>
 
+        <!--name-->
         <EditText
             android:id="@+id/signin_phone"
             android:layout_width="0dp"
@@ -96,6 +98,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="12dp"/>
 
+        <!--password-->
         <EditText
             android:id="@+id/signin_password"
             android:layout_width="0dp"
@@ -103,11 +106,14 @@
             android:hint="Nhập mật khẩu"
             android:textSize="16sp"
             android:background="@android:color/transparent"
+            android:inputType="textVisiblePassword"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             app:layout_constraintStart_toEndOf="@id/password_icon"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
 
         <!--Nut an hien mat khau-->
         <ImageView
@@ -172,6 +178,7 @@
             android:textColor="#111"/>
 <!--Nut tao tai khoan-->
         <TextView
+            android:id="@+id/txt_signin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" Tạo Một Tài Khoản "
