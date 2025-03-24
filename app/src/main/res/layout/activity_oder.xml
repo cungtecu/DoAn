@@ -1,4 +1,4 @@
-<!-- res/layout/your_activity_layout.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -42,13 +42,13 @@
                 android:text="Đơn Đặt Hàng"
                 android:textSize="16sp"
                 android:textColor="@color/brown"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/green"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="4dp" />
         </LinearLayout>
 
         <!-- Cột Điểm Dripst -->
@@ -72,13 +72,75 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- ScrollView cho phần body -->
+    <!-- ScrollView cho danh sách đơn hàng -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/order_dripst_layout"
         android:layout_above="@+id/bottom_navigation"
         android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/order_list_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+            <TextView
+                android:id="@+id/tv_order_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="date"
+                android:textSize="14sp"
+                android:textColor="@color/brown"
+                android:textStyle="bold" />
+
+            <!-- Layout mẫu cho item đơn hàng -->
+            <LinearLayout
+                android:id="@+id/item_oder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/order_item_background"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/tv_order_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="id_order"
+                    android:textSize="16sp"
+                    android:textColor="@color/brown"
+                    android:textStyle="bold" />
+
+                <!-- Hàng dưới: Trạng thái và tổng giá -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_order_status"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="status"
+                        android:textSize="14sp"
+                        android:textColor="@color/brown"
+                        android:textStyle="bold"
+                        android:padding="4dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tv_total_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="total_price đ"
+                        android:textSize="16sp"
+                        android:textColor="@color/brown"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -90,5 +152,5 @@
         app:elevation="4dp"
         app:menu="@menu/bottom_navigation_menu"
         app:itemIconTint="@color/green"
-        app:itemTextColor="@color/brown"/>
+        app:itemTextColor="@color/brown" />
 </RelativeLayout>
