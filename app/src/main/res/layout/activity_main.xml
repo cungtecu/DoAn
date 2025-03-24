@@ -80,15 +80,15 @@
                 android:textColor="@color/black"
                 android:layout_marginBottom="8dp"/>
 
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/recyclerCategory"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginBottom="20dp"-->
-<!--                android:scrollbars="horizontal">-->
-<!--                -->
-<!--            </androidx.recyclerview.widget.RecyclerView>-->
-<!--            catolory-->
+            <!--            <androidx.recyclerview.widget.RecyclerView-->
+            <!--                android:id="@+id/recyclerCategory"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginBottom="20dp"-->
+            <!--                android:scrollbars="horizontal">-->
+            <!--                -->
+            <!--            </androidx.recyclerview.widget.RecyclerView>-->
+            <!--            catolory-->
             <LinearLayout
                 android:id="@+id/catolory1"
                 android:layout_width="match_parent"

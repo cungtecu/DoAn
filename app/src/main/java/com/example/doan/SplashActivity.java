@@ -1,19 +1,20 @@
 package com.example.doan;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_splash);  // Layout chứa VideoView
 
-        // Delay 2 giây rồi mở MainActivity
+        // Khởi tạo VideoView
         VideoView videoView = findViewById(R.id.Intro);
 
         // Đường dẫn video từ thư mục raw
@@ -26,12 +27,12 @@ public class SplashActivity extends AppCompatActivity {
         // Bắt đầu phát video
         videoView.start();
 
-        // Khi video kết thúc, chuyển sang MainActivity
+        // Khi video kết thúc, chuyển sang SigninActivity
         videoView.setOnCompletionListener(mp -> {
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            // Chuyển sang SigninActivity thay vì MainActivity
+            Intent intent = new Intent(SplashActivity.this, SigninActivity.class);
             startActivity(intent);
-            finish(); // Đóng màn hình loading
+            finish(); // Đảm bảo không quay lại màn hình splash
         });
     }
 }
-

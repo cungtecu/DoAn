@@ -12,32 +12,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAn"
         tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".SplashActivity"-->
-<!--            android:theme="@style/Theme.OderCoffee"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+
+        <!-- SplashActivity là màn hình đầu tiên khi ứng dụng khởi động -->
         <activity
             android:name=".SplashActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SigninActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
 
+        <!-- SigninActivity là màn hình đăng nhập sau Splash -->
+        <activity
+            android:name=".SigninActivity"
+            android:theme="@style/Theme.OderCoffee"
+            android:exported="true">
+            <!-- No need to specify LAUNCHER for SigninActivity -->
+        </activity>
+
+        <!-- MainActivity là màn hình chính sau khi đăng nhập thành công -->
+        <activity android:name=".MainActivity" android:exported="true" />
+
+    </application>
 </manifest>
