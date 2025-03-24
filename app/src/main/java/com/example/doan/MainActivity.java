@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drips);
+        setContentView(R.layout.activity_oder);
 
         // Khởi tạo DatabaseHelper
         DatabaseHelper dbHelper = new DatabaseHelper(this);

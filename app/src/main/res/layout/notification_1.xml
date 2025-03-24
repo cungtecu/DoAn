@@ -15,8 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_continue_notification1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.5"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- TextView "Thành công!" -->
     <TextView
@@ -59,5 +58,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"/>
+        android:layout_marginBottom="32dp"
+        android:textSize="16sp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
