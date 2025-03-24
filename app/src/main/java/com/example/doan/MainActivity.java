@@ -13,12 +13,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Khởi tạo DatabaseHelper
+        // DatabaseHelper
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // In đường dẫn database để kiểm tra
+        //  database
         String dbPath = db.getPath();
         Log.d("Database Path", "Database stored at: " + dbPath);
     }

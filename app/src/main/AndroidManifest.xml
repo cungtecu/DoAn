@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -11,8 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAn"
         tools:targetApi="31">
-
-        <!-- SplashActivity -->
+<!--        <activity-->
+<!--            android:name=".SplashActivity"-->
+<!--            android:theme="@style/Theme.OderCoffee"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -21,11 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- SigninActivity -->
         <activity android:name=".SigninActivity" />
-
-        <!-- MainActivity -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -34,16 +38,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- ForgetPasswordActivity -->
-        <activity android:name=".ForgetPasswordActivity" />
-
-        <!-- SignupActivity -->
-        <activity android:name=".SignupActivity" />
-        <!-- RegisterActivity -->
-        <activity android:name=".RegisterActivity"/>
-
-
     </application>
 
 </manifest>
