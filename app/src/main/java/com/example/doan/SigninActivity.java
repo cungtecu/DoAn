@@ -33,64 +33,62 @@ public class SigninActivity extends AppCompatActivity {
         eyeIcon = findViewById(R.id.eye_icon);
         TextView txtForgetPassword = findViewById(R.id.txt_forgetpassword);
         Button btnSignIn = findViewById(R.id.btn_signin);
-        TextView txtCreateAccount = findViewById(R.id.txt_signin);  // Thêm đúng vị trí
+        TextView txtCreateAccount = findViewById(R.id.txt_signup);  // Nút Tạo Một Tài Khoản
 
-        initFakeUsers();
+        if (txtCreateAccount == null || btnSignIn == null) {
+            Toast.makeText(this, "Lỗi giao diện! Kiểm tra lại layout.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        // 1. Xử lý ẩn/hiện mật khẩu
-        eyeIcon.setOnClickListener(v -> {
-            if (isPasswordVisible) {
-                edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                eyeIcon.setImageResource(R.drawable.hide_password);
-            } else {
-                edtPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                eyeIcon.setImageResource(R.drawable.show_password);
-            }
-            edtPassword.setSelection(edtPassword.getText().length());
-            isPasswordVisible = !isPasswordVisible;
-        });
-
-        // 2. Nhảy qua giao diện quên mật khẩu
-        txtForgetPassword.setOnClickListener(v -> {
-            Intent intent = new Intent(SigninActivity.this, ForgetPasswordActivity.class);
-            startActivity(intent);
-        });
-
-        // 3. Nút đăng nhập
-        btnSignIn.setOnClickListener(v -> {
-            String inputPhone = edtPhone.getText().toString().trim();
-            String inputPassword = edtPassword.getText().toString().trim();
-
-            // ========== RÀNG BUỘC DỮ LIỆU ==========
-            if (!validatePhone(inputPhone) || !validatePassword(inputPassword)) {
-                return; // Không hợp lệ thì không cho đăng nhập
-            }
-
-            // ======= KIỂM TRA ĐĂNG NHẬP (fake DB) =======
-            boolean isMatch = false;
-            for (HashMap<String, String> user : fakeUsers) {
-                if (user.get("phone").equals(inputPhone) && user.get("password").equals(inputPassword)) {
-                    isMatch = true;
-                    break;
-                }
-            }
-
-            if (isMatch) {
-                Toast.makeText(SigninActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                // startActivity(new Intent(SigninActivity.this, MainActivity.class)); // Chuyển sang Main nếu có
-            } else {
-                Toast.makeText(SigninActivity.this, "Sai số điện thoại hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // 4. Nhảy qua giao diện đăng ký (TÁCH RA ĐÚNG CHỖ)
+        // Khi nhấn vào "Tạo Một Tài Khoản", chuyển đến màn hình đăng ký
         txtCreateAccount.setOnClickListener(v -> {
-            Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
-            startActivity(intent);
+            Toast.makeText(SigninActivity.this, "Đang chuyển sang đăng ký...", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(SigninActivity.this, SignupActivity.class));
         });
+
+        eyeIcon.setOnClickListener(v -> {
+            togglePasswordVisibility();
+        });
+
+        txtForgetPassword.setOnClickListener(v -> {
+            startActivity(new Intent(SigninActivity.this, ForgetPasswordActivity.class));
+        });
+
+        btnSignIn.setOnClickListener(v -> handleSignIn());
     }
 
-    // Hàm kiểm tra số điện thoại
+
+    private void togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            eyeIcon.setImageResource(R.drawable.hide_password);
+        } else {
+            edtPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            eyeIcon.setImageResource(R.drawable.show_password);
+        }
+        edtPassword.setSelection(edtPassword.getText().length());
+        isPasswordVisible = !isPasswordVisible;
+    }
+
+    private void handleSignIn() {
+        String inputPhone = edtPhone.getText().toString().trim();
+        String inputPassword = edtPassword.getText().toString().trim();
+
+        if (!validatePhone(inputPhone) || !validatePassword(inputPassword)) {
+            return;
+        }
+
+        for (HashMap<String, String> user : fakeUsers) {
+            if (user.get("phone").equals(inputPhone) && user.get("password").equals(inputPassword)) {
+                Toast.makeText(SigninActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(SigninActivity.this, MainActivity.class));
+                finish();
+                return;
+            }
+        }
+        Toast.makeText(SigninActivity.this, "Sai số điện thoại hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+    }
+
     private boolean validatePhone(String phone) {
         if (phone.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập số điện thoại!", Toast.LENGTH_SHORT).show();
@@ -103,7 +101,6 @@ public class SigninActivity extends AppCompatActivity {
         return true;
     }
 
-    // Hàm kiểm tra mật khẩu
     private boolean validatePassword(String password) {
         if (password.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
@@ -116,22 +113,16 @@ public class SigninActivity extends AppCompatActivity {
         return true;
     }
 
-    // Tạo database giả để test
     private void initFakeUsers() {
-        HashMap<String, String> user1 = new HashMap<>();
-        user1.put("phone", "0912345678");
-        user1.put("password", "password123");
+        fakeUsers.add(createUser("0912345678", "password123"));
+        fakeUsers.add(createUser("0987654321", "123456"));
+        fakeUsers.add(createUser("0909090909", "coffee2024"));
+    }
 
-        HashMap<String, String> user2 = new HashMap<>();
-        user2.put("phone", "0987654321");
-        user2.put("password", "123456");
-
-        HashMap<String, String> user3 = new HashMap<>();
-        user3.put("phone", "0909090909");
-        user3.put("password", "coffee2024");
-
-        fakeUsers.add(user1);
-        fakeUsers.add(user2);
-        fakeUsers.add(user3);
+    private HashMap<String, String> createUser(String phone, String password) {
+        HashMap<String, String> user = new HashMap<>();
+        user.put("phone", phone);
+        user.put("password", password);
+        return user;
     }
 }

@@ -29,11 +29,23 @@
             android:name=".SigninActivity"
             android:theme="@style/Theme.OderCoffee"
             android:exported="true">
-            <!-- No need to specify LAUNCHER for SigninActivity -->
+            <!-- Không cần khai báo LAUNCHER cho SigninActivity -->
         </activity>
 
+        <!-- SignupActivity: Màn hình đăng ký tài khoản -->
+        <activity
+            android:name=".SignupActivity"
+            android:exported="true" /> <!-- Đảm bảo khai báo SignupActivity -->
+
+        <!-- ForgetPasswordActivity: Màn hình quên mật khẩu -->
+        <activity
+            android:name=".ForgetPasswordActivity"
+            android:exported="true" /> <!-- Đảm bảo khai báo ForgetPasswordActivity -->
+
         <!-- MainActivity là màn hình chính sau khi đăng nhập thành công -->
-        <activity android:name=".MainActivity" android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
 
     </application>
 </manifest>
