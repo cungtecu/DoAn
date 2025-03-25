@@ -59,7 +59,8 @@
                     android:textSize="18sp"
                     android:textColor="@color/brown"
                     android:textStyle="bold"
-                    android:paddingBottom="8dp"/>
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"/>
 
                 <RelativeLayout
                     android:id="@+id/btn_delete_account"
@@ -96,14 +97,15 @@
                     android:id="@+id/security_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Bảo Mật"
+                    android:text="Bảo mật"
                     android:textSize="18sp"
                     android:textColor="@color/brown"
                     android:textStyle="bold"
-                    android:paddingBottom="8dp"/>
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"/>
 
                 <RelativeLayout
-                    android:id="@+id/btn_create_password"
+                    android:id="@+id/btn_change_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/btn_setting_background"
@@ -120,10 +122,10 @@
                         android:layout_centerVertical="true"/>
 
                     <TextView
-                        android:id="@+id/txt_create_password"
+                        android:id="@+id/txt_change_password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tạo mật khẩu"
+                        android:text="Đổi mật khẩu"
                         android:textSize="16sp"
                         android:textColor="@color/black"
                         android:layout_toEndOf="@id/icon_password"

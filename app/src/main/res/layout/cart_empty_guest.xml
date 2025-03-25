@@ -6,35 +6,21 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- Logo trên cùng -->
-    <ImageView
-        android:id="@+id/app_logo"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/logo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="50dp"/>
-
-    <!-- Icon Thành công -->
     <ImageView
         android:id="@+id/success_icon"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/thankyou"
-        app:layout_constraintTop_toBottomOf="@id/app_logo"
-        app:layout_constraintBottom_toTopOf="@id/btn_continue_notification2"
+        android:src="@drawable/empty_cart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_signin_or_signup"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.3"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- TextView "Thành công!" -->
     <TextView
         android:id="@+id/tv_success"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cảm Ơn !"
+        android:text="Hãy Đăng Nhập Để Xem Giỏ Hàng !"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/brown"
@@ -43,25 +29,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <!-- TextView "Tài khoản của bạn đã được tạo thành công." -->
-    <TextView
-        android:id="@+id/tv_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tài khoản của bạn đã được tạo thành công."
-        android:textSize="16sp"
-        android:textColor="@color/brown"
-        app:layout_constraintTop_toBottomOf="@id/tv_success"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
 
-    <!-- Nút "TIẾP TỤC" -->
     <Button
-        android:id="@+id/btn_continue_notification2"
+        android:id="@+id/btn_signin_or_signup"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:text="TIẾP TỤC"
+        android:text="ĐĂNG KÝ / ĐĂNG NHẬP"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:background="@drawable/background_button"
