@@ -8,17 +8,11 @@
 
     <item
         android:id="@+id/navigation_order"
-        android:icon="@drawable/coffee_maker_40px"
-        android:title="Đặt Hàng" />
-
-    <item
-        android:id="@+id/navigation_activity"
-        android:icon="@drawable/history_40px"
-        android:title="Hoạt Động" />
+        android:icon="@drawable/cart"
+        android:title="Giỏ Hàng"/>
 
     <item
         android:id="@+id/navigation_other"
         android:icon="@drawable/menu_40px"
         android:title="Khác" />
-
 </menu>
