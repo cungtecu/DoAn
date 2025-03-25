@@ -1,0 +1,6 @@
+<!-- res/drawable/rounded_search_bar.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/white" />  <!-- Màu nền -->
+    <corners android:radius="60dp" />  <!-- Giá trị bo tròn góc (điều chỉnh theo ý muốn) -->
+</shape>

@@ -5,29 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#f0f0f0">
+    android:background="#F5F5F5">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <!-- Header -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:elevation="4dp"
+            android:elevation="3dp"
             android:padding="16dp">
 
-            <!-- Nút Back -->
             <ImageView
                 android:id="@+id/btn_back"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/back"
-                android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
-                android:padding="5dp"/>
+                android:layout_centerVertical="true"
+                android:padding="5dp"
+                android:src="@drawable/back" />
 
-            <!-- Tiêu đề Hồ Sơ -->
             <TextView
                 android:id="@+id/title_profile"
                 android:layout_width="wrap_content"
@@ -36,172 +36,175 @@
                 android:text="Hồ Sơ"
                 android:textColor="@color/brown"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </RelativeLayout>
 
+        <!-- Main Content -->
         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/header_background"
-        android:orientation="vertical">
-
-        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:background="@drawable/header_background"
+            android:orientation="vertical">
 
-            <!-- Ảnh đại diện -->
-            <ImageView
-                android:id="@+id/profile_image"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:src="@drawable/person"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"/>
-
-            <!-- Text "Drips:" -->
-            <TextView
-                android:id="@+id/drips_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/profile_image"
-                android:layout_marginStart="16dp"
-                android:layout_centerVertical="true"
-                android:drawableLeft="@drawable/medal"
-                android:drawablePadding="5dp"
-                android:text="DRIPS:"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-
-            <!-- Hiển thị số điểm Drips -->
-            <TextView
-                android:id="@+id/drips_points"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/drips_text"
-                android:layout_centerVertical="true"
-                android:layout_alignBaseline="@id/drips_text"
-                android:text="0"
-                android:textColor="@color/yellow"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginLeft="5dp"/>
-        </RelativeLayout>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="2dp">
-            <LinearLayout
+            <!-- Profile Info and Drips -->
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
+                android:layout_height="wrap_content"
                 android:padding="16dp">
-                <RelativeLayout
+
+               <ImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/person"
+                    app:civ_border_color="#FFFFFF"
+                    app:civ_border_width="2dp" />
+
+                <TextView
+                    android:id="@+id/drips_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_toRightOf="@id/profile_image"
+                    android:drawableLeft="@drawable/medal"
+                    android:drawablePadding="5dp"
+                    android:text="DRIPS:"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/drips_points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/drips_text"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/drips_text"
+                    android:text="0"
+                    android:textColor="#FFD700"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <!-- Profile Details Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Section Header and Edit Button -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/general_info_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thông Tin Chung"
+                            android:textColor="@color/brown"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/edit_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:drawablePadding="4dp"
+                            android:text="Sửa"
+                            android:textColor="@color/dark_red"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <!-- Name -->
                     <TextView
-                        android:id="@+id/general_info_title"
+                        android:id="@+id/txtprofile_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/text_view_background"
+                        android:padding="12dp"
+                        android:textColor="@color/brown"
+                        android:textSize="18sp" />
+
+                    <!-- Gender -->
+                    <TextView
+                        android:id="@+id/txtprofile_gender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/text_view_background"
+                        android:hint="gender"
+                        android:padding="12dp"
+                        android:textColor="@color/brown"
+                    android:textSize="18sp" />
+
+                    <!-- Birthday -->
+                    <TextView
+                        android:id="@+id/txtprofile_birthday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/text_view_background"
+                        android:hint="birthday"
+                        android:padding="12dp"
+                        android:textColor="@color/brown"
+                        android:textSize="18sp" />
+
+                    <!-- Phone Number -->
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Thông Tin Chung"
-                        android:textSize="18sp"
+                        android:layout_marginTop="16dp"
+                        android:text="Số Điện Thoại"
                         android:textColor="@color/brown"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/edit_button"
+                        android:id="@+id/txtprofile_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/text_view_background"
+                        android:padding="12dp"
+                        android:textColor="@color/brown"
+                        android:textSize="18sp" />
+
+                    <!-- Email -->
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:text="Sửa"
-                        android:textStyle="bold"
-                        android:textColor="@color/dark_red"
-                        android:textSize="16sp" />
-                </RelativeLayout>
-                <TextView
-                    android:id="@+id/txtprofile_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:inputType="textPersonName"
-                    android:textSize="18sp"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/edit_text_detail_background"
-                    android:padding="8dp"/>
+                        android:layout_marginTop="18dp"
+                        android:text="Email"
+                        android:textColor="@color/brown"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                <!--Gender-->
-                <TextView
-                    android:id="@+id/txtprofile_gender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:inputType="text"
-                    android:textSize="18sp"
-                    android:hint="Giới tính"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/edit_text_detail_background"
-                    android:padding="8dp"/>
-
-                <!--Birthday-->
-                <TextView
-                    android:id="@+id/txtprofile_birthday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:inputType="date"
-                    android:hint="Ngày sinh"
-                    android:textSize="18sp"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/edit_text_detail_background"
-                    android:padding="8dp"/>
-                <TextView
-                    android:id="@+id/general_info_title2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Số Điện Thoại"
-                    android:textColor="@color/brown"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:paddingTop="18dp"/>
-                <TextView
-                    android:id="@+id/txtprofile_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:inputType="textPersonName"
-                    android:textSize="18sp"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/edit_text_detail_background"
-                    android:padding="8dp"/>
-                <TextView
-                    android:id="@+id/general_info_title3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Email"
-                    android:textColor="@color/brown"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:paddingTop="18dp"/>
-                <TextView
-                    android:id="@+id/txtprofile_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:inputType="textPersonName"
-                    android:textSize="18sp"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/edit_text_detail_background"
-                    android:padding="8dp"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+                    <TextView
+                        android:id="@+id/txtprofile_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/text_view_background"
+                        android:padding="12dp"
+                        android:textColor="@color/brown"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
