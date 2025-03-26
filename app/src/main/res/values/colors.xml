@@ -6,5 +6,9 @@
     <color name="dark_red">#B3271D</color>
     <color name="brown">#493430</color>
     <color name="yellow">#FFD700</color>
-    <color name="gray">#FAF7F7</color>
+    <color name="gray">#E9E9E9</color>
+    <color name="ligthgreen">#90EE90</color>
+    <color name="blackgreen">#006241</color>
+
+
 </resources>
