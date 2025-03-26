@@ -1,13 +1,24 @@
 package com.example.doan;
 
+import static com.example.doan.R.*;
+
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.doan.BestSellerAdapter;
 import com.example.doan.models.Product;
 
@@ -33,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerBestSeller;
     private BestSellerAdapter bestSellerAdapter;
     private List<Product> bestSellerList;
+
+    // khai báo amination cho giỏ hàng
+    private ImageView cartIcon, productImage;
+    private Button addToCartButton;
 
 
     @Override
@@ -77,6 +92,22 @@ public class MainActivity extends AppCompatActivity {
         // Gán Adapter
         bestSellerAdapter = new BestSellerAdapter(bestSellerList);
         recyclerBestSeller.setAdapter(bestSellerAdapter);
+
+        // ánh xạ giỏ hàng
+        cartIcon = findViewById(R.id.cartIcon);
+        productImage = findViewById(id.imgProduct);
+        FrameLayout addToCartButton = findViewById(R.id.addToCartButton);
+        // xử lý amination cho giỏ hàng
+        addToCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Hiệu ứng giỏ hàng phóng to rồi nhỏ lại
+                YoYo.with(Techniques.Pulse)
+                        .duration(500) // Thời gian chạy (ms)
+                        .repeat(1) // Lặp lại 1 lần
+                        .playOn(cartIcon);
+            }
+        });
     }
 
     //Phương thức tự động cuộn banner vô tận

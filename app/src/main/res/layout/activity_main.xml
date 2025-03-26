@@ -3,17 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f0f0f0">
+    android:background="@color/blackgreen">
 
     <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@drawable/round_header"
         android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        >
 
         <!-- User -->
         <ImageView
@@ -28,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Xin chào, người dùng!"
+            android:fontFamily="@font/font_main"
             android:textSize="16sp"
             android:textColor="@color/brown"
             android:layout_marginEnd="16dp"
@@ -61,7 +65,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:background="@color/blackgreen">
 
             <!-- Phần 1: Banner cuộn ngang -->
             <androidx.viewpager2.widget.ViewPager2
@@ -71,16 +76,39 @@
                 android:layout_marginBottom="10dp"/>
 
             <!-- Phần 2: Danh mục món -->
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Danh mục"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_marginBottom="8dp"/>
+                android:orientation="horizontal"
+                android:paddingLeft="15dp">
 
-<!--            <androidx.recyclerview.widget.RecyclerView-->
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/font_bigger"
+                    android:text="Danh mục"
+                    android:paddingBottom="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:gravity="start"/>
+
+                <TextView
+                    android:id="@+id/btn_order"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/font_main"
+                    android:gravity="end"
+                    android:text="View all"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <!--            <androidx.recyclerview.widget.RecyclerView-->
 <!--                android:id="@+id/recyclerCategory"-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="wrap_content"-->
@@ -94,11 +122,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@color/gray"
-                android:elevation="4dp"
                 android:orientation="horizontal"
-                android:padding="10dp"
-                android:weightSum="3">
+                android:padding="5dp"
+                android:weightSum="3"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_banner">
 
                 <!-- Cat 1 -->
                 <LinearLayout
@@ -124,6 +152,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="Cà Phê"
+                        android:fontFamily="@font/font_main"
                         android:textColor="@color/brown"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -154,6 +183,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:fontFamily="@font/font_main"
                         android:text="Cà phê truyền thống"
                         android:textColor="@color/brown"
                         android:textSize="14sp" />
@@ -182,6 +212,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Bánh ngọt"
+                        android:fontFamily="@font/font_main"
                         android:textColor="@color/brown"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -192,11 +223,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@color/gray"
                 android:elevation="4dp"
                 android:orientation="horizontal"
-                android:padding="10dp"
-                android:weightSum="3">
+                android:padding="5dp"
+                android:weightSum="3"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/round_banner">
 
                 <!-- Cat 1 -->
                 <LinearLayout
@@ -221,6 +253,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:fontFamily="@font/font_main"
                         android:text="Trà"
                         android:textColor="@color/brown"
                         android:textSize="14sp" />
@@ -251,6 +284,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="Đá xay"
+                        android:fontFamily="@font/font_main"
                         android:textColor="@color/brown"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -278,144 +312,230 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Phindi"
+                        android:fontFamily="@font/font_main"
                         android:textColor="@color/brown"
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
-
-
-
             <!-- Phần 3: Sản phẩm bán chạy -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sản phẩm bán chạy"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="8dp"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerBestSeller"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:padding="8dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+                android:background="@drawable/round_banner">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sản phẩm bán chạy"
+                    android:textSize="18sp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/font_main"
+                    android:textStyle="bold"
+                    android:paddingLeft="15dp"
+                    android:textColor="@color/blackgreen"
+                    android:layout_marginTop="10dp"/>
+                <!--                android:layout_marginBottom="8dp"/>-->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerBestSeller"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            </LinearLayout>
 
         </LinearLayout>
-
     </ScrollView>
 
-    <!-- Footer -->
+<!--     Footer -->
+<!--    <LinearLayout-->
+<!--        android:id="@+id/footer"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:background="@color/white"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="15dp"-->
+<!--        android:weightSum="4"-->
+<!--        android:elevation="4dp">-->
+
+<!--        &lt;!&ndash; Icon 1 &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/btn_home"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center"-->
+<!--            android:clickable="true"-->
+<!--            android:onClick="onHomeButtonClicked">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="25dp"-->
+<!--                android:layout_height="25dp"-->
+<!--                android:src="@drawable/store" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Trang Chủ"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textColor="@color/brown"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Icon 2 &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center"-->
+<!--            android:clickable="true"-->
+<!--            android:onClick="onOrderButtonClicked">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="25dp"-->
+<!--                android:layout_height="25dp"-->
+<!--                android:src="@drawable/coffee_cup" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Đặt Hàng"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textColor="@color/brown"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Icon 3 &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/btn_activity"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center"-->
+<!--            android:clickable="true"-->
+<!--            android:onClick="onActivityButtonClicked">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="25dp"-->
+<!--                android:layout_height="25dp"-->
+<!--                android:src="@drawable/clock" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Hoạt Động"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textColor="@color/brown"/>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Icon 4 &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/btn_other"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center"-->
+<!--            android:clickable="true"-->
+<!--            android:onClick="onOtherButtonClicked">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="25dp"-->
+<!--                android:layout_height="25dp"-->
+<!--                android:src="@drawable/menu" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Khác"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textColor="@color/brown"/>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
     <LinearLayout
         android:id="@+id/footer"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
         android:orientation="horizontal"
-        android:padding="10dp"
-        android:weightSum="4"
-        android:elevation="4dp">
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center">
 
-        <!-- Icon 1 -->
-        <LinearLayout
+        <!-- Nút Trang Chủ -->
+<!--        <TextView-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Trang Chủ"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:fontFamily="@font/font_bigger"-->
+<!--            android:textSize="14sp"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="10dp"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"/>-->
+        <ImageView
             android:id="@+id/btn_home"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
+            android:padding="10dp"
             android:clickable="true"
-            android:onClick="onHomeButtonClicked">
+            android:focusable="true"
+            android:src="@drawable/ic_home"/>
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/store" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Trang Chủ"
-                android:textSize="14sp"
-                android:textColor="@color/brown"/>
-        </LinearLayout>
-
-        <!-- Icon 2 -->
-        <LinearLayout
-            android:id="@+id/btn_order"
+        <!-- Nút Add To Order (Cao hơn) -->
+        <FrameLayout
+            android:id="@+id/addToCartButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
+            android:layout_height="70dp"
+            android:layout_weight="2"
+            android:background="@drawable/bg_add_to_order"
             android:gravity="center"
-            android:clickable="true"
-            android:onClick="onOrderButtonClicked">
-
+            android:orientation="horizontal"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="20dp">
+            
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/coffee_cup" />
+                android:id="@+id/cartIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_cart"
+                android:contentDescription="Cart Icon"
+                android:scaleType="centerInside"/>
+        </FrameLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Đặt Hàng"
-                android:textSize="14sp"
-                android:textColor="@color/brown"/>
-        </LinearLayout>
 
-        <!-- Icon 3 -->
-        <LinearLayout
-            android:id="@+id/btn_activity"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:onClick="onActivityButtonClicked">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/clock" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hoạt Động"
-                android:textSize="14sp"
-                android:textColor="@color/brown"/>
-        </LinearLayout>
-
-        <!-- Icon 4 -->
-        <LinearLayout
+    <!-- Nút Khác -->
+<!--    <TextView-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        android:text="Khác"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:fontFamily="@font/font_bigger"-->
+<!--        android:textSize="14sp"-->
+<!--        android:gravity="center"-->
+<!--        android:padding="10dp"-->
+<!--        android:clickable="true"-->
+<!--        android:focusable="true"/>-->
+        <ImageView
             android:id="@+id/btn_other"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
+            android:padding="10dp"
             android:clickable="true"
-            android:onClick="onOtherButtonClicked">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/menu" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Khác"
-                android:textSize="14sp"
-                android:textColor="@color/brown"/>
-        </LinearLayout>
+            android:focusable="true"
+            android:src="@drawable/ic_other"/>
     </LinearLayout>
+
+
 </RelativeLayout>
