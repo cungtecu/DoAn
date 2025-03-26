@@ -1,198 +1,212 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="#f0f0f0">
+    android:background="#FAFAFA">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:padding="16dp"
+        android:layout_alignParentTop="true">
 
-        <!-- Header -->
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Sửa Hồ Sơ"
+            android:textColor="@color/brown"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/header_background"
+        android:orientation="vertical"
+        android:layout_below="@id/header_layout"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_marginBottom="10dp">
+
+        <!-- Profile Section -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:elevation="4dp"
             android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/btn_back"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:padding="5dp"
-                android:src="@drawable/back" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/person"
+                android:layout_marginEnd="16dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/white"/>
 
-            <TextView
-                android:id="@+id/title_profile"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Sửa Hồ Sơ"
-                android:textColor="@color/brown"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <!-- Main Content -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/header_background"
-            android:orientation="vertical">
-
-            <!-- Profile Info and Drips -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-
-                <ImageView
-                    android:id="@+id/profile_image"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/person" />
+                android:orientation="horizontal"
+                android:layout_toEndOf="@id/profile_image"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/drips_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="16dp"
-                    android:layout_toRightOf="@id/profile_image"
                     android:drawableLeft="@drawable/medal"
                     android:drawablePadding="5dp"
                     android:text="DRIPS:"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/drips_points"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/drips_text"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/drips_text"
                     android:text="0"
                     android:textColor="@color/yellow"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="5dp"/>
+            </LinearLayout>
+        </RelativeLayout>
 
-            <!-- Profile Details Card -->
-            <androidx.cardview.widget.CardView
+        <!-- CardView for Account Settings -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <LinearLayout
+                <!-- Section Header and Edit Button -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/general_info_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thông Tin Chung"
+                        android:textColor="@color/brown"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/save_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="Lưu"
+                        android:textColor="@color/dark_red"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <!-- Name -->
+                <EditText
+                    android:id="@+id/edit_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edit_text_detail_background"
+                    android:padding="8dp"
+                    android:inputType="textPersonName"
+                    android:textSize="18sp" />
 
-                    <!-- Section Header and Edit Button -->
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                <!-- Gender -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edit_text_detail_background"
+                    android:padding="8dp">
 
-                        <TextView
-                            android:id="@+id/general_info_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Thông Tin Chung"
-                            android:textColor="@color/brown"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/save_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="Lưu"
-                            android:textColor="@color/dark_red"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </RelativeLayout>
-
-                    <!-- Name -->
-                    <EditText
-                        android:id="@+id/edit_name"
+                    <TextView
+                        android:id="@+id/edit_gender"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/edit_text_detail_background"
-                        android:padding="8dp"
-                        android:inputType="textPersonName"
-                        android:textSize="18sp" />
+                        android:textSize="16sp"
+                        android:hint="Giới tính"
+                        android:paddingEnd="40dp"
+                        android:gravity="center_vertical" />
 
-                    <!-- Gender -->
-                    <RelativeLayout
+                    <ImageView
+                        android:id="@+id/gender_selector"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/gender"
+                        android:padding="5dp"/>
+                </RelativeLayout>
+
+                <!-- Birthday -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edit_text_detail_background"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/edit_birthday"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/edit_text_detail_background"
-                        android:padding="8dp">
+                        android:textSize="16sp"
+                        android:hint="Ngày sinh"
+                        android:paddingEnd="40dp"
+                        android:gravity="center_vertical" />
 
-                        <TextView
-                            android:id="@+id/edit_gender"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:hint="Giới tính"
-                            android:paddingEnd="40dp"
-                            android:gravity="center_vertical" />
-
-                        <ImageView
-                            android:id="@+id/gender_selector"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/gender"
-                            android:padding="5dp"/>
-                    </RelativeLayout>
-
-                    <!-- Birthday -->
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/edit_text_detail_background"
-                        android:padding="8dp">
-
-                        <TextView
-                            android:id="@+id/edit_birthday"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:hint="Ngày sinh"
-                            android:paddingEnd="40dp"
-                            android:gravity="center_vertical" />
-
-                        <ImageView
-                            android:id="@+id/birthday_picker"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/calendar"
-                            android:padding="5dp"/>
-                    </RelativeLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/birthday_picker"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/calendar"
+                        android:padding="5dp"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
-</ScrollView>
+
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        app:elevation="8dp"
+        app:menu="@menu/bottom_navigation_menu"
+        app:itemIconTint="@color/green"
+        app:itemTextColor="@color/green"/>
+</RelativeLayout>

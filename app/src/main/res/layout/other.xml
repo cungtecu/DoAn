@@ -11,7 +11,9 @@
         android:layout_height="match_parent"
         android:background="@drawable/header_background"
         android:orientation="vertical"
-        android:layout_above="@id/bottom_navigation">
+        android:layout_above="@id/bottom_navigation"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
 
         <!-- Profile Section -->
         <RelativeLayout

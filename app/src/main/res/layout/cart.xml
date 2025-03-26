@@ -118,7 +118,6 @@
                         android:contentDescription="Thêm sản phẩm" />
                 </LinearLayout>
 
-                <!-- Line 3 (Tiêu đề) -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -159,7 +158,6 @@
                         android:textStyle="bold" />
                 </TableRow>
 
-                <!-- Line 4 (Ví dụ dữ liệu sản phẩm) -->
                 <TableRow>
 
                     <TextView
@@ -194,15 +192,14 @@
                     <ImageView
                         android:id="@+id/btn_delete_product"
                         android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_height="22dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/remove"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:focusable="true"/>
+                        android:focusable="true"
+                        android:src="@drawable/remove" />
                 </TableRow>
 
-                <!-- Line 5 -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -214,7 +211,7 @@
                     android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingTop="20dp"/>
-
+                <!-- Line 3 -->
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
@@ -238,7 +235,7 @@
                         android:focusable="true"
                         android:paddingBottom="20dp"/>
                 </TableRow>
-
+                <!-- Line 4 -->
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
@@ -262,7 +259,7 @@
                         android:focusable="true"
                         android:paddingBottom="20dp"/>
                 </TableRow>
-
+                <!-- Line 5 -->
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
@@ -284,7 +281,7 @@
                         android:textStyle="bold"
                         android:paddingBottom="20dp"/>
                 </TableRow>
-
+                <!-- Line 6 -->
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
