@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-//    khai báo banner
+    //    khai báo banner
     private ViewPager2 viewPager;
     private List<Integer> imageList = Arrays.asList(
             R.drawable.banner1,
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final long SLIDE_DELAY = 3000; // Điều chỉnh tốc độ cuộn (5 giây)
 
 
-//    khai báo sản phẩm bán chạy
+    //    khai báo sản phẩm bán chạy
     private RecyclerView recyclerBestSeller;
     private BestSellerAdapter bestSellerAdapter;
     private List<Product> bestSellerList;
