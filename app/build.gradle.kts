@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation("de.hdodenhof:circleimageview:2.2.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

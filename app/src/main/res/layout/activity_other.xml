@@ -9,6 +9,7 @@ android:orientation="vertical">
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FAFAFA"
+        android:layout_alignParentBottom="true"
         android:layout_weight="1">
 
         <!-- Header Layout -->
@@ -41,6 +42,7 @@ android:orientation="vertical">
                     android:layout_toEndOf="@id/profile_image"
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical">
+
 
                     <TextView
                         android:id="@+id/drips_text"
@@ -272,12 +274,14 @@ android:orientation="vertical">
         </LinearLayout>
     </RelativeLayout>
 <LinearLayout
-    android:id="@+id/footer"
+    android:id="@+id/bottom_navigation"
     android:layout_alignParentBottom="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:weightSum="3"
+    android:padding="5dp"
+    android:background="@color/blackgreen"
     android:gravity="center">
 
     <ImageButton

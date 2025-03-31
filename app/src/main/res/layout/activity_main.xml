@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Chứa header và footer-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blackgreen">
+    android:background="@color/blackgreen"
+    android:layout_alignParentBottom="true">
 
     <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:background="@drawable/round_header"
         android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="8dp"
         android:gravity="center_vertical"
-        android:padding="16dp"
-        >
+        android:padding="16dp">
 
         <!-- User -->
         <ImageView
@@ -25,6 +24,7 @@
             android:layout_height="36dp"
             android:src="@drawable/person"
             android:clickable="true"
+            android:layout_gravity="center"
             android:onClick="onUserClicked"
             android:layout_marginEnd="16dp"/>
         <TextView
@@ -54,319 +54,39 @@
 
     </LinearLayout>
     <!-- ScrollView cho phần body -->
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/header"
-        android:layout_above="@id/footer"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:background="@color/blackgreen">
-
-            <!-- Phần 1: Banner cuộn ngang -->
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginBottom="10dp"/>
-
-            <!-- Phần 2: Danh mục món -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="15dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/font_bigger"
-                    android:text="Danh mục"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:gravity="start"/>
-
-                <TextView
-                    android:id="@+id/btn_order"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/font_main"
-                    android:gravity="end"
-                    android:text="View all"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-
-            <!--            <androidx.recyclerview.widget.RecyclerView-->
-            <!--                android:id="@+id/recyclerCategory"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginBottom="20dp"-->
-            <!--                android:scrollbars="horizontal">-->
-            <!--                -->
-            <!--            </androidx.recyclerview.widget.RecyclerView>-->
-            <!--            catolory-->
-            <LinearLayout
-                android:id="@+id/catolory1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:weightSum="3"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/round_banner">
-
-                <!-- Cat 1 -->
-                <LinearLayout
-                    android:id="@+id/cat_coffe"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:onClick="onHomeButtonClicked"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/cat_coffee"
-                        android:scaleType="centerInside"
-                        android:background="@drawable/circle_background"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Cà Phê"
-                        android:fontFamily="@font/font_main"
-                        android:textColor="@color/brown"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <!-- Cat 2 -->
-                <LinearLayout
-                    android:id="@+id/cat_coffee_traditional"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:onClick="onOrderButtonClicked"
-                    android:orientation="vertical"
-                    >
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/cat_coffee_traditional"
-                        android:scaleType="centerInside"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/circle_background"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:fontFamily="@font/font_main"
-                        android:text="Cà phê truyền thống"
-                        android:textColor="@color/brown"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <!-- Cat 3 -->
-                <LinearLayout
-                    android:id="@+id/cat_cake"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:onClick="onActivityButtonClicked"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/cat_cake"
-                        android:scaleType="centerInside"
-                        android:background="@drawable/circle_background"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Bánh ngọt"
-                        android:fontFamily="@font/font_main"
-                        android:textColor="@color/brown"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/catolory2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:elevation="4dp"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:weightSum="3"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/round_banner">
-
-                <!-- Cat 1 -->
-                <LinearLayout
-                    android:id="@+id/cat_tea"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:onClick="onHomeButtonClicked"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/cat_tea"
-                        android:scaleType="centerInside"
-                        android:background="@drawable/circle_background"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:fontFamily="@font/font_main"
-                        android:text="Trà"
-                        android:textColor="@color/brown"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <!-- Cat 2 -->
-                <LinearLayout
-                    android:id="@+id/cat_iceblended"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:onClick="onOrderButtonClicked"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/circle_background"
-                        android:paddingBottom="5dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/cat_iceblended" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Đá xay"
-                        android:fontFamily="@font/font_main"
-                        android:textColor="@color/brown"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <!-- Cat 3 -->
-                <LinearLayout
-                    android:id="@+id/cat_phindi"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:onClick="onActivityButtonClicked"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/cat_phindi"
-                        android:scaleType="centerInside"
-                        android:background="@drawable/circle_background"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Phindi"
-                        android:fontFamily="@font/font_main"
-                        android:textColor="@color/brown"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-            <!-- Phần 3: Sản phẩm bán chạy -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/round_banner">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sản phẩm bán chạy"
-                    android:textSize="18sp"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/font_main"
-                    android:textStyle="bold"
-                    android:paddingLeft="15dp"
-                    android:textColor="@color/blackgreen"
-                    android:layout_marginTop="10dp"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerBestSeller"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="8dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent"/>
     <LinearLayout
-        android:id="@+id/footer"
+        android:id="@+id/bottom_navigation"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:weightSum="3"
+        android:background="@color/blackgreen"
+        android:weightSum="5"
+        android:padding="5dp"
         android:gravity="center">
+
         <ImageButton
             android:id="@+id/btn_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
             android:background="@color/blackgreen"
             android:clickable="true"
             android:focusable="true"
+            android:padding="14dp"
             android:src="@drawable/ic_home" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/blackgreen"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="14dp"
+            />
 
         <ImageButton
             android:id="@+id/cartIcon"
@@ -382,16 +102,22 @@
             android:contentDescription="Cart Icon"
             android:scaleType="centerInside"/>
         <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/blackgreen"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="14dp"
+            />
+        <ImageButton
             android:id="@+id/btn_other"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
+            android:padding="14dp"
             android:background="@color/blackgreen"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_other"/>
     </LinearLayout>
-
-
 </RelativeLayout>
