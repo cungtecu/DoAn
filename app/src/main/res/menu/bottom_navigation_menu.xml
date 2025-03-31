@@ -3,16 +3,16 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/store_40px"
+        android:icon="@drawable/ic_home"
         android:title="Trang Chủ" />
 
     <item
         android:id="@+id/navigation_order"
-        android:icon="@drawable/cart"
+        android:icon="@drawable/ic_cart"
         android:title="Giỏ Hàng"/>
 
     <item
         android:id="@+id/navigation_other"
-        android:icon="@drawable/menu_40px"
+        android:icon="@drawable/ic_other"
         android:title="Khác" />
 </menu>

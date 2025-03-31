@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f0f0f0">
+    android:background="#f0f0f0"
+    >
 
     <!-- Thanh tìm kiếm -->
     <LinearLayout
         android:id="@+id/search_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:orientation="horizontal"
         android:background="@drawable/rounded_search"
         android:padding="5dp">
@@ -27,7 +28,8 @@
             android:singleLine="true"
             android:imeOptions="actionSearch"
             android:paddingStart="8dp"
-            android:paddingEnd="8dp"/>
+            android:paddingEnd="8dp"
+            android:layout_gravity="center_vertical"/>
         <!-- Icon tìm kiếm -->
         <ImageView
             android:layout_width="24dp"
@@ -253,15 +255,84 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- BottomNavigationView -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        app:elevation="4dp"
-        app:itemIconTint="@color/green"
-        app:itemTextColor="@color/brown"
-        app:menu="@menu/bottom_navigation_menu" />
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:gravity="center"
+        android:background="@color/blackgreen">
+
+        <!-- Nút Trang Chủ -->
+        <!--        <TextView-->
+        <!--            android:layout_width="30dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:text="Trang Chủ"-->
+        <!--            android:textColor="@color/white"-->
+        <!--            android:fontFamily="@font/font_bigger"-->
+        <!--            android:textSize="14sp"-->
+        <!--            android:gravity="center"-->
+        <!--            android:padding="10dp"-->
+        <!--            android:clickable="true"-->
+        <!--            android:focusable="true"/>-->
+        <ImageView
+            android:id="@+id/btn_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_home"/>
+
+        <!-- Nút Add To Order (Cao hơn) -->
+        <!--        <FrameLayout-->
+        <!--            android:id="@+id/addToCartButton"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="70dp"-->
+        <!--            android:layout_weight="2"-->
+        <!--            android:gravity="center"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:paddingHorizontal="30dp"-->
+        <!--            android:paddingVertical="20dp">-->
+
+        <ImageView
+            android:id="@+id/cartIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_cart"
+            android:contentDescription="Cart Icon"
+            android:scaleType="centerInside"/>
+        <!--        </FrameLayout>-->
+
+
+        <!-- Nút Khác -->
+        <!--    <TextView-->
+        <!--        android:layout_width="30dp"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_weight="1"-->
+        <!--        android:text="Khác"-->
+        <!--        android:textColor="@color/white"-->
+        <!--        android:fontFamily="@font/font_bigger"-->
+        <!--        android:textSize="14sp"-->
+        <!--        android:gravity="center"-->
+        <!--        android:padding="10dp"-->
+        <!--        android:clickable="true"-->
+        <!--        android:focusable="true"/>-->
+        <ImageView
+            android:id="@+id/btn_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_other"/>
+    </LinearLayout>
 </RelativeLayout>
