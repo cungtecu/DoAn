@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FAFAFA"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="1">
+
+        <!-- Header Layout -->
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/header_background"
+            android:orientation="vertical">
+
+            <!-- Profile Section -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:src="@drawable/person"
+                    android:layout_marginEnd="16dp"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FFFFFF"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_toEndOf="@id/profile_image"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical">
+
+
+                    <TextView
+                        android:id="@+id/drips_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/medal"
+                        android:drawablePadding="5dp"
+                        android:text="DRIPS:"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/drips_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/yellow"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="5dp"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <!-- CardView for Account Settings -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@android:color/white">
+
+                    <TextView
+                        android:id="@+id/account_settings_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tài Khoản"
+                        android:textSize="16sp"
+                        android:textColor="#333333"
+                        android:textStyle="bold"
+                        android:paddingBottom="12dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <!-- Profile Button -->
+                    <RelativeLayout
+                        android:id="@+id/btn_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/text_view_background"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="16dp"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:id="@+id/icon_btn_profile"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/user"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true" />
+
+                        <TextView
+                            android:id="@+id/txt_btn_profile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hồ Sơ"
+                            android:textSize="16sp"
+                            android:textColor="@color/brown"
+                            android:layout_toEndOf="@id/icon_btn_profile"
+                            android:layout_marginStart="16dp"
+                            android:layout_centerVertical="true"/>
+                        <ImageView
+                            android:id="@+id/icon_arrow_profile"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/arrow_right"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"/>
+                    </RelativeLayout>
+
+                    <!-- Settings Button -->
+                    <RelativeLayout
+                        android:id="@+id/btn_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/text_view_background"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="16dp"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:id="@+id/icon_btn_setting"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/setting"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true" />
+
+                        <TextView
+                            android:id="@+id/txt_btn_setting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cài Đặt"
+                            android:textSize="16sp"
+                            android:textColor="@color/brown"
+                            android:layout_toEndOf="@id/icon_btn_setting"
+                            android:layout_marginStart="16dp"
+                            android:layout_centerVertical="true"/>
+                        <ImageView
+                            android:id="@+id/icon_arrow_setting"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/arrow_right"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+
+                    <!-- thong tin chung -->
+                    <TextView
+                        android:id="@+id/security_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Thông Tin Chung"
+                        android:textSize="16sp"
+                        android:textColor="#333333"
+                        android:textStyle="bold"
+                        android:paddingBottom="12dp"
+                        android:layout_marginLeft="10dp"/>
+
+                    <RelativeLayout
+                        android:id="@+id/btn_policy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/text_view_background"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="16dp"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:id="@+id/icon_policy"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/paper2"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true" />
+
+                        <TextView
+                            android:id="@+id/txt_policy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Chính sách bảo mật"
+                            android:textSize="16sp"
+                            android:textColor="@color/brown"
+                            android:layout_toEndOf="@id/icon_policy"
+                            android:layout_marginStart="16dp"
+                            android:layout_centerVertical="true"/>
+
+                        <ImageView
+                            android:id="@+id/icon_arrow_policy"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/arrow_right"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/btn_terms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/text_view_background"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/icon_terms"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/paper2"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true" />
+
+                        <TextView
+                            android:id="@+id/txt_create_password"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Điều khoản dịch vụ"
+                            android:textSize="16sp"
+                            android:textColor="@color/brown"
+                            android:layout_toEndOf="@id/icon_terms"
+                            android:layout_marginStart="16dp"
+                            android:layout_centerVertical="true"/>
+
+                        <ImageView
+                            android:id="@+id/icon_arrow_terms"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/arrow_right"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+                    <!-- Logout Button -->
+                    <Button
+                        android:id="@+id/btn_logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/background_button"
+                        android:text="ĐĂNG XUẤT"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:padding="12dp"
+                        android:stateListAnimator="@null"
+                        android:elevation="4dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </RelativeLayout>
+<LinearLayout
+    android:id="@+id/bottom_navigation"
+    android:layout_alignParentBottom="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="3"
+    android:padding="5dp"
+    android:background="@color/blackgreen"
+    android:gravity="center">
+
+    <ImageButton
+        android:id="@+id/btn_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/blackgreen"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="14dp"
+        android:src="@drawable/ic_home" />
+
+    <ImageButton
+        android:id="@+id/cartIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:background="@color/blackgreen"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_cart"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="Cart Icon"
+        android:scaleType="centerInside"/>
+    <ImageButton
+        android:id="@+id/btn_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="14dp"
+        android:background="@color/blackgreen"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_other"/>
+</LinearLayout>
+</LinearLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!--    <item-->
+<!--        android:id="@+id/btn_home"-->
+<!--        android:icon="@drawable/ic_home"-->
+<!--        android:title="Trang Chủ" />-->
+
+<!--    <item-->
+<!--        android:id="@+id/cartIcon"-->
+<!--        android:icon="@drawable/ic_cart"-->
+<!--        android:title="Giỏ Hàng"/>-->
+
+<!--    <item-->
+<!--        android:id="@+id/btn_other"-->
+<!--        android:icon="@drawable/ic_other"-->
+<!--        android:title="Khác" />-->
+</menu>

@@ -1,0 +1,456 @@
+<!--&lt;!&ndash; res/layout/your_activity_layout.xml &ndash;&gt;-->
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:background="#f0f0f0">-->
+
+<!--    &lt;!&ndash; Thanh tìm kiếm &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:id="@+id/search_bar_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:background="@drawable/rounded_search"-->
+<!--        android:padding="5dp">-->
+
+<!--        &lt;!&ndash; Ô nhập tìm kiếm &ndash;&gt;-->
+<!--        <EditText-->
+<!--            android:id="@+id/search_edit_text"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:hint="Tìm kiếm Tên món ăn"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:singleLine="true"-->
+<!--            android:imeOptions="actionSearch"-->
+<!--            android:paddingStart="8dp"-->
+<!--            android:paddingEnd="8dp"/>-->
+<!--        &lt;!&ndash; Icon tìm kiếm &ndash;&gt;-->
+<!--        <ImageView-->
+<!--            android:layout_width="24dp"-->
+<!--            android:layout_height="24dp"-->
+<!--            android:src="@drawable/search"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:layout_marginEnd="8dp"/>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Main Content (Categories and Product List) &ndash;&gt;-->
+
+<!--    &lt;!&ndash; BottomNavigationView &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_below="@id/search_bar_layout"-->
+<!--        android:layout_marginTop="1dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:weightSum="1">-->
+
+<!--        &lt;!&ndash; Categories (Left) &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="0.3"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/category_title"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="Danh Mục"-->
+<!--                android:textColor="@color/brown"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_margin="8dp"-->
+<!--                android:backgroundTint="@color/gray"-->
+<!--                app:cardCornerRadius="15dp">-->
+
+<!--                <ScrollView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:fillViewport="true">-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/category_list_layout"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:padding="8dp">-->
+
+<!--                        &lt;!&ndash; Ví dụ: Icon danh mục 1 &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="center"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:padding="10dp">-->
+
+<!--                            <ImageView-->
+<!--                                android:layout_width="55dp"-->
+<!--                                android:layout_height="55dp"-->
+<!--                                android:src="@drawable/cat_cake" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="Bánh ngọt"-->
+<!--                                android:textColor="@color/black"-->
+<!--                                android:textSize="14sp" />-->
+<!--                        </LinearLayout>-->
+<!--                        &lt;!&ndash; Các LinearLayout cho các danh mục khác ở đây &ndash;&gt;-->
+<!--                        &lt;!&ndash; Ví dụ: Icon danh mục 1 &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="center"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:padding="10dp">-->
+
+<!--                            <ImageView-->
+<!--                                android:layout_width="55dp"-->
+<!--                                android:layout_height="55dp"-->
+<!--                                android:src="@drawable/cat_coffee" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="Cà Phê"-->
+<!--                                android:textColor="@color/black"-->
+<!--                                android:textSize="14sp" />-->
+<!--                        </LinearLayout>-->
+<!--                        &lt;!&ndash; Ví dụ: Icon danh mục 1 &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="center"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:padding="10dp">-->
+
+<!--                            <ImageView-->
+<!--                                android:layout_width="55dp"-->
+<!--                                android:layout_height="55dp"-->
+<!--                                android:src="@drawable/cat_coffee_traditional" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:gravity="center"-->
+<!--                                android:text="Cà phê nóng"-->
+<!--                                android:textColor="@color/black"-->
+<!--                                android:textSize="14sp" />-->
+<!--                        </LinearLayout>-->
+<!--                        &lt;!&ndash; Ví dụ: Icon danh mục 1 &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="center"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:padding="10dp">-->
+
+<!--                            <ImageView-->
+<!--                                android:layout_width="55dp"-->
+<!--                                android:layout_height="55dp"-->
+<!--                                android:src="@drawable/cat_iceblended" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="Đá xay"-->
+<!--                                android:textColor="@color/black"-->
+<!--                                android:textSize="14sp" />-->
+<!--                        </LinearLayout>-->
+<!--                        &lt;!&ndash; Ví dụ: Icon danh mục 1 &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="center"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:padding="10dp">-->
+
+<!--                            <ImageView-->
+<!--                                android:layout_width="55dp"-->
+<!--                                android:layout_height="55dp"-->
+<!--                                android:src="@drawable/cat_phindi" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="Phindi"-->
+<!--                                android:textColor="@color/black"-->
+<!--                                android:textSize="14sp" />-->
+<!--                        </LinearLayout>-->
+<!--                        &lt;!&ndash; Ví dụ: Icon danh mục 1 &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="center"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:padding="10dp">-->
+
+<!--                            <ImageView-->
+<!--                                android:layout_width="55dp"-->
+<!--                                android:layout_height="55dp"-->
+<!--                                android:contentDescription="Category 1"-->
+<!--                                android:src="@drawable/cat_tea" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="Trà"-->
+<!--                                android:textColor="@color/black"-->
+<!--                                android:textSize="14sp" />-->
+<!--                        </LinearLayout>-->
+
+<!--                    </LinearLayout>-->
+<!--                </ScrollView>-->
+<!--            </androidx.cardview.widget.CardView>-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash; Product List (Right) &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="0.7"-->
+<!--            android:orientation="vertical">-->
+
+<!--            &lt;!&ndash; Product Title and Toggle Button (Horizontal Layout) &ndash;&gt;-->
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--                &lt;!&ndash; Toggle Button (or Switch) for Grid/List View &ndash;&gt;-->
+<!--                <ImageButton-->
+<!--                    android:id="@+id/toggle_layout_button"-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_margin="5dp"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:paddingRight="8dp"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    android:src="@drawable/list" />-->
+
+<!--            </RelativeLayout>-->
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:backgroundTint="@color/gray"-->
+<!--                app:cardCornerRadius="15dp">-->
+
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/product_recycler_view"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:padding="8dp" />-->
+
+<!--            </androidx.cardview.widget.CardView>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/bottom_navigation"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:background="@color/white"-->
+<!--        app:elevation="4dp"-->
+<!--        app:itemIconTint="@color/green"-->
+<!--        app:itemTextColor="@color/brown"-->
+<!--        app:menu="@menu/bottom_navigation_menu" />-->
+<!--</RelativeLayout>-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0">
+
+    <!-- Thanh tìm kiếm -->
+    <LinearLayout
+        android:id="@+id/search_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_search"
+        android:padding="5dp">
+
+        <EditText
+            android:id="@+id/search_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Tìm kiếm Tên món ăn"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:background="@android:color/transparent"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"/>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/search"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"/>
+    </LinearLayout>
+
+    <!-- Main Content (Categories and Product List) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_bar_layout"
+        android:layout_above="@id/bottom_navigation"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <!-- Categories (Left) -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/gray"
+            app:cardCornerRadius="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/category_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="Danh Mục"
+                android:textColor="@color/brown"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:id="@+id/category_list_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <!-- Danh mục ví dụ -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:src="@drawable/cat_cake" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bánh ngọt"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:src="@drawable/cat_coffee" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cà Phê"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- Thêm các danh mục khác ở đây -->
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Product List (Right) -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.7"
+        android:layout_margin="8dp"
+        android:backgroundTint="@color/gray"
+        app:cardCornerRadius="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Toggle Button -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/toggle_layout_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="@android:color/transparent"
+                android:paddingRight="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/list" />
+        </RelativeLayout>
+
+        <!-- RecyclerView cho sản phẩm -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/product_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="8dp" />
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+    android:id="@+id/bottom_navigation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/white"
+    app:elevation="4dp"
+    app:itemIconTint="@color/green"
+    app:itemTextColor="@color/brown"
+    app:menu="@menu/bottom_navigation_menu" />
+</RelativeLayout>

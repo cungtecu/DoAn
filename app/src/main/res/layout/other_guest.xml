@@ -1,0 +1,174 @@
+<!-- res/layout/your_activity_layout.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0">
+
+    <!-- Header (Now encompasses CardView) -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_background"
+        android:orientation="vertical">  <!-- Changed to vertical -->
+
+        <!-- Profile Info and Drips (Now a signup/login message) -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <!-- Ảnh đại diện -->
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/person"
+                android:layout_marginEnd="16dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_toEndOf="@id/profile_image"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/drips_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:text="Đăng Ký Hoặc Đăng Nhập Để Nhận Những Ưu Đãi Hấp Dẫn"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- CardView (Now INSIDE the header) -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/edit_text_background">
+
+            <!-- thong tin chung -->
+            <TextView
+                android:id="@+id/security_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thông Tin Chung"
+                android:textSize="18sp"
+                android:textColor="@color/brown"
+                android:textStyle="bold"
+                android:paddingBottom="8dp"
+                android:layout_marginLeft="10dp"/>
+
+            <RelativeLayout
+                android:id="@+id/btn_policy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_setting_background"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/icon_policy"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/paper2"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:id="@+id/txt_policy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chính sách bảo mật"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_toEndOf="@id/icon_policy"
+                    android:layout_marginStart="12dp"
+                    android:layout_centerVertical="true"/>
+
+                <ImageView
+                    android:id="@+id/icon_arrow_policy"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/arrow_right"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/btn_terms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_setting_background"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/icon_terms"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/paper2"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:id="@+id/txt_create_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Điều khoản dịch vụ"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_toEndOf="@id/icon_terms"
+                    android:layout_marginStart="12dp"
+                    android:layout_centerVertical="true"/>
+
+                <ImageView
+                    android:id="@+id/icon_arrow_terms"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/arrow_right"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_signin_or_signup"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_button"
+                android:text="ĐĂNG KÝ / ĐĂNG NHẬP"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
+
+
+    <!-- BottomNavigationView -->
+<com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        app:elevation="4dp"
+        app:menu="@menu/bottom_navigation_menu"
+        app:itemIconTint="@color/green"
+        app:itemTextColor="@color/brown"/>
+    </RelativeLayout>
