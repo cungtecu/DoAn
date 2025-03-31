@@ -1,0 +1,13 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF"/> <!-- Màu nền trắng -->
+            <stroke
+                android:width="2dp"
+                android:color="@color/blackgreen"/>
+            <corners android:radius="25dp"/>
+        </shape>
+    </item>
+    <!-- Giữ mũi tên dropdown màu đen -->
+    <item android:drawable="@drawable/ic_arrow_drop_down_black" android:gravity="end|center_vertical"/>
+</layer-list>
