@@ -1,0 +1,36 @@
+<!-- res/layout/header.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="16dp">
+
+    <!-- User -->
+    <ImageView
+        android:id="@+id/user_icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/person"
+        android:clickable="true"
+        android:onClick="onUserClicked"
+        android:layout_marginEnd="16dp"/>
+
+    <!-- Khoảng trắng để đẩy các icon còn lại về bên phải -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Tìm kiếm -->
+    <ImageView
+        android:id="@+id/search_icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/search"
+        android:clickable="true"
+        android:onClick="onSearchClicked" />
+
+</LinearLayout>

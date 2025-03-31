@@ -13,6 +13,7 @@
         android:background="@drawable/round_header"
         android:orientation="horizontal"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
         android:padding="16dp"
         >
@@ -108,14 +109,14 @@
 
 
             <!--            <androidx.recyclerview.widget.RecyclerView-->
-            <!--                android:id="@+id/recyclerCategory"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginBottom="20dp"-->
-            <!--                android:scrollbars="horizontal">-->
-            <!--                -->
-            <!--            </androidx.recyclerview.widget.RecyclerView>-->
-            <!--            catolory-->
+<!--                android:id="@+id/recyclerCategory"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="20dp"-->
+<!--                android:scrollbars="horizontal">-->
+<!--                -->
+<!--            </androidx.recyclerview.widget.RecyclerView>-->
+<!--            catolory-->
             <LinearLayout
                 android:id="@+id/catolory1"
                 android:layout_width="match_parent"
@@ -316,7 +317,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
-
+            <!-- Phần 3: Sản phẩm bán chạy -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
@@ -352,23 +353,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:weightSum="3"
         android:gravity="center">
 
         <!-- Nút Trang Chủ -->
-        <!--        <TextView-->
-        <!--            android:layout_width="30dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:text="Trang Chủ"-->
-        <!--            android:textColor="@color/white"-->
-        <!--            android:fontFamily="@font/font_bigger"-->
-        <!--            android:textSize="14sp"-->
-        <!--            android:gravity="center"-->
-        <!--            android:padding="10dp"-->
-        <!--            android:clickable="true"-->
-        <!--            android:focusable="true"/>-->
+<!--        <TextView-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Trang Chủ"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:fontFamily="@font/font_bigger"-->
+<!--            android:textSize="14sp"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="10dp"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"/>-->
         <ImageView
             android:id="@+id/btn_home"
             android:layout_width="wrap_content"
@@ -380,42 +381,41 @@
             android:src="@drawable/ic_home"/>
 
         <!-- Nút Add To Order (Cao hơn) -->
-        <!--        <FrameLayout-->
-        <!--            android:id="@+id/addToCartButton"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="70dp"-->
-        <!--            android:layout_weight="2"-->
-        <!--            android:gravity="center"-->
-        <!--            android:orientation="horizontal"-->
-        <!--            android:paddingHorizontal="30dp"-->
-        <!--            android:paddingVertical="20dp">-->
+        <FrameLayout
+            android:id="@+id/addToCartButton"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="2"
+            android:background="@drawable/bg_add_to_order"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="20dp">
+            
+            <ImageView
+                android:id="@+id/cartIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_cart"
+                android:contentDescription="Cart Icon"
+                android:scaleType="centerInside"/>
+        </FrameLayout>
 
-        <ImageView
-            android:id="@+id/cartIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="10dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_cart"
-            android:contentDescription="Cart Icon"
-            android:scaleType="centerInside"/>
-        <!--        </FrameLayout>-->
 
-
-        <!-- Nút Khác -->
-        <!--    <TextView-->
-        <!--        android:layout_width="30dp"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:layout_weight="1"-->
-        <!--        android:text="Khác"-->
-        <!--        android:textColor="@color/white"-->
-        <!--        android:fontFamily="@font/font_bigger"-->
-        <!--        android:textSize="14sp"-->
-        <!--        android:gravity="center"-->
-        <!--        android:padding="10dp"-->
-        <!--        android:clickable="true"-->
-        <!--        android:focusable="true"/>-->
+    <!-- Nút Khác -->
+<!--    <TextView-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        android:text="Khác"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:fontFamily="@font/font_bigger"-->
+<!--        android:textSize="14sp"-->
+<!--        android:gravity="center"-->
+<!--        android:padding="10dp"-->
+<!--        android:clickable="true"-->
+<!--        android:focusable="true"/>-->
         <ImageView
             android:id="@+id/btn_other"
             android:layout_width="wrap_content"
