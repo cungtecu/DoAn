@@ -44,16 +44,16 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 // Thêm người dùng vào cơ sở dữ liệu
-                long userId = dbHelper.addUser(name, email, phone, password);
+//                long userId = dbHelper.addUser(name, email, phone, password);
 
-                if (userId > 0) {
-                    // Thông báo đăng ký thành công
-                    Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                    // Có thể chuyển hướng sang màn hình đăng nhập hoặc trang chính
-                } else {
-                    // Thông báo lỗi khi đăng ký
-                    Toast.makeText(RegisterActivity.this, "Đã có lỗi xảy ra. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
-                }
+//                if (userId > 0) {
+//                    // Thông báo đăng ký thành công
+//                    Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+//                    // Có thể chuyển hướng sang màn hình đăng nhập hoặc trang chính
+//                } else {
+//                    // Thông báo lỗi khi đăng ký
+//                    Toast.makeText(RegisterActivity.this, "Đã có lỗi xảy ra. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
     }

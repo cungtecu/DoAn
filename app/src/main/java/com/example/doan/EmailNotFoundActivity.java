@@ -18,7 +18,7 @@ public class EmailNotFoundActivity extends AppCompatActivity {
 
         btnRetry.setOnClickListener(v -> {
             // Quay lại màn hình nhập email
-            startActivity(new Intent(this, ForgetPasswordActivity.class));
+//            startActivity(new Intent(this, ForgetPasswordActivity.class));
             finish();
         });
 

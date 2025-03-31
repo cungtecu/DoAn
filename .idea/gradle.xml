@@ -9,8 +9,8 @@
         <option name="gradleJvm" value="jbr-21" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../đồ án 4" />
-            <option value="$PROJECT_DIR$/../đồ án 4/app" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

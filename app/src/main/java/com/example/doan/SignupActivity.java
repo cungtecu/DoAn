@@ -39,7 +39,7 @@ public class SignupActivity extends AppCompatActivity {
         iconNewPass1 = findViewById(R.id.icon_newpass1);
         iconNewPass2 = findViewById(R.id.icon_newpass2);
         btnSignup = findViewById(R.id.btn_signup);
-        btnContinueGuest = findViewById(R.id.btn_continueguest);
+//        btnContinueGuest = findViewById(R.id.btn_continueguest);
 
         iconNewPass1.setOnClickListener(v -> togglePasswordVisibility(edtPassword, iconNewPass1));
         iconNewPass2.setOnClickListener(v -> togglePasswordVisibility(edtConfirmPassword, iconNewPass2));
@@ -132,18 +132,18 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        if (dbHelper.isUserExists(phone)) {
-            Toast.makeText(this, "Số điện thoại đã được đăng ký", Toast.LENGTH_SHORT).show();
-        } else {
-            long result = dbHelper.addUser(name, phone, email, password);
-            if (result != -1) {
-                Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SignupActivity.this, SigninActivity.class));
-                finish();
-            } else {
-                Toast.makeText(this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
-            }
-        }
+//        if (dbHelper.isUserExists(phone)) {
+//            Toast.makeText(this, "Số điện thoại đã được đăng ký", Toast.LENGTH_SHORT).show();
+//        } else {
+//            long result = dbHelper.addUser(name, phone, email, password);
+//            if (result != -1) {
+//                Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+//                startActivity(new Intent(SignupActivity.this, SigninActivity.class));
+//                finish();
+//            } else {
+//                Toast.makeText(this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+//            }
+//        }
     }
 
     private void continueAsGuest() {

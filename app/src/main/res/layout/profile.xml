@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
+    android:fillViewport="true">
     <LinearLayout
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:orientation="vertical">
         <RelativeLayout
@@ -16,7 +17,7 @@
                 android:id="@+id/btn_back"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_centerVertical="true"
+                android:layout_centerVertical="true"/>
 
             <TextView
                 android:id="@+id/title_profile"
@@ -45,7 +46,7 @@
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:id="@+id/drips_text"
@@ -63,13 +64,15 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/drips_text"
                     android:text="0"
-                    android:textSize="20sp"
+                    android:textSize="20sp"/>
             </RelativeLayout>
 
             <androidx.cardview.widget.CardView
+                android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 app:cardElevation="2dp">
                 <LinearLayout
+                    android:layout_height="match_parent"
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:padding="16dp">
@@ -90,47 +93,46 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="Sửa"
-                            android:textColor="@color/dark_red"
+                            android:textColor="@color/dark_red"/>
                     </RelativeLayout>
                     <TextView
                         android:id="@+id/txtprofile_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-
+                        android:layout_marginTop="10dp"/>
                     <!--Gender-->
                     <TextView
                         android:id="@+id/txtprofile_gender"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="10dp"/>
 
                     <!--Birthday-->
                     <TextView
                         android:id="@+id/txtprofile_birthday"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="10dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Số Điện Thoại"
-                        android:textColor="@color/brown"
+                        android:textColor="@color/brown"/>
                     <TextView
                         android:id="@+id/txtprofile_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="10dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Email"
-                        android:textColor="@color/brown"
+                        android:textColor="@color/brown"/>
                     <TextView
                         android:id="@+id/txtprofile_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="10dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>

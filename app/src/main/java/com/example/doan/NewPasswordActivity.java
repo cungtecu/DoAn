@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.example.doan.MainActivity;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseAuth;
 
 public class NewPasswordActivity extends AppCompatActivity {
     private EditText edtEmail, edtPassword;
@@ -30,15 +30,15 @@ public class NewPasswordActivity extends AppCompatActivity {
         String email = edtEmail.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
 
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(this, MainActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(this, "Sai email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+//                        startActivity(new Intent(this, MainActivity.class));
+//                        finish();
+//                    } else {
+//                        Toast.makeText(this, "Sai email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
     }
 }
