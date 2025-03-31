@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "457254744852",
+    "project_id": "forgetpasswordthuctap",
+    "storage_bucket": "forgetpasswordthuctap.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457254744852:android:df363ce21b01a392d34801",
+        "android_client_info": {
+          "package_name": "com.example.doan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARHrfqbMOhARkj929PIRFUDFLkQ7Ztrgg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
