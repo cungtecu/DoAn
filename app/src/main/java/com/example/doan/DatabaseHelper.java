@@ -1,6 +1,7 @@
 package com.example.doan;
 import android.content.Context;
 import android.database.Cursor;
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -32,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE Categories (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "name TEXT NOT NULL UNIQUE, " +
+                "image TEXT, " +
                 "description TEXT )");
 
         //  Products
@@ -90,6 +92,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "added_at DATETIME DEFAULT CURRENT_TIMESTAMP, " +
                 "FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE, " +
                 "FOREIGN KEY (product_id) REFERENCES Products(id) ON DELETE CASCADE )");
+
+        insertSampleData(db);
     }
 
     @Override
@@ -105,4 +109,83 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
     // Method to get all products
+    private void insertSampleData(SQLiteDatabase db) {
+        ContentValues values = new ContentValues();
+
+        // Thêm danh mục
+        values.put("id", 1);
+        values.put("name", "Bánh ngọt");
+        values.put("image", R.drawable.cat_cake);
+        values.put("description", "Các loại bánh ngọt ngon");
+        db.insert("categories", null, values);
+
+        values.clear();
+        values.put("id", 2);
+        values.put("name", "Cà Phê");
+        values.put("image", R.drawable.cat_coffee);
+        values.put("description", "Cà phê đậm đà");
+        db.insert("categories", null, values);
+
+        values.clear();
+        values.put("id", 3);
+        values.put("name", "Cà phê nóng");
+        values.put("image", R.drawable.cat_hot_coffee);
+        values.put("description", "Cà phê nóng thơm lừng");
+        db.insert("categories", null, values);
+
+        values.clear();
+        values.put("id", 4);
+        values.put("name", "Đá xay");
+        values.put("image", R.drawable.cat_iceblended);
+        values.put("description", "Đồ uống mát lạnh");
+        db.insert("categories", null, values);
+
+        values.clear();
+        values.put("id", 5);
+        values.put("name", "Phindi");
+        values.put("image", R.drawable.cat_phindi);
+        values.put("description", "Phindi đặc biệt");
+        db.insert("categories", null, values);
+
+        // Thêm sản phẩm
+        values.clear();
+        values.put("id", 1);
+        values.put("name", "Cà Phê đen đá");
+        values.put("description", "Our dark, rich espresso combined with milk and served over ice.");
+        values.put("price", 35000);
+        values.put("image", R.drawable.product2);
+        values.put("categoryId", 2);
+        values.put("isDeleted", 0);
+        db.insert("products", null, values);
+
+        values.clear();
+        values.put("id", 2);
+        values.put("name", "Cà phê sữa đá");
+        values.put("description", "Trà sữa thơm ngon");
+        values.put("price", 40000);
+        values.put("image", R.drawable.product1);
+        values.put("categoryId", 2);
+        values.put("isDeleted", 0);
+        db.insert("products", null, values);
+
+        values.clear();
+        values.put("id", 3);
+        values.put("name", "Bánh tiramisu");
+        values.put("description", "Our dark, rich espresso combined with milk and served over ice.");
+        values.put("price", 35000);
+        values.put("image", R.drawable.tiramisu_cake);
+        values.put("categoryId", 1);
+        values.put("isDeleted", 0);
+        db.insert("products", null, values);
+
+        values.clear();
+        values.put("id", 4);
+        values.put("name", "Bánh tiramisu");
+        values.put("description", "Our dark, rich espresso combined with milk and served over ice.");
+        values.put("price", 35000);
+        values.put("image", R.drawable.mattcha_cake);
+        values.put("categoryId", 1);
+        values.put("isDeleted", 0);
+        db.insert("products", null, values);
+    }
 }

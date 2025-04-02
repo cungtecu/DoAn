@@ -1,4 +1,4 @@
-package com.example.doan;
+package com.example.doan.api;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
