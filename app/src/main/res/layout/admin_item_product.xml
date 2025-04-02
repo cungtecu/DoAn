@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:focusable="true"
+        android:clickable="true">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/product_image"
@@ -27,7 +29,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusable="true"
+            android:clickable="true">
 
             <TextView
                 android:id="@+id/product_name"
@@ -55,7 +59,9 @@
             android:layout_marginEnd="10dp"
             android:layout_centerVertical="true"
             android:src="@drawable/setting"
-            android:background="@color/white"/>
+            android:background="@color/white"
+            android:focusable="true"
+            android:clickable="true"/>
 
         <ImageButton
             android:id="@+id/btn_delete_product"
@@ -64,6 +70,8 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/close"
-            android:background="@color/white"/>
+            android:background="@color/white"
+            android:focusable="true"
+            android:clickable="true"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

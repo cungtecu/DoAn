@@ -43,3 +43,6 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation("com.daimajia.androidanimations:library:2.4@aar")
 }
+dependencies {
+    implementation ("de.hdodenhof:circleimageview:2.2.0")
+}

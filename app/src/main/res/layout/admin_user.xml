@@ -102,7 +102,8 @@
                 android:hint="Tên"
                 android:textSize="16sp"
                 android:background="@drawable/top_button_background2"
-                android:padding="15dp"/>
+                android:padding="15dp"
+                android:inputType="text"/>
 
             <EditText
                 android:id="@+id/edtEmailUser"
@@ -112,14 +113,17 @@
                 android:padding="15dp"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp"
-                android:hint="Email" />
+                android:hint="Email"
+                android:inputType="textEmailAddress"/>
 
             <Button
                 android:id="@+id/btnAddUser"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Thêm"
                 android:textStyle="bold"
+                android:focusable="true"
+                android:clickable="true"
                 android:textSize="16sp"
                 android:textColor="@color/white"
                 android:layout_marginTop="10dp"
@@ -134,7 +138,9 @@
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:layout_marginRight="5dp"
-                android:layout_gravity="end"/>
+                android:layout_gravity="end"
+                android:focusable="true"
+                android:clickable="true"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_user"

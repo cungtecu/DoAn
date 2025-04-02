@@ -26,6 +26,14 @@
             android:layout_marginTop="3dp"
             android:textSize="16sp"
             android:textColor="@color/brown"/>
+        <TextView
+            android:id="@+id/tv_userdrips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="drips"
+            android:layout_marginTop="3dp"
+            android:textSize="16sp"
+            android:textColor="@color/brown"/>
     </LinearLayout>
     <ImageButton
         android:id="@+id/btn_edit_user"
@@ -35,7 +43,9 @@
         android:layout_marginEnd="10dp"
         android:layout_centerVertical="true"
         android:src="@drawable/setting"
-        android:background="@color/white"/>
+        android:background="@color/white"
+        android:focusable="true"
+        android:clickable="true"/>
 
     <ImageButton
         android:id="@+id/btn_delete_user"
@@ -44,7 +54,9 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:src="@drawable/close"
-        android:background="@color/white"/>
+        android:background="@color/white"
+        android:focusable="true"
+        android:clickable="true"/>
 
 
 

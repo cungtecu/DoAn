@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:text="TroisH Category"
+            android:text="TroisH Order"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -55,7 +55,7 @@
                 android:id="@+id/edt_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Name, description ... "
+                android:hint="Tên khách hàng, Mã đơn hàng "
                 android:fontFamily="@font/font_main"
                 android:textSize="16sp"
                 android:inputType="text"
@@ -92,86 +92,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="10dp">
 
-            <EditText
-                android:id="@+id/edtNameCategory"
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/spinnerFilter"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:hint="Tên Danh Mục"
-                android:textColor="@color/brown"
-                android:textSize="16sp"
-                android:background="@drawable/top_button_background2"
-                android:padding="15dp"
-                android:inputType="text"/>
-
-
-            <!-- Chọn ảnh sản phẩm -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="10dp"
-                android:gravity="center">
-
-                <!-- Hiển thị ảnh sản phẩm -->
-                <ImageView
-                    android:id="@+id/imgCategory"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/top_button_background2"/>
-
-                <!-- Nút chọn ảnh -->
-                <Button
-                    android:id="@+id/btnChooseImageCategory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chọn Ảnh"
-                    android:textStyle="bold"
-                    android:padding="15dp"
-                    android:textSize="16sp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:layout_marginTop="10dp"
-                    android:focusable="true"
-                    android:clickable="true"
-                    android:background="@drawable/top_button_background_white"/>
-            </LinearLayout>
-
+                android:background="@drawable/top_button_background3"
+                android:padding="15dp"
+                android:textSize="16sp" />
 
             <Button
-                android:id="@+id/btnAddCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Thêm"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:focusable="true"
-                android:clickable="true"
-                android:background="@drawable/top_button_background_white"/>
-            <TextView
-                android:id="@+id/tv_delete_all"
+                android:id="@+id/btnFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Xoá Tất Cả"
-                android:textColor="@color/dark_red"
-                android:textStyle="bold"
-                android:focusable="true"
-                android:clickable="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/top_button_background_white"
+                android:text="Lọc"
+                android:textColor="@color/white"
                 android:textSize="16sp"
-                android:layout_marginRight="5dp"
-                android:layout_gravity="end"/>
+                android:textStyle="bold"
+                android:padding="15dp"
+                android:focusable="true"
+                android:clickable="true"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_category"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"/>
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
