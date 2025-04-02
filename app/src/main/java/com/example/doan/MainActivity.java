@@ -17,12 +17,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Ánh xạ xử lý chuyển trang
         btnHome = findViewById(R.id.btn_home);
         btnCart = findViewById(R.id.cartIcon);
         btnOther = findViewById(R.id.btn_other);
 
-        // Đặt trạng thái mặc định: Home được chọn khi mở app
         currentSelectedButton = btnHome;
         btnHome.setScaleX(1.5f);
         btnHome.setScaleY(1.5f);
@@ -31,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         btnOther.setScaleX(1.0f);
         btnOther.setScaleY(1.0f);
 
-        // Load fragment mặc định (Home) khi mở app
         loadFragment(new HomeFragment());
 
         btnHome.setOnClickListener(v -> {
@@ -65,19 +62,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateButtonState(ImageButton selectedButton) {
         if (currentSelectedButton != null && currentSelectedButton != selectedButton) {
-            // Thu nhỏ icon hiện tại với animation
             currentSelectedButton.animate()
                     .scaleX(1.0f)
                     .scaleY(1.0f)
-                    .setDuration(200) // Thời gian animation (200ms)
+                    .setDuration(200)
                     .start();
         }
-
-        // Phóng to icon được chọn với animation
         selectedButton.animate()
                 .scaleX(1.5f)
                 .scaleY(1.5f)
-                .setDuration(200) // Thời gian animation (200ms)
+                .setDuration(200)
                 .start();
 
         currentSelectedButton = selectedButton;

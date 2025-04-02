@@ -1,153 +1,137 @@
 package com.example.doan;
 
-import android.content.ContentValues;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
-import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.doan.api.RetrofitClient;
+import com.example.doan.models.ApiResponse;
+import com.example.doan.models.SignupRequest;
+import com.google.gson.Gson;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText edtName, edtPhone, edtEmail, edtPassword, edtConfirmPassword;
-    private ImageView iconNewPass1, iconNewPass2;
-    private Button btnSignup, btnContinueGuest;
-    private DatabaseHelper dbHelper;
+    private static final String TAG = "SignupActivity";
+    private EditText edtName, edtEmail, edtPhone, edtPass1, edtPass2;
+    private Button btnSignup;
+    private ImageView eyePass1, eyePass2;
+    private boolean isPass1Visible = false, isPass2Visible = false;
+
+    // Regex kiểm tra mật khẩu: ít nhất 7 ký tự
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^.{7,}$");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
 
-        dbHelper = new DatabaseHelper(this);
-
         edtName = findViewById(R.id.signup_name);
-        edtPhone = findViewById(R.id.signup_phone);
         edtEmail = findViewById(R.id.signup_email);
-        edtPassword = findViewById(R.id.new_pass1);
-        edtConfirmPassword = findViewById(R.id.new_pass2);
-        iconNewPass1 = findViewById(R.id.icon_newpass1);
-        iconNewPass2 = findViewById(R.id.icon_newpass2);
+        edtPhone = findViewById(R.id.signup_phone);
+        edtPass1 = findViewById(R.id.new_pass1);
+        edtPass2 = findViewById(R.id.new_pass2);
         btnSignup = findViewById(R.id.btn_signup);
-//        btnContinueGuest = findViewById(R.id.btn_continueguest);
+        eyePass1 = findViewById(R.id.icon_newpass1);
+        eyePass2 = findViewById(R.id.icon_newpass2);
 
-        iconNewPass1.setOnClickListener(v -> togglePasswordVisibility(edtPassword, iconNewPass1));
-        iconNewPass2.setOnClickListener(v -> togglePasswordVisibility(edtConfirmPassword, iconNewPass2));
-
-        edtConfirmPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkPasswordMatch();
+        // Xử lý ẩn/hiện mật khẩu cho Pass1
+        eyePass1.setOnClickListener(v -> {
+            isPass1Visible = !isPass1Visible;
+            if (isPass1Visible) {
+                edtPass1.setTransformationMethod(null); // Hiện mật khẩu
+                eyePass1.setImageResource(R.drawable.show_password); // Icon mắt mở
+            } else {
+                edtPass1.setTransformationMethod(PasswordTransformationMethod.getInstance()); // Ẩn mật khẩu
+                eyePass1.setImageResource(R.drawable.hide_password); // Icon mắt đóng
             }
-            @Override
-            public void afterTextChanged(Editable s) {}
+            edtPass1.setSelection(edtPass1.getText().length()); // Đặt con trỏ ở cuối
         });
 
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        // Xử lý ẩn/hiện mật khẩu cho Pass2
+        eyePass2.setOnClickListener(v -> {
+            isPass2Visible = !isPass2Visible;
+            if (isPass2Visible) {
+                edtPass2.setTransformationMethod(null); // Hiện mật khẩu
+                eyePass2.setImageResource(R.drawable.show_password); // Icon mắt mở
+            } else {
+                edtPass2.setTransformationMethod(PasswordTransformationMethod.getInstance()); // Ẩn mật khẩu
+                eyePass2.setImageResource(R.drawable.hide_password); // Icon mắt đóng
+            }
+            edtPass2.setSelection(edtPass2.getText().length()); // Đặt con trỏ ở cuối
+        });
 
+        btnSignup.setOnClickListener(v -> {
+            Log.d(TAG, "Nút Đăng Ký được nhấn");
+
+            String name = edtName.getText().toString().trim();
+            String email = edtEmail.getText().toString().trim();
+            String phone = edtPhone.getText().toString().trim();
+            String password = edtPass1.getText().toString().trim();
+            String confirmPassword = edtPass2.getText().toString().trim();
+
+            Log.d(TAG, "name: " + name);
+            Log.d(TAG, "email: " + email);
+            Log.d(TAG, "phone: " + phone);
+            Log.d(TAG, "password: " + password);
+            Log.d(TAG, "confirmPassword: " + confirmPassword);
+
+            // Kiểm tra ràng buộc
+            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                Log.d(TAG, "Thông tin không đầy đủ");
+                Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
+                Log.d(TAG, "Mật khẩu không hợp lệ");
+                Toast.makeText(this, "Mật khẩu phải có ít nhất 7 ký tự!", Toast.LENGTH_LONG).show();
+            } else if (!password.equals(confirmPassword)) {
+                Log.d(TAG, "Mật khẩu không khớp");
+                Toast.makeText(this, "Mật khẩu và xác nhận mật khẩu không khớp!", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d(TAG, "Bắt đầu gửi yêu cầu đăng ký: " + email);
+                signupUser(name, email, phone, password, confirmPassword);
+            }
+        });
+    }
+
+    private void signupUser(String name, String email, String phone, String password, String confirmPassword) {
+        SignupRequest signupRequest = new SignupRequest(name, email, phone, password, confirmPassword);
+        Log.d(TAG, "Gửi yêu cầu đăng ký với dữ liệu: " + signupRequest.toString());
+
+        RetrofitClient.getApiService().createUser(signupRequest).enqueue(new Callback<ApiResponse>() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkAllFields();
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful()) {
+                    ApiResponse apiResponse = response.body();
+                    Log.d(TAG, "Đăng ký thành công: " + apiResponse.getMessage());
+                    Toast.makeText(SignupActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e(TAG, "Đăng ký thất bại, mã lỗi: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        ApiResponse errorResponse = new Gson().fromJson(errorBody, ApiResponse.class);
+                        String errorMessage = errorResponse.getMessage();
+                        Log.e(TAG, "Thông báo lỗi từ server: " + errorMessage);
+                        Toast.makeText(SignupActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        Log.e(TAG, "Lỗi parse phản hồi: " + e.getMessage());
+                        Toast.makeText(SignupActivity.this, "Đăng ký thất bại. Mã lỗi: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
-        };
-
-        edtName.addTextChangedListener(textWatcher);
-        edtPhone.addTextChangedListener(textWatcher);
-        edtEmail.addTextChangedListener(textWatcher);
-        edtPassword.addTextChangedListener(textWatcher);
-        edtConfirmPassword.addTextChangedListener(textWatcher);
-
-        btnSignup.setOnClickListener(v -> validateAndRegister());
-        btnContinueGuest.setOnClickListener(v -> continueAsGuest());
-
-        checkAllFields();
-    }
-
-    private void togglePasswordVisibility(EditText editText, ImageView icon) {
-        if (editText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            icon.setImageResource(R.drawable.show_password);
-        } else {
-            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            icon.setImageResource(R.drawable.hide_password);
-        }
-        editText.setSelection(editText.getText().length());
-    }
-
-    private void checkPasswordMatch() {
-        if (!edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
-            edtConfirmPassword.setError("Mật khẩu không khớp");
-        } else {
-            edtConfirmPassword.setError(null);
-        }
-    }
-
-    private void checkAllFields() {
-        boolean isValid = !edtName.getText().toString().trim().isEmpty() &&
-                !edtPhone.getText().toString().trim().isEmpty() &&
-                !edtEmail.getText().toString().trim().isEmpty() &&
-                !edtPassword.getText().toString().isEmpty() &&
-                !edtConfirmPassword.getText().toString().isEmpty();
-        btnSignup.setEnabled(isValid);
-    }
-
-    private void validateAndRegister() {
-        String name = edtName.getText().toString().trim();
-        String phone = edtPhone.getText().toString().trim();
-        String email = edtEmail.getText().toString().trim();
-        String password = edtPassword.getText().toString();
-        String confirmPassword = edtConfirmPassword.getText().toString();
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            edtEmail.setError("Email không hợp lệ");
-            return;
-        }
-        if (!phone.matches("\\d{10,11}")) {
-            edtPhone.setError("Số điện thoại không hợp lệ");
-            return;
-        }
-        if (password.length() < 6) {
-            edtPassword.setError("Mật khẩu phải có ít nhất 6 ký tự");
-            return;
-        }
-        if (!password.equals(confirmPassword)) {
-            edtConfirmPassword.setError("Mật khẩu không khớp");
-            return;
-        }
-
-//        if (dbHelper.isUserExists(phone)) {
-//            Toast.makeText(this, "Số điện thoại đã được đăng ký", Toast.LENGTH_SHORT).show();
-//        } else {
-//            long result = dbHelper.addUser(name, phone, email, password);
-//            if (result != -1) {
-//                Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(SignupActivity.this, SigninActivity.class));
-//                finish();
-//            } else {
-//                Toast.makeText(this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-    }
-
-    private void continueAsGuest() {
-        startActivity(new Intent(SignupActivity.this, MainActivity.class));
-        finish();
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.e(TAG, "Lỗi kết nối khi đăng ký: " + t.getMessage());
+                Toast.makeText(SignupActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

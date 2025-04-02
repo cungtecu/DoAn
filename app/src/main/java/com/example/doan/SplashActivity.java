@@ -28,7 +28,8 @@ public class SplashActivity extends AppCompatActivity {
 
         // Khi video kết thúc, chuyển sang MainActivity
         videoView.setOnCompletionListener(mp -> { 
-            Intent intent = new Intent(SplashActivity.this, OrderActivity.class);
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+//            Intent intent = new Intent(SplashActivity.this, SigninActivity.class);
 
             startActivity(intent);
             finish(); // Đóng màn hình loading
