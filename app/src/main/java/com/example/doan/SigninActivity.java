@@ -4,71 +4,127 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.doan.api.RetrofitClient;
+import com.example.doan.models.ApiResponse;
+import com.example.doan.models.LoginRequest;
+import com.google.gson.Gson;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import java.io.IOException;
 
 public class SigninActivity extends AppCompatActivity {
 
-    private boolean isPasswordVisible = false;  // Biến kiểm tra trạng thái mật khẩu
+    private static final String TAG = "SigninActivity";
+    private EditText edtPhone, edtPassword;
+    private ImageView btnTogglePassword;
+    private TextView txtForgetPassword, txtSignup, btnSignin;
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signin);  // Đảm bảo có layout activity_signin.xml
+        setContentView(R.layout.signin);
 
         // Ánh xạ các view
-        EditText edtPhone = findViewById(R.id.signin_phone);  // Ánh xạ EditText số điện thoại
-        EditText edtPassword = findViewById(R.id.signin_password);  // Ánh xạ EditText mật khẩu
-        ImageView btnTogglePassword = findViewById(R.id.eye_icon);
-        TextView txtForgetPassword = findViewById(R.id.txt_forgetpassword);  // Ánh xạ TextView quên mật khẩu
-        TextView txtSignup = findViewById(R.id.txt_signup);  // Ánh xạ TextView tạo tài khoản
-        TextView btnSignin = findViewById(R.id.btn_signin); // Nút đăng nhập
+        edtPhone = findViewById(R.id.signin_phone);
+        edtPassword = findViewById(R.id.signin_password);
+        btnTogglePassword = findViewById(R.id.eye_icon);
+        txtForgetPassword = findViewById(R.id.txt_forgetpassword);
+        txtSignup = findViewById(R.id.txt_signup);
+        btnSignin = findViewById(R.id.btn_signin);
 
         // Xử lý hiển thị/ẩn mật khẩu khi nhấn vào icon
         btnTogglePassword.setOnClickListener(v -> {
             if (isPasswordVisible) {
                 // Ẩn mật khẩu
                 edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                btnTogglePassword.setImageResource(R.drawable.hide_password);  // Icon ẩn mật khẩu
+                btnTogglePassword.setImageResource(R.drawable.hide_password);
             } else {
                 // Hiển thị mật khẩu
                 edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                btnTogglePassword.setImageResource(R.drawable.show_password);  // Icon hiện mật khẩu
+                btnTogglePassword.setImageResource(R.drawable.show_password);
             }
-            isPasswordVisible = !isPasswordVisible;  // Đảo ngược trạng thái
+            isPasswordVisible = !isPasswordVisible;
+            edtPassword.setSelection(edtPassword.getText().length()); // Đặt con trỏ ở cuối
         });
 
         // Sự kiện khi nhấn vào TextView quên mật khẩu
         txtForgetPassword.setOnClickListener(v -> {
             Intent intent = new Intent(SigninActivity.this, ForgetPasswordActivity.class);
-            startActivity(intent);  // Chuyển đến ForgetPasswordActivity
+            startActivity(intent);
         });
 
         // Xử lý sự kiện nhấn vào "Tạo Một Tài Khoản"
         txtSignup.setOnClickListener(v -> {
-            // Chuyển sang màn hình đăng ký
             Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
             startActivity(intent);
         });
 
         // Xử lý sự kiện nhấn vào nút Đăng nhập
         btnSignin.setOnClickListener(v -> {
+            Log.d(TAG, "Nút Đăng Nhập được nhấn");
+
             String phone = edtPhone.getText().toString().trim();
             String password = edtPassword.getText().toString().trim();
 
+            Log.d(TAG, "phone: " + phone);
+            Log.d(TAG, "password: " + password);
+
+            // Kiểm tra ràng buộc
             if (phone.isEmpty() || password.isEmpty()) {
-                // Hiển thị thông báo lỗi nếu số điện thoại hoặc mật khẩu trống
+                Log.d(TAG, "Thông tin không đầy đủ");
+                Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Gửi yêu cầu đăng nhập (có thể sử dụng API hoặc gọi trực tiếp vào backend)
-            // Thực hiện đăng nhập tại đây (Ví dụ: sử dụng Retrofit để gửi yêu cầu)
-            // Sau khi đăng nhập thành công:
-            Intent intent = new Intent(SigninActivity.this, MainActivity.class);  // Ví dụ chuyển đến màn hình chính
-            startActivity(intent);
-            finish();  // Đóng màn hình đăng nhập
+            // Gửi yêu cầu đăng nhập
+            loginUser(phone, password);
+        });
+    }
+
+    private void loginUser(String phone, String password) {
+        LoginRequest loginRequest = new LoginRequest(phone, password);
+        Log.d(TAG, "Gửi yêu cầu đăng nhập với dữ liệu: " + loginRequest.toString());
+
+        RetrofitClient.getApiService().loginUser(loginRequest).enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful()) {
+                    ApiResponse apiResponse = response.body();
+                    Log.d(TAG, "Đăng nhập thành công: " + apiResponse.getMessage());
+                    Toast.makeText(SigninActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    // Chuyển đến MainActivity
+                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish(); // Đóng SigninActivity để không quay lại
+                } else {
+                    Log.e(TAG, "Đăng nhập thất bại, mã lỗi: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        ApiResponse errorResponse = new Gson().fromJson(errorBody, ApiResponse.class);
+                        String errorMessage = errorResponse.getMessage();
+                        Log.e(TAG, "Thông báo lỗi từ server: " + errorMessage);
+                        Toast.makeText(SigninActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        Log.e(TAG, "Lỗi parse phản hồi: " + e.getMessage());
+                        Toast.makeText(SigninActivity.this, "Đăng nhập thất bại. Mã lỗi: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.e(TAG, "Lỗi kết nối khi đăng nhập: " + t.getMessage());
+                Toast.makeText(SigninActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

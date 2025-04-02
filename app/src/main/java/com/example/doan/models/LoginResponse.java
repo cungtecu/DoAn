@@ -1,6 +1,6 @@
 package com.example.doan.models;
 
-public class SigninResponse {
+public class LoginResponse {
     private String token;
 
     public String getToken() {
