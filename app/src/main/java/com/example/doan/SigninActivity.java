@@ -2,127 +2,129 @@ package com.example.doan;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
-import android.view.View;
-import android.widget.Button;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.example.doan.api.RetrofitClient;
+import com.example.doan.models.ApiResponse;
+import com.example.doan.models.LoginRequest;
+import com.google.gson.Gson;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import java.io.IOException;
 
 public class SigninActivity extends AppCompatActivity {
 
+    private static final String TAG = "SigninActivity";
     private EditText edtPhone, edtPassword;
-    private ImageView eyeIcon;
+    private ImageView btnTogglePassword;
+    private TextView txtForgetPassword, txtSignup, btnSignin;
     private boolean isPasswordVisible = false;
-
-    private ArrayList<HashMap<String, String>> fakeUsers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin);
 
+        // Ánh xạ các view
         edtPhone = findViewById(R.id.signin_phone);
         edtPassword = findViewById(R.id.signin_password);
-        eyeIcon = findViewById(R.id.eye_icon);
-        TextView txtForgetPassword = findViewById(R.id.txt_forgetpassword);
-        Button btnSignIn = findViewById(R.id.btn_signin);
-        TextView txtCreateAccount = findViewById(R.id.txt_signup);  // Nút Tạo Một Tài Khoản
+        btnTogglePassword = findViewById(R.id.eye_icon);
+        txtForgetPassword = findViewById(R.id.txt_forgetpassword);
+        txtSignup = findViewById(R.id.txt_signup);
+        btnSignin = findViewById(R.id.btn_signin);
 
-        if (txtCreateAccount == null || btnSignIn == null) {
-            Toast.makeText(this, "Lỗi giao diện! Kiểm tra lại layout.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Khi nhấn vào "Tạo Một Tài Khoản", chuyển đến màn hình đăng ký
-        txtCreateAccount.setOnClickListener(v -> {
-            Toast.makeText(SigninActivity.this, "Đang chuyển sang đăng ký...", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(SigninActivity.this, SignupActivity.class));
+        // Xử lý hiển thị/ẩn mật khẩu khi nhấn vào icon
+        btnTogglePassword.setOnClickListener(v -> {
+            if (isPasswordVisible) {
+                // Ẩn mật khẩu
+                edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                btnTogglePassword.setImageResource(R.drawable.hide_password);
+            } else {
+                // Hiển thị mật khẩu
+                edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                btnTogglePassword.setImageResource(R.drawable.show_password);
+            }
+            isPasswordVisible = !isPasswordVisible;
+            edtPassword.setSelection(edtPassword.getText().length()); // Đặt con trỏ ở cuối
         });
 
-        eyeIcon.setOnClickListener(v -> {
-            togglePasswordVisibility();
-        });
-
+        // Sự kiện khi nhấn vào TextView quên mật khẩu
         txtForgetPassword.setOnClickListener(v -> {
-//            startActivity(new Intent(SigninActivity.this, ForgetPasswordActivity.class));
+            Intent intent = new Intent(SigninActivity.this, ForgetPasswordActivity.class);
+            startActivity(intent);
         });
 
-        btnSignIn.setOnClickListener(v -> handleSignIn());
-    }
+        // Xử lý sự kiện nhấn vào "Tạo Một Tài Khoản"
+        txtSignup.setOnClickListener(v -> {
+            Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
+            startActivity(intent);
+        });
 
+        // Xử lý sự kiện nhấn vào nút Đăng nhập
+        btnSignin.setOnClickListener(v -> {
+            Log.d(TAG, "Nút Đăng Nhập được nhấn");
 
-    private void togglePasswordVisibility() {
-        if (isPasswordVisible) {
-            edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            eyeIcon.setImageResource(R.drawable.hide_password);
-        } else {
-            edtPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            eyeIcon.setImageResource(R.drawable.show_password);
-        }
-        edtPassword.setSelection(edtPassword.getText().length());
-        isPasswordVisible = !isPasswordVisible;
-    }
+            String phone = edtPhone.getText().toString().trim();
+            String password = edtPassword.getText().toString().trim();
 
-    private void handleSignIn() {
-        String inputPhone = edtPhone.getText().toString().trim();
-        String inputPassword = edtPassword.getText().toString().trim();
+            Log.d(TAG, "phone: " + phone);
+            Log.d(TAG, "password: " + password);
 
-        if (!validatePhone(inputPhone) || !validatePassword(inputPassword)) {
-            return;
-        }
-
-        for (HashMap<String, String> user : fakeUsers) {
-            if (user.get("phone").equals(inputPhone) && user.get("password").equals(inputPassword)) {
-                Toast.makeText(SigninActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SigninActivity.this, MainActivity.class));
-                finish();
+            // Kiểm tra ràng buộc
+            if (phone.isEmpty() || password.isEmpty()) {
+                Log.d(TAG, "Thông tin không đầy đủ");
+                Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 return;
             }
-        }
-        Toast.makeText(SigninActivity.this, "Sai số điện thoại hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+
+            // Gửi yêu cầu đăng nhập
+            loginUser(phone, password);
+        });
     }
 
-    private boolean validatePhone(String phone) {
-        if (phone.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập số điện thoại!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (!phone.matches("^0[0-9]{9}$")) {
-            Toast.makeText(this, "Số điện thoại không hợp lệ! Vui lòng nhập đúng 10 số.", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
+    private void loginUser(String phone, String password) {
+        LoginRequest loginRequest = new LoginRequest(phone, password);
+        Log.d(TAG, "Gửi yêu cầu đăng nhập với dữ liệu: " + loginRequest.toString());
 
-    private boolean validatePassword(String password) {
-        if (password.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (password.length() < 6) {
-            Toast.makeText(this, "Mật khẩu phải có ít nhất 6 ký tự!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
+        RetrofitClient.getApiService().loginUser(loginRequest).enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful()) {
+                    ApiResponse apiResponse = response.body();
+                    Log.d(TAG, "Đăng nhập thành công: " + apiResponse.getMessage());
+                    Toast.makeText(SigninActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
-    private void initFakeUsers() {
-        fakeUsers.add(createUser("0912345678", "password123"));
-        fakeUsers.add(createUser("0987654321", "123456"));
-        fakeUsers.add(createUser("0909090909", "coffee2024"));
-    }
+                    // Chuyển đến MainActivity
+                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish(); // Đóng SigninActivity để không quay lại
+                } else {
+                    Log.e(TAG, "Đăng nhập thất bại, mã lỗi: " + response.code());
+                    try {
+                        String errorBody = response.errorBody().string();
+                        ApiResponse errorResponse = new Gson().fromJson(errorBody, ApiResponse.class);
+                        String errorMessage = errorResponse.getMessage();
+                        Log.e(TAG, "Thông báo lỗi từ server: " + errorMessage);
+                        Toast.makeText(SigninActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        Log.e(TAG, "Lỗi parse phản hồi: " + e.getMessage());
+                        Toast.makeText(SigninActivity.this, "Đăng nhập thất bại. Mã lỗi: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
 
-    private HashMap<String, String> createUser(String phone, String password) {
-        HashMap<String, String> user = new HashMap<>();
-        user.put("phone", phone);
-        user.put("password", password);
-        return user;
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.e(TAG, "Lỗi kết nối khi đăng nhập: " + t.getMessage());
+                Toast.makeText(SigninActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
