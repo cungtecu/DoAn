@@ -177,7 +177,7 @@
             android:textColor="#111"/>
 <!--Nut tao tai khoan-->
         <TextView
-            android:id="@+id/txt_signin"
+            android:id="@+id/txt_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" Tạo Một Tài Khoản "

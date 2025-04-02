@@ -317,7 +317,7 @@
                 android:textColor="#111"/>
 <!--Nut Dang Nhap -->
             <TextView
-                android:id="@+id/txt_signup"
+                android:id="@+id/txt_signin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" Đăng nhập"
