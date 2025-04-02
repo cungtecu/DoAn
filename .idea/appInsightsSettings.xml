@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.doan" />
+                  <option name="mobileSdkAppId" value="1:457254744852:android:df363ce21b01a392d34801" />
+                  <option name="projectId" value="forgetpasswordthuctap" />
+                  <option name="projectNumber" value="457254744852" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
