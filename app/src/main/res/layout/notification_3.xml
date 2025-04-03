@@ -24,26 +24,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingEnd="24dp">
+                android:gravity="center_vertical">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Xác nhận xoá tài khoản!"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/dark_red"
                     android:gravity="center"/>  <!-- Căn giữa text -->
 
-                <ImageView
-                    android:id="@+id/btn_close"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/close"
-                    android:clickable="true"
-                    android:focusable="true"/>
             </LinearLayout>
         </RelativeLayout>
 

@@ -43,14 +43,13 @@
             android:layout_weight="1" />
 
         <!-- Tìm kiếm -->
-        <ImageView
+        <ImageButton
             android:id="@+id/search_icon"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@drawable/search"
+            android:background="@drawable/search"
             android:clickable="true"
-            android:onClick="onSearchClicked"
-            />
+            android:onClick="onSearchClicked"/>
 
     </LinearLayout>
     <!-- ScrollView cho phần body -->

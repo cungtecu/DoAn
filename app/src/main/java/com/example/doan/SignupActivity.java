@@ -1,11 +1,13 @@
 package com.example.doan;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.doan.api.RetrofitClient;
@@ -24,6 +26,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText edtName, edtEmail, edtPhone, edtPass1, edtPass2;
     private Button btnSignup;
     private ImageView eyePass1, eyePass2;
+    private TextView txtSignin;
     private boolean isPass1Visible = false, isPass2Visible = false;
 
     // Regex kiểm tra mật khẩu: ít nhất 7 ký tự
@@ -42,6 +45,7 @@ public class SignupActivity extends AppCompatActivity {
         btnSignup = findViewById(R.id.btn_signup);
         eyePass1 = findViewById(R.id.icon_newpass1);
         eyePass2 = findViewById(R.id.icon_newpass2);
+        txtSignin = findViewById(R.id.txt_signin);
 
         // Xử lý ẩn/hiện mật khẩu cho Pass1
         eyePass1.setOnClickListener(v -> {
@@ -99,6 +103,11 @@ public class SignupActivity extends AppCompatActivity {
                 signupUser(name, email, phone, password, confirmPassword);
             }
         });
+
+        txtSignin.setOnClickListener(v -> {
+            Intent intent = new Intent(SignupActivity.this, SigninActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void signupUser(String name, String email, String phone, String password, String confirmPassword) {
@@ -110,8 +119,11 @@ public class SignupActivity extends AppCompatActivity {
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful()) {
                     ApiResponse apiResponse = response.body();
-                    Log.d(TAG, "Đăng ký thành công: " + apiResponse.getMessage());
-                    Toast.makeText(SignupActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG,  apiResponse.getMessage());
+                    Intent intent = new Intent(SignupActivity.this, Notification_2Activity.class);
+                    startActivity(intent);
+                    finish();
+
                 } else {
                     Log.e(TAG, "Đăng ký thất bại, mã lỗi: " + response.code());
                     try {

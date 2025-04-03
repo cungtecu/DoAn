@@ -3,6 +3,7 @@ package com.example.doan;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import com.example.doan.R;
 
 public class OtherActivity extends AppCompatActivity {
     private ImageButton btnHome, btnCart, btnOther;
+    private Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,7 @@ public class OtherActivity extends AppCompatActivity {
         btnHome = findViewById(R.id.btn_home);
         btnCart = findViewById(R.id.cartIcon);
         btnOther = findViewById(R.id.btn_other);
+        btnLogout = findViewById(R.id.btn_logout);
 
         highlightCurrentPage();
 
@@ -41,6 +44,12 @@ public class OtherActivity extends AppCompatActivity {
 
         btnOther.setOnClickListener(view -> {
             // Không cần chuyển vì đã ở OtherActivity
+        });
+
+        //xử lý sự kện đăng xuất
+        btnLogout.setOnClickListener(v -> {
+            Intent intent = new Intent(OtherActivity.this, SigninActivity.class);
+            startActivity(intent);
         });
     }
 
