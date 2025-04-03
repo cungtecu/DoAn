@@ -14,21 +14,10 @@
         android:layout_height="match_parent"
         android:padding="12dp"
         android:background="@drawable/bg">
-
-        <!-- Icon trái tim -->
-        <!--        <ImageView-->
-        <!--            android:id="@+id/imgFavorite"-->
-        <!--            android:layout_width="20dp"-->
-        <!--            android:layout_height="20dp"-->
-        <!--            android:layout_alignParentEnd="true"-->
-        <!--            android:src="@drawable/ic_heart"-->
-        <!--            android:tint="@color/red" />-->
-
-        <!-- Ảnh sản phẩm -->
         <ImageView
             android:id="@+id/imgProduct"
             android:layout_width="wrap_content"
-            android:layout_height="122dp"
+            android:layout_height="160dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:scaleType="centerInside"
@@ -57,17 +46,5 @@
             android:textSize="18sp"
             android:textColor="@color/green"
             android:textStyle="bold" />
-
-        <!-- Nút "+" để thêm vào giỏ hàng -->
-        <ImageView
-            android:id="@+id/btnAddToCart"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_below="@id/txtProductPrice"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_addtocart"
-            android:layout_marginTop="8dp"
-            android:padding="2dp"
-            />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
