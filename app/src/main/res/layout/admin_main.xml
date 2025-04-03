@@ -296,7 +296,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/admin_statistical"
+                android:id="@+id/admin_point"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_margin="10dp"
@@ -335,7 +335,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/admin_review"
+                android:id="@+id/admin_statistical"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_margin="10dp"

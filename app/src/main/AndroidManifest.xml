@@ -28,7 +28,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <!-- Các Activity khác -->
         <activity android:name=".SigninActivity" android:exported="true" />
         <activity android:name=".MainActivity" android:exported="true" />
@@ -36,6 +35,10 @@
         <activity android:name=".OtherActivity" android:exported="true" />
         <activity android:name=".ForgetPasswordActivity" android:exported="true" />
         <activity android:name=".SignupActivity" android:exported="true" />
-    </application>
+        <activity android:name=".Notification_2Activity" android:exported="true"/>
+        <activity android:name=".Notification_8Activity" android:exported="true"/>
 
+        <activity android:name=".admin.Admin_Main_Activity" android:exported="true" />
+        <activity android:name=".admin.Admin_User_Activity" android:exported="true" />/>
+    </application>
 </manifest>

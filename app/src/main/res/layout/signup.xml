@@ -282,7 +282,7 @@
 
     <!-- Nut Tiếp tục như khách -->
     <TextView
-        android:id="@+id/btn_continueguest"
+        android:id="@+id/txt_continueguest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TIẾP TỤC NHƯ KHÁCH"
@@ -324,6 +324,7 @@
                 android:textColor="@color/dark_red"
                 android:textStyle="bold"
                 android:textSize="15sp"
-                android:clickable="true" />
+                android:clickable="true"
+                android:focusable="true"/>
         </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

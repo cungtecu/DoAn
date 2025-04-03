@@ -52,7 +52,7 @@ public class SigninActivity extends AppCompatActivity {
                 btnTogglePassword.setImageResource(R.drawable.show_password);
             }
             isPasswordVisible = !isPasswordVisible;
-            edtPassword.setSelection(edtPassword.getText().length()); // Đặt con trỏ ở cuối
+            edtPassword.setSelection(edtPassword.getText().length());
         });
 
         // Sự kiện khi nhấn vào TextView quên mật khẩu
@@ -70,7 +70,6 @@ public class SigninActivity extends AppCompatActivity {
         // Xử lý sự kiện nhấn vào nút Đăng nhập
         btnSignin.setOnClickListener(v -> {
             Log.d(TAG, "Nút Đăng Nhập được nhấn");
-
             String phone = edtPhone.getText().toString().trim();
             String password = edtPassword.getText().toString().trim();
 
@@ -96,27 +95,32 @@ public class SigninActivity extends AppCompatActivity {
         RetrofitClient.getApiService().loginUser(loginRequest).enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     ApiResponse apiResponse = response.body();
                     Log.d(TAG, "Đăng nhập thành công: " + apiResponse.getMessage());
-                    Toast.makeText(SigninActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SigninActivity.this, "Đăng nhập thành công, hãy đợi một chút nhé!", Toast.LENGTH_SHORT).show();
 
                     // Chuyển đến MainActivity
                     Intent intent = new Intent(SigninActivity.this, MainActivity.class);
                     startActivity(intent);
-                    finish(); // Đóng SigninActivity để không quay lại
+                    finish(); // Đóng SigninActivity
                 } else {
                     Log.e(TAG, "Đăng nhập thất bại, mã lỗi: " + response.code());
+                    String errorMessage = "Đăng nhập thất bại. Mã lỗi: " + response.code();
                     try {
-                        String errorBody = response.errorBody().string();
-                        ApiResponse errorResponse = new Gson().fromJson(errorBody, ApiResponse.class);
-                        String errorMessage = errorResponse.getMessage();
-                        Log.e(TAG, "Thông báo lỗi từ server: " + errorMessage);
-                        Toast.makeText(SigninActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        if (response.errorBody() != null) {
+                            String errorBody = response.errorBody().string();
+                            ApiResponse errorResponse = new Gson().fromJson(errorBody, ApiResponse.class);
+                            if (errorResponse != null && errorResponse.getMessage() != null) {
+                                errorMessage = errorResponse.getMessage();
+                            }
+                        }
                     } catch (IOException e) {
                         Log.e(TAG, "Lỗi parse phản hồi: " + e.getMessage());
-                        Toast.makeText(SigninActivity.this, "Đăng nhập thất bại. Mã lỗi: " + response.code(), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Log.e(TAG, "Lỗi không xác định: " + e.getMessage());
                     }
+                    Toast.makeText(SigninActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             }
 

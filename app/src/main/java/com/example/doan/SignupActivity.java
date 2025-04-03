@@ -1,11 +1,15 @@
 package com.example.doan;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.doan.api.RetrofitClient;
@@ -24,11 +28,13 @@ public class SignupActivity extends AppCompatActivity {
     private EditText edtName, edtEmail, edtPhone, edtPass1, edtPass2;
     private Button btnSignup;
     private ImageView eyePass1, eyePass2;
+    private TextView txt_signin,txt_continueguest;
     private boolean isPass1Visible = false, isPass2Visible = false;
 
     // Regex kiểm tra mật khẩu: ít nhất 7 ký tự
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^.{7,}$");
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +48,9 @@ public class SignupActivity extends AppCompatActivity {
         btnSignup = findViewById(R.id.btn_signup);
         eyePass1 = findViewById(R.id.icon_newpass1);
         eyePass2 = findViewById(R.id.icon_newpass2);
+        txt_signin = findViewById(R.id.txt_signin);
+        txt_continueguest = findViewById(R.id.txt_continueguest);
+
 
         // Xử lý ẩn/hiện mật khẩu cho Pass1
         eyePass1.setOnClickListener(v -> {
@@ -67,6 +76,22 @@ public class SignupActivity extends AppCompatActivity {
                 eyePass2.setImageResource(R.drawable.hide_password); // Icon mắt đóng
             }
             edtPass2.setSelection(edtPass2.getText().length()); // Đặt con trỏ ở cuối
+        });
+        txt_signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignupActivity.this, SigninActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        txt_continueguest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
         });
 
         btnSignup.setOnClickListener(v -> {
@@ -111,7 +136,9 @@ public class SignupActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     ApiResponse apiResponse = response.body();
                     Log.d(TAG, "Đăng ký thành công: " + apiResponse.getMessage());
-                    Toast.makeText(SignupActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignupActivity.this, Notification_2Activity.class);
+                    startActivity(intent);
+                    finish();
                 } else {
                     Log.e(TAG, "Đăng ký thất bại, mã lỗi: " + response.code());
                     try {
