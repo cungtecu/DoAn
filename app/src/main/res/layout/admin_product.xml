@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DDDDDD">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/top_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/imageViewa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="TroisH Product"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:srcCompat="@drawable/btn2"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="120dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_search"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
+            android:padding="5dp">
+            <EditText
+                android:id="@+id/edt_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Name, price, description ... "
+                android:fontFamily="@font/font_main"
+                android:textSize="16sp"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
+                android:textColor="@color/brown"
+                android:layout_marginEnd="16dp" />
+            <!-- Khoảng trắng để đẩy các icon còn lại về bên phải -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Tìm kiếm -->
+            <ImageView
+                android:id="@+id/search_icon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/search"
+                android:clickable="true"
+                android:onClick="onSearchClicked"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <EditText
+                android:id="@+id/edtNameProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên Sản Phẩm"
+                android:textColor="@color/brown"
+                android:textSize="16sp"
+                android:background="@drawable/top_button_background2"
+                android:padding="15dp"/>
+
+            <Spinner
+                android:id="@+id/spinnerSelectCat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/top_button_background3"/>
+
+            <EditText
+                android:id="@+id/edtPriceProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Giá"
+                android:textColor="@color/brown"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/top_button_background2"
+                android:padding="15dp"/>
+
+
+            <Button
+                android:id="@+id/btnAddProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thêm"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/top_button_background_white"/>
+            <TextView
+                android:id="@+id/tv_delete_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Xoá Tất Cả"
+                android:textColor="@color/dark_red"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="end"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_user"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

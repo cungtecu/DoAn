@@ -1,17 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:orientation="vertical"
-    android:background="@color/blackgreen">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/blackgreen"
-        android:layout_alignParentBottom="true"
-        android:layout_weight="1">
 
         <!-- Header Layout -->
         <LinearLayout
@@ -19,14 +8,11 @@ android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/header_background"
-            android:orientation="vertical">
 
             <!-- Profile Section -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:background="@color/blackgreen">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image"
@@ -44,7 +30,6 @@ android:orientation="vertical"
                     android:layout_toEndOf="@id/profile_image"
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical">
-
 
                     <TextView
                         android:id="@+id/drips_text"
@@ -72,15 +57,9 @@ android:orientation="vertical"
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:cardElevation="4dp"
-                app:cardCornerRadius="16dp"
-                android:layout_marginBottom="3dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:padding="16dp"
                     android:background="@android:color/white">
@@ -275,51 +254,35 @@ android:orientation="vertical"
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
-    </RelativeLayout>
 <LinearLayout
-    android:id="@+id/bottom_navigation"
     android:layout_alignParentBottom="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:weightSum="3"
-    android:padding="5dp"
-    android:background="@color/blackgreen"
-    android:gravity="center">
 
-    <ImageButton
         android:id="@+id/btn_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@color/blackgreen"
         android:clickable="true"
         android:focusable="true"
-        android:padding="14dp"
         android:src="@drawable/ic_home" />
 
-    <ImageButton
         android:id="@+id/cartIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:padding="10dp"
-        android:background="@color/blackgreen"
         android:layout_gravity="center"
         android:src="@drawable/ic_cart"
-        android:clickable="true"
-        android:focusable="true"
         android:contentDescription="Cart Icon"
         android:scaleType="centerInside"/>
-    <ImageButton
         android:id="@+id/btn_other"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:padding="14dp"
-        android:background="@color/blackgreen"
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_other"/>
-</LinearLayout>
 </LinearLayout>

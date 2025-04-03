@@ -1,4 +1,5 @@
 package com.example.doan;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.content.ContentValues;
@@ -108,6 +109,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS Cart");
         onCreate(db);
     }
+    // Thêm người dùng mới
+    public void insertUser(String name, String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("email", email);
+        db.insert("users", null, values);
+        db.close();
+    }
+
     // Method to get all products
     private void insertSampleData(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
