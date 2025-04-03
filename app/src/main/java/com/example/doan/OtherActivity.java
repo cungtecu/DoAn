@@ -24,7 +24,7 @@ public class OtherActivity extends AppCompatActivity {
         btnHome = findViewById(R.id.btn_home);
         btnCart = findViewById(R.id.cartIcon);
         btnOther = findViewById(R.id.btn_other);
-        btnLogout = findViewById(R.id.btn_logout);
+
 
         highlightCurrentPage();
 
@@ -47,10 +47,10 @@ public class OtherActivity extends AppCompatActivity {
         });
 
         //xử lý sự kện đăng xuất
-        btnLogout.setOnClickListener(v -> {
-            Intent intent = new Intent(OtherActivity.this, SigninActivity.class);
-            startActivity(intent);
-        });
+//        btnLogout.setOnClickListener(v -> {
+//            Intent intent = new Intent(OtherActivity.this, SigninActivity.class);
+//            startActivity(intent);
+//        });
     }
 
     private void highlightCurrentPage() {

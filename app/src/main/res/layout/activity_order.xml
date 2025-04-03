@@ -7,11 +7,32 @@
     android:background="#f0f0f0">
 
     <!-- Include Header -->
-    <include
+    <LinearLayout
         android:id="@+id/header"
-        layout="@layout/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="70dp"
+        android:background="@drawable/round_header"
+        android:orientation="horizontal"
+        android:layout_margin="8dp"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <!-- Khoảng trắng để đẩy các icon còn lại về bên phải -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Tìm kiếm -->
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/search"
+            android:clickable="true"
+            android:onClick="onSearchClicked" />
+
+    </LinearLayout>
 
     <!-- Phần Đơn Đặt Hàng và Điểm Dripst -->
     <LinearLayout
@@ -142,15 +163,4 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        app:elevation="4dp"
-        app:menu="@menu/bottom_navigation_menu"
-        app:itemIconTint="@color/green"
-        app:itemTextColor="@color/brown" />
 </RelativeLayout>

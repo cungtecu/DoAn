@@ -30,6 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".OrderActivity" android:enabled="true"/>
         <activity android:name=".Notification_2Activity" android:exported="true"/>
         <activity android:name=".CartActivity" android:exported="true"/>
         <activity android:name=".OtherActivity" android:exported="true"/>

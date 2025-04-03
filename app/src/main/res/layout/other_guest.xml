@@ -156,19 +156,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</LinearLayout>
-
-
-    <!-- BottomNavigationView -->
-<com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        app:elevation="4dp"
-        app:menu="@menu/bottom_navigation_menu"
-        app:itemIconTint="@color/green"
-        app:itemTextColor="@color/brown"/>
-    </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</RelativeLayout>
