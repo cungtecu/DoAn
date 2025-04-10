@@ -1,27 +1,58 @@
 package com.example.doan.api;
 
+import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitClient {
-    private static final String BASE_URL = "http://10.0.2.2:9090/";
-    private static Retrofit retrofit = null;
+    private static Retrofit retrofitWithGson = null;
+    private static Retrofit retrofitForText = null;
 
+    // Dùng cho các endpoint trả về JSON
     public static ApiService getApiService() {
-        if (retrofit == null) {
+        if (retrofitWithGson == null) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient client = new OkHttpClient.Builder()
+
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(logging)
                     .build();
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+
+            retrofitWithGson = new Retrofit.Builder()
+                    .baseUrl("http://10.0.2.2:9090/")
+                    .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .client(client)
                     .build();
         }
-        return retrofit.create(ApiService.class);
+        return retrofitWithGson.create(ApiService.class);
+    }
+
+    // Dùng cho các endpoint trả về text/plain nhưng gửi JSON
+    public static ApiService getApiServiceForText() {
+        if (retrofitForText == null) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .addInterceptor(logging)
+                    .build();
+
+            retrofitForText = new Retrofit.Builder()
+                    .baseUrl("http://10.0.2.2:9090/")
+                    .client(okHttpClient)
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofitForText.create(ApiService.class);
     }
 }
