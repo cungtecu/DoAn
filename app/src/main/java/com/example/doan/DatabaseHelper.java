@@ -80,6 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "order_id INTEGER, " +
                 "payment_method TEXT NOT NULL, " +
+                "amount REAL NOT NULL, " +
                 "payment_status TEXT DEFAULT 'Pending', " +
                 "payment_date DATETIME DEFAULT CURRENT_TIMESTAMP, " +
                 "FOREIGN KEY (order_id) REFERENCES Orders(id) )");
