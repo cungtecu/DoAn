@@ -1,146 +1,153 @@
 package com.example.doan.admin;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.doan.DatabaseHelper;
-import com.example.doan.models.User;
-
+import com.example.doan.R;
+import com.example.doan.api.RetrofitClient;
+import com.example.doan.models.UserAdapter;
+import com.example.doan.api.ApiService;
+import com.example.doan.models.UserSummaryDTO;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-public class Admin_User_Activity extends AppCompatActivity implements Admin_User_Adapter.OnUserActionListener {
-    private EditText edtSearch, edtNameUser, edtEmailUser;
+public class Admin_User_Activity extends AppCompatActivity {
+    private RecyclerView recyclerView;
+    private UserAdapter userAdapter;
+    private List<UserSummaryDTO> userList = new ArrayList<>();
+    private List<UserSummaryDTO> filteredUserList = new ArrayList<>();
+    private EditText edtSearch;
     private ImageView searchIcon;
-    private Button btnAddUser;
-    private TextView tvDeleteAll;
-    private RecyclerView rcvUser;
-    private Admin_User_Adapter userAdapter;
-    private DatabaseHelper dbHelper;
+    private String authToken; // Token sẽ được lấy từ SharedPreferences
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_user);
 
-        // Ánh xạ giao diện
+        // Lấy token từ SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+        authToken = "Bearer " + prefs.getString("token", null);
+        if (authToken == null) {
+            Toast.makeText(this, "Không tìm thấy token, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
+            finish(); // Thoát activity nếu không có token
+            return;
+        }
+
+        recyclerView = findViewById(R.id.rcv_user);
         edtSearch = findViewById(R.id.edt_search);
         searchIcon = findViewById(R.id.search_icon);
-        edtNameUser = findViewById(R.id.edtNameUser);
-        edtEmailUser = findViewById(R.id.edtEmailUser);
-        btnAddUser = findViewById(R.id.btnAddUser);
-        tvDeleteAll = findViewById(R.id.tv_delete_all);
-        rcvUser = findViewById(R.id.rcv_user);
 
-        // Khởi tạo cơ sở dữ liệu và adapter
-        dbHelper = new DatabaseHelper(this);
-        List<User> userList = dbHelper.getAllUsers();
-        userAdapter = new Admin_User_Adapter(userList, this);
-        rcvUser.setLayoutManager(new LinearLayoutManager(this));
-        rcvUser.setAdapter(userAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        userAdapter = new UserAdapter(filteredUserList, this::deleteUser, this::showUserDetails);
+        recyclerView.setAdapter(userAdapter);
 
-        // Sự kiện tìm kiếm
-        searchIcon.setOnClickListener(v -> onSearchClicked());
-
-        // Sự kiện thêm người dùng
-        btnAddUser.setOnClickListener(v -> onAddUserClicked());
-
-        // Sự kiện xóa tất cả
-        tvDeleteAll.setOnClickListener(v -> onDeleteAllClicked());
+        fetchUsers();
+        searchIcon.setOnClickListener(v -> filterUsers(edtSearch.getText().toString()));
     }
 
-    private void onSearchClicked() {
-        String query = edtSearch.getText().toString().trim();
-        if (!query.isEmpty()) {
-            List<User> filteredList = dbHelper.searchUsers(query);
-            userAdapter.updateList(filteredList);
-            Toast.makeText(this, "Đã tìm kiếm: " + query, Toast.LENGTH_SHORT).show();
-        } else {
-            userAdapter.updateList(dbHelper.getAllUsers());
-            Toast.makeText(this, "Vui lòng nhập từ khóa", Toast.LENGTH_SHORT).show();
-        }
+    private void showUserDetails(UserSummaryDTO user) {
+        // Chuyển sang Admin_User_Detail_Activity thay vì hiển thị AlertDialog
+        Intent intent = new Intent(Admin_User_Activity.this, Admin_User_Detail_Activity.class);
+        intent.putExtra("USER_ID", user.getId());
+        startActivity(intent);
     }
 
-    private void onAddUserClicked() {
-        String name = edtNameUser.getText().toString().trim();
-        String email = edtEmailUser.getText().toString().trim();
-
-        if (name.isEmpty() || email.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập tên và email", Toast.LENGTH_SHORT).show();
-        } else {
-            User newUser = new User(name, email, null, "default123", 0, "Customer");
-            if (dbHelper.addUser(newUser)) {
-                userAdapter.updateList(dbHelper.getAllUsers());
-                edtNameUser.setText("");
-                edtEmailUser.setText("");
-                Toast.makeText(this, "Đã thêm: " + name, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Email đã tồn tại", Toast.LENGTH_SHORT).show();
+    private void fetchUsers() {
+        ApiService apiService = RetrofitClient.getApiService();
+        Call<List<UserSummaryDTO>> call = apiService.getUsers(authToken);
+        call.enqueue(new Callback<List<UserSummaryDTO>>() {
+            @Override
+            public void onResponse(Call<List<UserSummaryDTO>> call, Response<List<UserSummaryDTO>> response) {
+                if (response.isSuccessful()) {
+                    userList = response.body();
+                    filteredUserList = new ArrayList<>(userList);
+                    userAdapter.updateList(filteredUserList);
+                } else {
+                    Toast.makeText(Admin_User_Activity.this, "Không thể tải dữ liệu: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
             }
+
+            @Override
+            public void onFailure(Call<List<UserSummaryDTO>> call, Throwable t) {
+                Toast.makeText(Admin_User_Activity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void filterUsers(String query) {
+        if (TextUtils.isEmpty(query)) {
+            filteredUserList = new ArrayList<>(userList);
+        } else {
+            String lowerQuery = query.toLowerCase();
+            filteredUserList = userList.stream()
+                    .filter(user -> {
+                        boolean matchesName = user.getName() != null && user.getName().toLowerCase().contains(lowerQuery);
+                        boolean matchesEmail = user.getEmail() != null && user.getEmail().toLowerCase().contains(lowerQuery);
+                        boolean matchesPhone = user.getPhone() != null && user.getPhone().toLowerCase().contains(lowerQuery);
+                        return matchesName || matchesEmail || matchesPhone; // Trả về true nếu khớp tên, email hoặc số điện thoại
+                    })
+                    .collect(Collectors.toList());
         }
+        userAdapter.updateList(filteredUserList);
     }
 
-    private void onDeleteAllClicked() {
-        new AlertDialog.Builder(this)
-                .setTitle("Xác nhận")
-                .setMessage("Bạn có chắc muốn xóa tất cả người dùng?")
-                .setPositiveButton("Có", (dialog, which) -> {
-                    dbHelper.deleteAllUsers();
-                    userAdapter.updateList(dbHelper.getAllUsers());
-                    Toast.makeText(this, "Đã xóa tất cả", Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton("Không", null)
-                .show();
-    }
-
-    @Override
-    public void onEditUser(User user) {
-        // Hiển thị dialog chỉnh sửa
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_user, null);
-        EditText edtEditName = dialogView.findViewById(R.id.edt_edit_name);
-        EditText edtEditEmail = dialogView.findViewById(R.id.edt_edit_email);
-
-        edtEditName.setText(user.getName());
-        edtEditEmail.setText(user.getEmail());
-
-        new AlertDialog.Builder(this)
-                .setTitle("Chỉnh sửa người dùng")
-                .setView(dialogView)
-                .setPositiveButton("Lưu", (dialog, which) -> {
-                    user.setName(edtEditName.getText().toString().trim());
-                    user.setEmail(edtEditEmail.getText().toString().trim());
-                    if (dbHelper.updateUser(user)) {
-                        userAdapter.updateList(dbHelper.getAllUsers());
-                        Toast.makeText(this, "Đã cập nhật", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+    private void deleteUser(UserSummaryDTO user) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Admin_User_Activity.this);
+        builder.setTitle("Xác nhận xóa tài khoản");
+        builder.setMessage("Bạn có chắc muốn xóa tài khoản " + user.getName() + " không?");
+        builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ApiService apiService = RetrofitClient.getApiService();
+                Call<Void> call = apiService.deleteUser(authToken, user.getId());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            userList.remove(user);
+                            filteredUserList = new ArrayList<>(userList);
+                            userAdapter.updateList(filteredUserList);
+                            new AlertDialog.Builder(Admin_User_Activity.this)
+                                    .setTitle("Thông báo")
+                                    .setMessage("Tài khoản " + user.getName() + " đã được xóa thành công!")
+                                    .setPositiveButton("OK", (d, w) -> d.dismiss())
+                                    .setCancelable(false)
+                                    .show();
+                        } else {
+                            Toast.makeText(Admin_User_Activity.this, "Không thể xóa tài khoản: " + response.code(), Toast.LENGTH_SHORT).show();
+                        }
                     }
-                })
-                .setNegativeButton("Hủy", null)
-                .show();
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(Admin_User_Activity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
+        builder.setCancelable(false);
+        builder.create().show();
     }
 
-    @Override
-    public void onDeleteUser(int userId) {
-        new AlertDialog.Builder(this)
-                .setTitle("Xác nhận")
-                .setMessage("Bạn có chắc muốn xóa người dùng này?")
-                .setPositiveButton("Có", (dialog, which) -> {
-                    if (dbHelper.deleteUser(userId)) {
-                        userAdapter.updateList(dbHelper.getAllUsers());
-                        Toast.makeText(this, "Đã xóa", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton("Không", null)
-                .show();
+    public void onSearchClicked(View view) {
+        filterUsers(edtSearch.getText().toString());
     }
 }

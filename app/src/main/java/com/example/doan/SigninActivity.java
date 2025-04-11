@@ -1,6 +1,7 @@
 package com.example.doan;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -10,9 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.doan.admin.Admin_Main_Activity;
 import com.example.doan.api.RetrofitClient;
-import com.example.doan.models.ApiResponse;
+import com.example.doan.models.LoginResponse;
 import com.example.doan.models.LoginRequest;
+import com.example.doan.models.Users;
 import com.google.gson.Gson;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,14 +44,12 @@ public class SigninActivity extends AppCompatActivity {
         txtSignup = findViewById(R.id.txt_signup);
         btnSignin = findViewById(R.id.btn_signin);
 
-        // Xử lý hiển thị/ẩn mật khẩu khi nhấn vào icon
+        // Xử lý hiển thị/ẩn mật khẩu
         btnTogglePassword.setOnClickListener(v -> {
             if (isPasswordVisible) {
-                // Ẩn mật khẩu
                 edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 btnTogglePassword.setImageResource(R.drawable.hide_password);
             } else {
-                // Hiển thị mật khẩu
                 edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 btnTogglePassword.setImageResource(R.drawable.show_password);
             }
@@ -55,19 +57,19 @@ public class SigninActivity extends AppCompatActivity {
             edtPassword.setSelection(edtPassword.getText().length());
         });
 
-        // Sự kiện khi nhấn vào TextView quên mật khẩu
+        // Sự kiện quên mật khẩu
         txtForgetPassword.setOnClickListener(v -> {
             Intent intent = new Intent(SigninActivity.this, ForgetPasswordActivity.class);
             startActivity(intent);
         });
 
-        // Xử lý sự kiện nhấn vào "Tạo Một Tài Khoản"
+        // Sự kiện đăng ký
         txtSignup.setOnClickListener(v -> {
             Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
             startActivity(intent);
         });
 
-        // Xử lý sự kiện nhấn vào nút Đăng nhập
+        // Sự kiện đăng nhập
         btnSignin.setOnClickListener(v -> {
             Log.d(TAG, "Nút Đăng Nhập được nhấn");
             String phone = edtPhone.getText().toString().trim();
@@ -76,58 +78,67 @@ public class SigninActivity extends AppCompatActivity {
             Log.d(TAG, "phone: " + phone);
             Log.d(TAG, "password: " + password);
 
-            // Kiểm tra ràng buộc
             if (phone.isEmpty() || password.isEmpty()) {
                 Log.d(TAG, "Thông tin không đầy đủ");
                 Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Gửi yêu cầu đăng nhập
             loginUser(phone, password);
         });
     }
 
     private void loginUser(String phone, String password) {
         LoginRequest loginRequest = new LoginRequest(phone, password);
-        Log.d(TAG, "Gửi yêu cầu đăng nhập với dữ liệu: " + loginRequest.toString());
-
-        RetrofitClient.getApiService().loginUser(loginRequest).enqueue(new Callback<ApiResponse>() {
+        RetrofitClient.getApiService().loginUser(loginRequest).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    ApiResponse apiResponse = response.body();
-                    Log.d(TAG, "Đăng nhập thành công: " + apiResponse.getMessage());
-                    Toast.makeText(SigninActivity.this, "Đăng nhập thành công, hãy đợi một chút nhé!", Toast.LENGTH_SHORT).show();
-
-                    // Chuyển đến MainActivity
-                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish(); // Đóng SigninActivity
-                } else {
-                    Log.e(TAG, "Đăng nhập thất bại, mã lỗi: " + response.code());
-                    String errorMessage = "Đăng nhập thất bại. Mã lỗi: " + response.code();
-                    try {
-                        if (response.errorBody() != null) {
-                            String errorBody = response.errorBody().string();
-                            ApiResponse errorResponse = new Gson().fromJson(errorBody, ApiResponse.class);
-                            if (errorResponse != null && errorResponse.getMessage() != null) {
-                                errorMessage = errorResponse.getMessage();
-                            }
-                        }
-                    } catch (IOException e) {
-                        Log.e(TAG, "Lỗi parse phản hồi: " + e.getMessage());
-                    } catch (Exception e) {
-                        Log.e(TAG, "Lỗi không xác định: " + e.getMessage());
+                    String token = response.body().getToken();
+                    if (token != null) {
+                        SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString("token", token);
+                        editor.apply();
+                        fetchCurrentUser(token);
+                    } else {
+                        Toast.makeText(SigninActivity.this, "Token không hợp lệ", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    String errorMessage = "Đăng nhập thất bại. Mã lỗi: " + response.code();
                     Toast.makeText(SigninActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Log.e(TAG, "Lỗi kết nối khi đăng nhập: " + t.getMessage());
-                Toast.makeText(SigninActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Toast.makeText(SigninActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchCurrentUser(String token) {
+        RetrofitClient.getApiService().getCurrentUser("Bearer " + token).enqueue(new Callback<Users>() {
+            @Override
+            public void onResponse(Call<Users> call, Response<Users> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Users user = response.body();
+                    Intent intent;
+                    if ("ADMIN".equals(user.getRole())) {
+                        intent = new Intent(SigninActivity.this, Admin_Main_Activity.class);
+                    } else {
+                        intent = new Intent(SigninActivity.this, MainActivity.class);
+                    }
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(SigninActivity.this, "Không thể lấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Users> call, Throwable t) {
+                Toast.makeText(SigninActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
             }
         });
     }

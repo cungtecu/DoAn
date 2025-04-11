@@ -38,7 +38,13 @@
         <activity android:name=".Notification_2Activity" android:exported="true"/>
         <activity android:name=".Notification_8Activity" android:exported="true"/>
 
+
+        <activity android:name=".admin.Admin_User_Activity" android:exported="true" />
+        <activity android:name=".admin.Admin_Cat_Activity" android:exported="true" />
+        <activity android:name=".admin.Admin_Product_Activity" android:exported="true" />
+        <activity android:name=".admin.Admin_Point_Activity" android:exported="true" />
+        <activity android:name=".admin.Admin_Order_Activity" android:exported="true" />
         <activity android:name=".admin.Admin_Main_Activity" android:exported="true" />
-        <activity android:name=".admin.Admin_User_Activity" android:exported="true" />/>
+        <activity android:name=".admin.Admin_User_Detail_Activity" android:exported="true"/>
     </application>
 </manifest>

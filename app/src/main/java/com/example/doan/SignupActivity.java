@@ -1,6 +1,7 @@
 package com.example.doan;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
@@ -11,9 +12,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.doan.api.RetrofitClient;
-import com.example.doan.models.ApiResponse;
+import com.example.doan.models.LoginResponse;
 import com.example.doan.models.SignupRequest;
 import com.google.gson.Gson;
 import retrofit2.Call;
@@ -85,14 +89,55 @@ public class SignupActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        // Xử lý sự kiện click cho nút
         txt_continueguest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                // Tạo AlertDialog để xác nhận
+                AlertDialog.Builder builder = new AlertDialog.Builder(SignupActivity.this);
+                builder.setTitle("Xác nhận tiếp tục như khách");
+                builder.setMessage("Bạn không thể đặt hàng khi không đăng nhập !");
+                builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Thực hiện đăng xuất khi nhấn "Đồng ý"
+                        Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish(); // Đóng
+                    }
+                });
+                builder.setNegativeButton("Thoát", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Đóng dialog khi nhấn "Thoát" (không làm gì cả)
+                        dialog.dismiss();
+                    }
+                });
+                builder.setCancelable(false); // Không cho phép thoát dialog bằng nút back
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         btnSignup.setOnClickListener(v -> {
             Log.d(TAG, "Nút Đăng Ký được nhấn");
@@ -130,12 +175,12 @@ public class SignupActivity extends AppCompatActivity {
         SignupRequest signupRequest = new SignupRequest(name, email, phone, password, confirmPassword);
         Log.d(TAG, "Gửi yêu cầu đăng ký với dữ liệu: " + signupRequest.toString());
 
-        RetrofitClient.getApiService().createUser(signupRequest).enqueue(new Callback<ApiResponse>() {
+        RetrofitClient.getApiService().createUser(signupRequest).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
-                    ApiResponse apiResponse = response.body();
-                    Log.d(TAG, "Đăng ký thành công: " + apiResponse.getMessage());
+                    LoginResponse loginResponse = response.body();
+                    Log.d(TAG, "Đăng ký thành công: " + loginResponse.getMessage());
                     Intent intent = new Intent(SignupActivity.this, Notification_2Activity.class);
                     startActivity(intent);
                     finish();
@@ -143,7 +188,7 @@ public class SignupActivity extends AppCompatActivity {
                     Log.e(TAG, "Đăng ký thất bại, mã lỗi: " + response.code());
                     try {
                         String errorBody = response.errorBody().string();
-                        ApiResponse errorResponse = new Gson().fromJson(errorBody, ApiResponse.class);
+                        LoginResponse errorResponse = new Gson().fromJson(errorBody, LoginResponse.class);
                         String errorMessage = errorResponse.getMessage();
                         Log.e(TAG, "Thông báo lỗi từ server: " + errorMessage);
                         Toast.makeText(SignupActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
@@ -155,7 +200,7 @@ public class SignupActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.e(TAG, "Lỗi kết nối khi đăng ký: " + t.getMessage());
                 Toast.makeText(SignupActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }

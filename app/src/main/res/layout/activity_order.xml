@@ -19,25 +19,6 @@
         android:gravity="center_vertical"
         android:padding="16dp"
         >
-
-        <!-- User -->
-        <ImageView
-            android:id="@+id/user_icon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/person"
-            android:clickable="true"
-            android:onClick="onUserClicked"
-            android:layout_marginEnd="16dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Xin chào, người dùng!"
-            android:fontFamily="@font/font_main"
-            android:textSize="16sp"
-            android:textColor="@color/brown"
-            android:layout_marginEnd="16dp"
-            />
         <!-- Khoảng trắng để đẩy các icon còn lại về bên phải -->
         <View
             android:layout_width="0dp"

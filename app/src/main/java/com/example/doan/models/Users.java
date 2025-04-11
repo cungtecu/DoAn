@@ -1,24 +1,31 @@
 package com.example.doan.models;
 
-public class User {
+public class Users {
     private Integer id;
     private String name;
     private String email;
     private String phone;
     private String password;
+    private Integer points;
+    private String role; // Đổi từ Integer sang String để khớp với enum Role trong Spring Boot
 
-    // Constructor cũ với 2 tham số (name và email)
-    public User(String name, String email) {
+    // Constructor mặc định (yêu cầu bởi Gson)
+    public Users() {}
+
+    // Constructor với 2 tham số (name và email) - nếu cần dùng trong code khác
+    public Users(String name, String email) {
         this.name = name;
         this.email = email;
     }
 
-    // Constructor mới với 4 tham số (name, email, phone, password)
-    public User(String name, String email, String phone, String password) {
+    // Constructor với 4 tham số (name, email, phone, password) - sửa lỗi và bỏ points/role
+    public Users(String name, String email, String phone, String password, Integer points, String role) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.password = password;
+        this.role = role;
+        this.points = points;
     }
 
     // Getter methods
@@ -42,7 +49,15 @@ public class User {
         return password;
     }
 
-    // Setter methods (nếu cần thiết)
+    public Integer getPoints() {
+        return points;
+    }
+
+    public String getRole() { // Đổi từ Integer sang String
+        return role;
+    }
+
+    // Setter methods
     public void setId(Integer id) {
         this.id = id;
     }
@@ -61,5 +76,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
+    public void setRole(String role) { // Đổi từ Integer sang String
+        this.role = role;
     }
 }
