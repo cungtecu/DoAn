@@ -136,11 +136,11 @@ public class HomeFragment extends Fragment {
         setupAutoScroll();
 
         // Xử lý RecyclerView (Sản phẩm bán chạy)
-        bestSellerList = new ArrayList<>();
-        bestSellerList.add(new Product(1, "Trà sữa", "Trà sữa thơm ngon", 50000, R.drawable.product1, 1, 0));
-        bestSellerList.add(new Product(2, "Cà phê sữa", "Cà phê sữa đậm đà", 45000, R.drawable.product2, 1, 0));
-        bestSellerList.add(new Product(3, "Đá xay", "Đá xay mát lạnh", 60000, R.drawable.product3, 1, 0));
-        bestSellerList.add(new Product(4, "Matcha", "Matcha nguyên chất", 55000, R.drawable.product4, 1, 0));
+//        bestSellerList = new ArrayList<>();
+//        bestSellerList.add(new Product(1, "Trà sữa", "Trà sữa thơm ngon", 50000, R.drawable.product1, 1, 0));
+//        bestSellerList.add(new Product(2, "Cà phê sữa", "Cà phê sữa đậm đà", 45000, R.drawable.product2, 1, 0));
+//        bestSellerList.add(new Product(3, "Đá xay", "Đá xay mát lạnh", 60000, R.drawable.product3, 1, 0));
+//        bestSellerList.add(new Product(4, "Matcha", "Matcha nguyên chất", 55000, R.drawable.product4, 1, 0));
 
         RecyclerView recyclerBestSeller = view.findViewById(R.id.recyclerBestSeller);
         recyclerBestSeller.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));

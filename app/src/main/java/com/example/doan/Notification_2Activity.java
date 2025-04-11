@@ -27,4 +27,3 @@ public class Notification_2Activity extends AppCompatActivity {
         });
     }
 }
-
