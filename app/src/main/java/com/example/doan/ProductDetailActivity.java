@@ -1,7 +1,5 @@
 package com.example.doan;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.bumptech.glide.Glide;
+import com.example.doan.api.RetrofitClient;
 import com.example.doan.models.Product;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -50,20 +53,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             return;
         }
 
-        // Load dữ liệu sản phẩm từ cơ sở dữ liệu
-        product = loadProductFromDatabase(productId);
-        if (product == null) {
-            Log.e(TAG, "Product not found for ID: " + productId);
-            Toast.makeText(this, "Error: Product not found", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-
-        // Gán dữ liệu vào giao diện
-        productImage.setImageResource(product.getImageResId());
-        productName.setText(product.getName());
-        productDescription.setText(product.getDescription());
-        productPrice.setText(String.format("$%.2f", product.getPrice()));
+        // Load dữ liệu sản phẩm từ API
+        loadProductFromApi(productId);
 
         // Xử lý sự kiện
         backButton.setOnClickListener(v -> finish());
@@ -99,41 +90,64 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         // Xử lý nút "Buy Now"
         buyNowButton.setOnClickListener(v -> {
-            Toast.makeText(this, "Buying " + quantity + " " + productName.getText() + " (Size: " + selectedSize + ")", Toast.LENGTH_SHORT).show();
+            if (product != null) {
+                Toast.makeText(this, "Buying " + quantity + " " + product.getName() + " (Size: " + selectedSize + ")", Toast.LENGTH_SHORT).show();
+            }
         });
 
         // Cập nhật giao diện ban đầu
         updateSizeButtonStyles();
     }
 
-    // Load sản phẩm từ cơ sở dữ liệu
-    private Product loadProductFromDatabase(int productId) {
-        Product product = null;
-        try {
-            DatabaseHelper dbHelper = new DatabaseHelper(this);
-            SQLiteDatabase db = dbHelper.getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT id, name, description, price, image, categoryId, isDeleted FROM products WHERE id = ? AND isDeleted = 0", new String[]{String.valueOf(productId)});
-            if (cursor != null && cursor.moveToFirst()) {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
-                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
-                String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
-                double price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
-                int imageResId = cursor.getInt(cursor.getColumnIndexOrThrow("image"));
-                int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow("categoryId"));
-                int isDeleted = cursor.getInt(cursor.getColumnIndexOrThrow("isDeleted"));
-                product = new Product(id, name, description, price, imageResId, categoryId, isDeleted);
-                cursor.close();
+    // Load sản phẩm từ API
+    private void loadProductFromApi(int productId) {
+        RetrofitClient.getApiService().getProductById(productId).enqueue(new Callback<Product>() {
+            @Override
+            public void onResponse(Call<Product> call, Response<Product> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    product = response.body();
+                    displayProductDetails();
+                    Log.d(TAG, "Loaded product: " + product.getName());
+                } else {
+                    Log.e(TAG, "Failed to load product, code: " + response.code() + ", message: " + response.message());
+                    Toast.makeText(ProductDetailActivity.this, "Error: Product not found", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
-            db.close();
-        } catch (Exception e) {
-            Log.e(TAG, "Error loading product from database: " + e.getMessage());
+
+            @Override
+            public void onFailure(Call<Product> call, Throwable t) {
+                Log.e(TAG, "Error loading product from API: " + t.getMessage());
+                Toast.makeText(ProductDetailActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+    }
+
+    // Hiển thị thông tin sản phẩm
+    private void displayProductDetails() {
+        if (product != null) {
+            // Load ảnh từ URL bằng Glide
+            if (product.getImage() != null && !product.getImage().isEmpty()) {
+                Glide.with(this)
+                        .load(product.getImage())
+                        .placeholder(android.R.drawable.ic_menu_gallery)
+                        .error(android.R.drawable.ic_menu_close_clear_cancel)
+                        .into(productImage);
+            } else {
+                productImage.setImageResource(android.R.drawable.ic_menu_gallery);
+            }
+
+            productName.setText(product.getName());
+            productDescription.setText(product.getDescription());
+            productPrice.setText(String.format("$%.2f", product.getPrice()));
+            quantityText.setText(String.valueOf(quantity));
         }
-        return product;
     }
 
     // Cập nhật giao diện nút kích thước khi chọn
     private void updateSizeButtonStyles() {
-        sizeSButton.setBackgroundResource(selectedSize.equals("S") ? R.drawable.selected_size_button: R.drawable.normal_size_button);
+        sizeSButton.setBackgroundResource(selectedSize.equals("S") ? R.drawable.selected_size_button : R.drawable.normal_size_button);
         sizeMButton.setBackgroundResource(selectedSize.equals("M") ? R.drawable.selected_size_button : R.drawable.normal_size_button);
         sizeLButton.setBackgroundResource(selectedSize.equals("L") ? R.drawable.selected_size_button : R.drawable.normal_size_button);
     }

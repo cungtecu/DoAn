@@ -10,6 +10,7 @@ import java.util.List;
 import retrofit2.http.GET;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -31,6 +32,9 @@ public interface ApiService {
     Call<List<Product>> getProducts();
 
     //Endpoint lấy danh sách sản phẩm theo danh mục (mới thêm)
-    @GET("api/products")
-    Call<List<Product>> getProductsByCategory(@Query("categoryId") int categoryId);
+    @GET("api/products/category/{categoryId}")
+    Call<List<Product>> getProductsByCategory(@Path("categoryId") int categoryId);
+
+    @GET("api/products/{id}")
+    Call<Product> getProductById(@Path("id") int productId);
 }
