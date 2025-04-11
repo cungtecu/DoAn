@@ -38,9 +38,11 @@
 
     <!-- Main Content (Categories and Product List) -->
     <LinearLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_below="@id/search_bar_layout"
+        android:layout_above="@id/cart_layout"
         android:orientation="horizontal"
         android:weightSum="1">
 
@@ -74,6 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:maxHeight="300dp"
                     android:minHeight="100dp"
                     android:padding="8dp" />
             </LinearLayout>
@@ -108,4 +111,56 @@
             android:layout_centerInParent="true"
             android:visibility="gone" />
     </LinearLayout>
+
+    <!-- Cart Layout (Bottom) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cart_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="8dp"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_cart"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Giỏ hàng"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/cart_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 VNĐ"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/checkout_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Thanh toán"
+                android:backgroundTint="@color/brown"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>
