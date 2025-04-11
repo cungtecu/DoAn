@@ -41,6 +41,7 @@
 
         <activity android:name=".admin.Admin_User_Activity" android:exported="true" />
         <activity android:name=".admin.Admin_Cat_Activity" android:exported="true" />
+        <activity android:name=".admin.Admin_Cat_Edit_Activity" android:exported="true" />
         <activity android:name=".admin.Admin_Product_Activity" android:exported="true" />
         <activity android:name=".admin.Admin_Point_Activity" android:exported="true" />
         <activity android:name=".admin.Admin_Order_Activity" android:exported="true" />

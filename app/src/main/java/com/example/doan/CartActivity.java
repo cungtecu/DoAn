@@ -1,5 +1,6 @@
 package com.example.doan;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.example.doan.R;
 public class CartActivity extends AppCompatActivity {
     private ImageButton btnHome, btnCart, btnOther;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

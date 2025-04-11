@@ -1,315 +1,6 @@
-//package com.example.doan;
-//
-//import android.os.Bundle;
-//import android.util.Log;
-//import android.view.View;
-//import android.widget.ProgressBar;
-//import android.widget.Toast;
-//import androidx.appcompat.app.AppCompatActivity;
-//import androidx.recyclerview.widget.GridLayoutManager;
-//import androidx.recyclerview.widget.LinearLayoutManager;
-//import androidx.recyclerview.widget.RecyclerView;
-//import com.example.doan.api.RetrofitClient;
-//import com.example.doan.models.Category;
-//import com.example.doan.models.Product;
-//import java.util.ArrayList;
-//import java.util.List;
-//import retrofit2.Call;
-//import retrofit2.Callback;
-//import retrofit2.Response;
-//
-//public class OrderActivity extends AppCompatActivity {
-//
-//    private static final String TAG = "OrderActivity";
-//    private RecyclerView categoryRecyclerView, productRecyclerView;
-//    private CategoryAdapter categoryAdapter;
-//    private ProductAdapter productAdapter;
-//    private ProgressBar progressBar;
-//    private List<Category> categoryList;
-//    private List<Product> productList;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.order);
-//
-//        // Ánh xạ các view
-//        categoryRecyclerView = findViewById(R.id.category_recycler_view);
-//        productRecyclerView = findViewById(R.id.product_recycler_view);
-//        progressBar = findViewById(R.id.progress_bar);
-//
-//        if (categoryRecyclerView == null || productRecyclerView == null) {
-//            Log.e(TAG, "RecyclerView not found in layout");
-//            return;
-//        }
-//
-//        // Hiển thị ProgressBar
-//        progressBar.setVisibility(View.VISIBLE);
-//
-//        // Khởi tạo RecyclerView
-//        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        productRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-//
-//        // Khởi tạo danh sách rỗng
-//        categoryList = new ArrayList<>();
-//        productList = new ArrayList<>();
-//
-//        // Khởi tạo adapter
-//        categoryAdapter = new CategoryAdapter(categoryList, categoryId -> {
-//            Log.d(TAG, "Category clicked: " + categoryId);
-//            loadProductsByCategory(categoryId);
-//        });
-//        productAdapter = new ProductAdapter(this, productList);
-//
-//        // Gán adapter cho RecyclerView
-//        categoryRecyclerView.setAdapter(categoryAdapter);
-//        productRecyclerView.setAdapter(productAdapter);
-//
-//        // Load dữ liệu từ API
-//        loadCategories();
-//        loadProducts();
-//    }
-//
-//    private void loadCategories() {
-//        RetrofitClient.getApiService().getCategories().enqueue(new Callback<List<Category>>() {
-//            @Override
-//            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    categoryList.clear();
-//                    categoryList.addAll(response.body());
-//                    categoryAdapter.notifyDataSetChanged();
-//                    Log.d(TAG, "Loaded categories: " + categoryList.size());
-//                } else {
-//                    Log.e(TAG, "Failed to load categories, code: " + response.code());
-//                    Toast.makeText(OrderActivity.this, "Không thể tải danh mục", Toast.LENGTH_SHORT).show();
-//                }
-//                checkLoadingComplete();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Category>> call, Throwable t) {
-//                Log.e(TAG, "Error loading categories: " + t.getMessage());
-//                Toast.makeText(OrderActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                checkLoadingComplete();
-//            }
-//        });
-//    }
-//
-//    private void loadProducts() {
-//        RetrofitClient.getApiService().getProducts().enqueue(new Callback<List<Product>>() {
-//            @Override
-//            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    productList.clear();
-//                    productList.addAll(response.body());
-//                    productAdapter.notifyDataSetChanged();
-//                    Log.d(TAG, "Loaded products: " + productList.size());
-//                } else {
-//                    Log.e(TAG, "Failed to load products, code: " + response.code());
-//                    Toast.makeText(OrderActivity.this, "Không thể tải sản phẩm", Toast.LENGTH_SHORT).show();
-//                }
-//                checkLoadingComplete();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Product>> call, Throwable t) {
-//                Log.e(TAG, "Error loading products: " + t.getMessage());
-//                Toast.makeText(OrderActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                checkLoadingComplete();
-//            }
-//        });
-//    }
-//
-//    private void loadProductsByCategory(int categoryId) {
-//        RetrofitClient.getApiService().getProductsByCategory(categoryId).enqueue(new Callback<List<Product>>() {
-//            @Override
-//            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    productList.clear();
-//                    productList.addAll(response.body());
-//                    productAdapter.notifyDataSetChanged();
-//                    Log.d(TAG, "Loaded products for category " + categoryId + ": " + productList.size());
-//                } else {
-//                    Log.e(TAG, "Failed to load products for category, code: " + response.code());
-//                    Toast.makeText(OrderActivity.this, "Không thể tải sản phẩm theo danh mục", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Product>> call, Throwable t) {
-//                Log.e(TAG, "Error loading products by category: " + t.getMessage());
-//                Toast.makeText(OrderActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-//
-//    private void checkLoadingComplete() {
-//        if (!categoryList.isEmpty() && !productList.isEmpty()) {
-//            progressBar.setVisibility(View.GONE);
-//        }
-//    }
-//}
-//package com.example.doan;
-//
-//import android.os.Bundle;
-//import android.util.Log;
-//import android.view.View;
-//import android.widget.ProgressBar;
-//import android.widget.Toast;
-//import androidx.appcompat.app.AppCompatActivity;
-//import androidx.recyclerview.widget.GridLayoutManager;
-//import androidx.recyclerview.widget.LinearLayoutManager;
-//import androidx.recyclerview.widget.RecyclerView;
-//import com.example.doan.api.RetrofitClient;
-//import com.example.doan.models.Category;
-//import com.example.doan.models.Product;
-//import java.util.ArrayList;
-//import java.util.List;
-//import retrofit2.Call;
-//import retrofit2.Callback;
-//import retrofit2.Response;
-//
-//public class OrderActivity extends AppCompatActivity {
-//
-//    private static final String TAG = "OrderActivity";
-//    private RecyclerView categoryRecyclerView, productRecyclerView;
-//    private CategoryAdapter categoryAdapter;
-//    private ProductAdapter productAdapter;
-//    private ProgressBar progressBar;
-//    private List<Category> categoryList;
-//    private List<Product> productList;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.order);
-//
-//        // Ánh xạ
-//        categoryRecyclerView = findViewById(R.id.category_recycler_view);
-//        productRecyclerView = findViewById(R.id.product_recycler_view);
-//        progressBar = findViewById(R.id.progress_bar);
-//
-//        if (categoryRecyclerView == null || productRecyclerView == null || progressBar == null) {
-//            Log.e(TAG, "One or more views not found in layout");
-//            return;
-//        }
-//
-//        progressBar.setVisibility(View.VISIBLE);
-//
-//        // Cấu hình RecyclerView
-//        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)); // Hiển thị ngang
-//        productRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-//
-//        // Khởi tạo danh sách
-//        categoryList = new ArrayList<>();
-//        productList = new ArrayList<>();
-//
-//        // Khởi tạo adapter
-//        categoryAdapter = new CategoryAdapter(categoryList, this::loadProductsByCategory);
-//        productAdapter = new ProductAdapter(this, productList);
-//
-//        // Gán adapter
-//        categoryRecyclerView.setAdapter(categoryAdapter);
-//        productRecyclerView.setAdapter(productAdapter);
-//
-//        // Load dữ liệu
-//        loadCategories();
-//        loadProducts();
-//    }
-//
-//    private void loadCategories() {
-//        RetrofitClient.getApiService().getCategories().enqueue(new Callback<List<Category>>() {
-//            @Override
-//            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    categoryList.clear();
-//                    categoryList.addAll(response.body());
-//                    categoryAdapter.notifyDataSetChanged();
-//                    Log.d(TAG, "Loaded " + categoryList.size() + " categories");
-//                } else {
-//                    Log.e(TAG, "Failed to load categories, code: " + response.code() + ", message: " + response.message());
-//                    try {
-//                        Log.e(TAG, "Error body: " + response.errorBody().string()); // Log chi tiết lỗi từ server
-//                    } catch (Exception e) {
-//                        Log.e(TAG, "Error parsing error body: " + e.getMessage());
-//                    }
-//                    Toast.makeText(OrderActivity.this, "Không thể tải danh mục", Toast.LENGTH_SHORT).show();
-//                }
-//                checkLoadingComplete();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Category>> call, Throwable t) {
-//                Log.e(TAG, "Error loading categories: " + t.getMessage());
-//                Toast.makeText(OrderActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                checkLoadingComplete();
-//            }
-//        });
-//    }
-//
-//    private void loadProducts() {
-//        RetrofitClient.getApiService().getProducts().enqueue(new Callback<List<Product>>() {
-//            @Override
-//            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    productList.clear();
-//                    productList.addAll(response.body());
-//                    productAdapter.notifyDataSetChanged();
-//                    Log.d(TAG, "Loaded " + productList.size() + " products");
-//                } else {
-//                    Log.e(TAG, "Failed to load products, code: " + response.code() + ", message: " + response.message());
-//                    try {
-//                        Log.e(TAG, "Error body: " + response.errorBody().string());
-//                    } catch (Exception e) {
-//                        Log.e(TAG, "Error parsing error body: " + e.getMessage());
-//                    }
-//                    Toast.makeText(OrderActivity.this, "Không thể tải sản phẩm", Toast.LENGTH_SHORT).show();
-//                }
-//                checkLoadingComplete();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Product>> call, Throwable t) {
-//                Log.e(TAG, "Error loading products: " + t.getMessage());
-//                Toast.makeText(OrderActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                checkLoadingComplete();
-//            }
-//        });
-//    }
-//
-//    private void loadProductsByCategory(int categoryId) {
-//        RetrofitClient.getApiService().getProductsByCategory(categoryId).enqueue(new Callback<List<Product>>() {
-//            @Override
-//            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    productList.clear();
-//                    productList.addAll(response.body());
-//                    productAdapter.notifyDataSetChanged();
-//                    Log.d(TAG, "Loaded " + productList.size() + " products for category " + categoryId);
-//                } else {
-//                    Log.e(TAG, "Failed to load products for category, code: " + response.code() + ", message: " + response.message());
-//                    Toast.makeText(OrderActivity.this, "Không thể tải sản phẩm theo danh mục", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Product>> call, Throwable t) {
-//                Log.e(TAG, "Error loading products by category: " + t.getMessage());
-//                Toast.makeText(OrderActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-//
-//    private void checkLoadingComplete() {
-//        if (!categoryList.isEmpty() && !productList.isEmpty()) {
-//            progressBar.setVisibility(View.GONE);
-//            Log.d(TAG, "Loading complete, hiding progress bar");
-//        }
-//    }
-//}
-
 package com.example.doan;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -337,6 +28,8 @@ public class OrderActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private List<Category> categoryList;
     private List<Product> productList;
+    private Call<List<Category>> categoryCall;
+    private Call<List<Product>> productByCategoryCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -371,91 +64,102 @@ public class OrderActivity extends AppCompatActivity {
         categoryRecyclerView.setAdapter(categoryAdapter);
         productRecyclerView.setAdapter(productAdapter);
 
-        // Load dữ liệu
+        // Load danh mục (sản phẩm của danh mục đầu tiên sẽ được load tự động sau khi load danh mục)
         loadCategories();
-        loadProducts();
     }
 
     private void loadCategories() {
-        RetrofitClient.getApiService().getCategories().enqueue(new Callback<List<Category>>() {
+        categoryCall = RetrofitClient.getApiService().getCategories();
+        categoryCall.enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    categoryList.clear();
-                    categoryList.addAll(response.body());
-                    categoryAdapter.notifyDataSetChanged();
-                    Log.d(TAG, "Loaded " + categoryList.size() + " categories");
-                    categoryRecyclerView.setVisibility(View.VISIBLE);
-                } else {
-                    Log.e(TAG, "Failed to load categories, code: " + response.code() + ", message: " + response.message());
-                    try {
-                        Log.e(TAG, "Error body: " + response.errorBody().string());
-                    } catch (Exception e) {
-                        Log.e(TAG, "Error parsing error body: " + e.getMessage());
+                if (!isFinishing()) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        categoryList.clear();
+                        categoryList.addAll(response.body());
+                        categoryAdapter.notifyDataSetChanged();
+                        Log.d(TAG, "Loaded " + categoryList.size() + " categories");
+                        categoryRecyclerView.setVisibility(View.VISIBLE);
+
+                        // Tự động load sản phẩm của danh mục đầu tiên
+                        if (!categoryList.isEmpty()) {
+                            int firstCategoryId = categoryList.get(0).getId();
+                            loadProductsByCategory(firstCategoryId);
+                        }
+                    } else {
+                        Log.e(TAG, "Failed to load categories, code: " + response.code() + ", message: " + response.message());
+                        try {
+                            Log.e(TAG, "Error body: " + response.errorBody().string());
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error parsing error body: " + e.getMessage());
+                        }
+                        if (response.code() == 401) {
+                            Toast.makeText(OrderActivity.this, "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(OrderActivity.this, SigninActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(OrderActivity.this, "Không thể tải danh mục", Toast.LENGTH_SHORT).show();
+                        }
+                        progressBar.setVisibility(View.GONE);
                     }
-                    Toast.makeText(OrderActivity.this, "Không thể tải danh mục", Toast.LENGTH_SHORT).show();
                 }
-                checkLoadingComplete();
             }
 
             @Override
             public void onFailure(Call<List<Category>> call, Throwable t) {
-                Log.e(TAG, "Error loading categories: " + t.getMessage());
-                Toast.makeText(OrderActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                checkLoadingComplete();
-            }
-        });
-    }
-
-    private void loadProducts() {
-        RetrofitClient.getApiService().getProducts().enqueue(new Callback<List<Product>>() {
-            @Override
-            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    productList.clear();
-                    productList.addAll(response.body());
-                    productAdapter.notifyDataSetChanged();
-                    Log.d(TAG, "Loaded " + productList.size() + " products");
-                } else {
-                    Log.e(TAG, "Failed to load products, code: " + response.code() + ", message: " + response.message());
-                    try {
-                        Log.e(TAG, "Error body: " + response.errorBody().string());
-                    } catch (Exception e) {
-                        Log.e(TAG, "Error parsing error body: " + e.getMessage());
-                    }
-                    Toast.makeText(OrderActivity.this, "Không thể tải sản phẩm", Toast.LENGTH_SHORT).show();
+                if (!call.isCanceled() && !isFinishing()) {
+                    Log.e(TAG, "Error loading categories: " + t.getMessage());
+                    Toast.makeText(OrderActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                 }
-                checkLoadingComplete();
-            }
-
-            @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
-                Log.e(TAG, "Error loading products: " + t.getMessage());
-                Toast.makeText(OrderActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                checkLoadingComplete();
             }
         });
     }
 
     private void loadProductsByCategory(int categoryId) {
-        RetrofitClient.getApiService().getProductsByCategory(categoryId).enqueue(new Callback<List<Product>>() {
+        productByCategoryCall = RetrofitClient.getApiService().getProductsByCategory(categoryId);
+        productByCategoryCall.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    productList.clear();
-                    productList.addAll(response.body());
-                    productAdapter.notifyDataSetChanged();
-                    Log.d(TAG, "Loaded " + productList.size() + " products for category " + categoryId);
-                } else {
-                    Log.e(TAG, "Failed to load products for category, code: " + response.code() + ", message: " + response.message());
-                    Toast.makeText(OrderActivity.this, "Không thể tải sản phẩm theo danh mục", Toast.LENGTH_SHORT).show();
+                if (!isFinishing()) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        productList.clear();
+                        productList.addAll(response.body());
+                        productAdapter.notifyDataSetChanged();
+                        Log.d(TAG, "Loaded " + productList.size() + " products for category " + categoryId);
+                        checkLoadingComplete();
+                    } else {
+                        Log.e(TAG, "Failed to load products for category, code: " + response.code() + ", message: " + response.message());
+                        try {
+                            Log.e(TAG, "Error body: " + response.errorBody().string());
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error parsing error body: " + e.getMessage());
+                        }
+                        if (response.code() == 404) {
+                            productList.clear();
+                            productAdapter.notifyDataSetChanged();
+                            Toast.makeText(OrderActivity.this, "Không có sản phẩm nào trong danh mục này", Toast.LENGTH_SHORT).show();
+                        } else if (response.code() == 401) {
+                            Toast.makeText(OrderActivity.this, "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(OrderActivity.this, SigninActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(OrderActivity.this, "Không thể tải sản phẩm theo danh mục", Toast.LENGTH_SHORT).show();
+                        }
+                        progressBar.setVisibility(View.GONE);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<List<Product>> call, Throwable t) {
-                Log.e(TAG, "Error loading products by category: " + t.getMessage());
-                Toast.makeText(OrderActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                if (!call.isCanceled() && !isFinishing()) {
+                    Log.e(TAG, "Error loading products by category: " + t.getMessage());
+                    Toast.makeText(OrderActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -464,6 +168,18 @@ public class OrderActivity extends AppCompatActivity {
         if (!categoryList.isEmpty() && !productList.isEmpty()) {
             progressBar.setVisibility(View.GONE);
             Log.d(TAG, "Loading complete, hiding progress bar");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Hủy các yêu cầu API khi activity bị hủy
+        if (categoryCall != null && !categoryCall.isCanceled()) {
+            categoryCall.cancel();
+        }
+        if (productByCategoryCall != null && !productByCategoryCall.isCanceled()) {
+            productByCategoryCall.cancel();
         }
     }
 }
