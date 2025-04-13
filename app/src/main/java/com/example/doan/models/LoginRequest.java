@@ -4,11 +4,13 @@ public class LoginRequest {
     private String phone;
     private String password;
 
+    // Constructor cho đăng nhập (chỉ cần phone và password)
     public LoginRequest(String phone, String password) {
         this.phone = phone;
         this.password = password;
     }
 
+    // Getters và setters
     public String getPhone() {
         return phone;
     }

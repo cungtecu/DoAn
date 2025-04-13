@@ -3,15 +3,21 @@ package com.example.doan;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.doan.api.RetrofitClient;
+import com.example.doan.models.User;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private static final String TAG = "ProfileActivity";
     private ImageView btnBack;
     private TextView titleProfile;
     private ImageView profileImage;
@@ -25,10 +31,12 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView txtProfilePhone;
     private TextView txtProfileEmail;
 
+    private String token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile); // Khớp với tên file profile.xml
+        setContentView(R.layout.profile);
 
         // Ánh xạ các thành phần từ layout
         btnBack = findViewById(R.id.btn_back);
@@ -44,61 +52,67 @@ public class ProfileActivity extends AppCompatActivity {
         txtProfilePhone = findViewById(R.id.txtprofile_phone);
         txtProfileEmail = findViewById(R.id.txtprofile_email);
 
-        // Lấy dữ liệu từ Intent
-        Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
-        String phone = intent.getStringExtra("phone");
-        String email = intent.getStringExtra("email");
-        String token = intent.getStringExtra("token");
-        Integer points = intent.getIntExtra("points", 0); // Giá trị mặc định là 0 nếu không có
-        String role = intent.getStringExtra("role");
-
-        // Hiển thị dữ liệu lên giao diện
-        if (txtProfileName != null) {
-            txtProfileName.setText(name != null ? name : "N/A");
-        }
-        if (txtProfilePhone != null) {
-            txtProfilePhone.setText(phone != null ? phone : "N/A");
-        }
-        if (txtProfileEmail != null) {
-            txtProfileEmail.setText(email != null ? email : "N/A");
-        }
-        if (dripsPoints != null) {
-            dripsPoints.setText(String.valueOf(points));
-        }
-        if (txtProfileGender != null) {
-            txtProfileGender.setText("N/A"); // Không có dữ liệu giới tính
-        }
-        if (txtProfileBirthday != null) {
-            txtProfileBirthday.setText("N/A"); // Không có dữ liệu ngày sinh
-        }
-
-        // Lưu token vào SharedPreferences
+        // Lấy token từ SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("token", token);
-        editor.apply();
+        token = sharedPreferences.getString("token", null);
+
+        if (token == null) {
+            Toast.makeText(this, "Token không tồn tại. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ProfileActivity.this, SigninActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        // Tải thông tin người dùng từ API
+        loadUserProfile();
 
         // Xử lý sự kiện nút Back
         if (btnBack != null) {
-            btnBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish(); // Quay lại MainActivity
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                }
+            btnBack.setOnClickListener(v -> {
+                finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             });
         }
 
-        // Xử lý sự kiện nút Edit (nếu cần)
+        // Xử lý sự kiện nút Edit
         if (editButton != null) {
-            editButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO: Thêm logic để chỉnh sửa thông tin (nếu cần)
-                    Toast.makeText(ProfileActivity.this, "Chức năng chỉnh sửa chưa được triển khai", Toast.LENGTH_SHORT).show();
-                }
+            editButton.setOnClickListener(v -> {
+                Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+                intent.putExtra("token", token);
+                intent.putExtra("name", txtProfileName.getText().toString());
+                intent.putExtra("gender", txtProfileGender.getText().toString());
+                intent.putExtra("birthday", txtProfileBirthday.getText().toString());
+                intent.putExtra("phone", txtProfilePhone.getText().toString());
+                intent.putExtra("email", txtProfileEmail.getText().toString());
+                startActivity(intent);
             });
         }
+    }
+
+    private void loadUserProfile() {
+        RetrofitClient.getApiService().getCurrentUser("Bearer " + token).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    User user = response.body();
+                    txtProfileName.setText(user.getName() != null ? user.getName() : "N/A");
+                    txtProfilePhone.setText(user.getPhone() != null ? user.getPhone() : "N/A");
+                    txtProfileEmail.setText(user.getEmail() != null ? user.getEmail() : "N/A");
+                    txtProfileGender.setText(user.getGender() != null ? user.getGender() : "N/A");
+                    txtProfileBirthday.setText(user.getBirthday() != null ? user.getBirthday() : "N/A");
+                    dripsPoints.setText(String.valueOf(user.getPoints() != null ? user.getPoints() : 0));
+                } else {
+                    Log.e(TAG, "Lỗi tải thông tin người dùng: " + response.code());
+                    Toast.makeText(ProfileActivity.this, "Không thể tải thông tin người dùng", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e(TAG, "Lỗi kết nối: " + t.getMessage());
+                Toast.makeText(ProfileActivity.this, "Lỗi kết nối. Vui lòng kiểm tra mạng!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

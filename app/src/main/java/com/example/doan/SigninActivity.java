@@ -1,6 +1,7 @@
 package com.example.doan;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -96,6 +97,12 @@ public class SigninActivity extends AppCompatActivity {
                     LoginResponse loginResponse = response.body();
                     Log.d(TAG, "Đăng nhập thành công: token=" + loginResponse.getToken());
                     Toast.makeText(SigninActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+
+                    // Lưu token vào SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("token", loginResponse.getToken());
+                    editor.apply();
 
                     // Chuyển sang MainActivity
                     Intent intent = new Intent(SigninActivity.this, MainActivity.class);

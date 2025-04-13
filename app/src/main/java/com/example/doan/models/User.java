@@ -6,6 +6,9 @@ public class User {
     private String email;
     private String phone;
     private String password;
+    private String gender;  // Thêm trường gender
+    private String birthday;  // Thêm trường birthday
+    private Integer points;  // Thêm trường points
 
     // Constructor cũ với 2 tham số (name và email)
     public User(String name, String email) {
@@ -19,6 +22,18 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.password = password;
+    }
+
+    // Constructor đầy đủ với tất cả các tham số (bao gồm gender, birthday, points)
+    public User(Integer id, String name, String email, String phone, String password, String gender, String birthday, Integer points) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.points = points;
     }
 
     // Getter methods
@@ -42,7 +57,19 @@ public class User {
         return password;
     }
 
-    // Setter methods (nếu cần thiết)
+    public String getGender() {
+        return gender;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    // Setter methods
     public void setId(Integer id) {
         this.id = id;
     }
@@ -61,5 +88,17 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 }

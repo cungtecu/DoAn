@@ -9,7 +9,6 @@ public class ChangePasswordRequest {
         this.newPassword = newPassword;
     }
 
-    // Getters và setters
     public String getOldPassword() {
         return oldPassword;
     }

@@ -1,6 +1,7 @@
 package com.example.doan;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,9 +39,10 @@ public class MainActivity extends AppCompatActivity {
         btnCart = findViewById(R.id.cartIcon);
         btnOther = findViewById(R.id.btn_other);
 
-        // Lấy token từ Intent
-        Intent intent = getIntent();
-        token = intent.getStringExtra("token");
+        // Lấy token từ SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        token = sharedPreferences.getString("token", null);
+
         if (token == null || token.isEmpty()) {
             Log.e(TAG, "Token không tồn tại hoặc rỗng");
             Toast.makeText(this, "Lỗi: Token không hợp lệ. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
@@ -88,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
         // Xử lý sự kiện nhấn btn_other
         btnOther.setOnClickListener(v -> {
             Intent otherIntent = new Intent(MainActivity.this, OtherActivity.class);
-            otherIntent.putExtra("token", token);
             startActivity(otherIntent);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             finish();
@@ -130,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("phone", userProfile.getPhone());
                             intent.putExtra("email", userProfile.getEmail());
                             intent.putExtra("token", token);
-                            // Truyền thêm points và role nếu cần
                             intent.putExtra("points", userProfile.getPoints());
                             intent.putExtra("role", userProfile.getRole());
                             startActivity(intent);

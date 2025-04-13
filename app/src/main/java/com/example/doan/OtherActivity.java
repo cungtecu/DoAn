@@ -70,7 +70,7 @@ public class OtherActivity extends AppCompatActivity {
             });
         } else {
             Log.e(TAG, "btn_setting không được tìm thấy trong layout");
-            Toast.makeText(this, "Lỗi: Không tìm thấy nút C FacsCài Đặt", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Lỗi: Không tìm thấy nút Cài Đặt", Toast.LENGTH_SHORT).show();
         }
 
         // Xử lý sự kiện nhấn btn_policy (Chính sách bảo mật)
@@ -113,21 +113,21 @@ public class OtherActivity extends AppCompatActivity {
         if (btnLogout != null) {
             btnLogout.setOnClickListener(v -> {
                 Log.d(TAG, "Nhấn nút Đăng Xuất");
-                try {
-                    SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.remove("token");
-                    editor.apply();
+                // Xóa token khỏi SharedPreferences
+                SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove("token");
+                editor.apply();
 
-                    Toast.makeText(OtherActivity.this, "Đã đăng xuất!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(OtherActivity.this, SigninActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                } catch (Exception e) {
-                    Log.e(TAG, "Lỗi khi đăng xuất: " + e.getMessage());
-                    Toast.makeText(this, "Lỗi: Không thể đăng xuất", Toast.LENGTH_SHORT).show();
-                }
+                // Hiển thị thông báo
+                Toast.makeText(OtherActivity.this, "Đã đăng xuất!", Toast.LENGTH_SHORT).show();
+
+                // Chuyển về SigninActivity và xóa stack Activity
+                Intent intent = new Intent(OtherActivity.this, SigninActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
             });
         } else {
             Log.e(TAG, "btn_logout không được tìm thấy trong layout");
@@ -142,6 +142,7 @@ public class OtherActivity extends AppCompatActivity {
                     Intent intent = new Intent(OtherActivity.this, MainActivity.class);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    finish(); // Thêm finish() để đóng OtherActivity
                 } catch (Exception e) {
                     Log.e(TAG, "Lỗi khi chuyển sang MainActivity: " + e.getMessage());
                     Toast.makeText(this, "Lỗi: Không thể mở Trang chủ", Toast.LENGTH_SHORT).show();
