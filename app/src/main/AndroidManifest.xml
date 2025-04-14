@@ -51,6 +51,9 @@
         <activity
             android:name=".ForgetPasswordActivity"
             android:exported="true" />
+        <activity
+            android:name=".ProductDetailActivity"
+            android:exported="true"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 
