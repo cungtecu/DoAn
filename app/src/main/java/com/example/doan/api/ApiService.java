@@ -82,6 +82,6 @@ public interface ApiService {
     @GET("api/products/category/{categoryId}")
     Call<List<Product>> getProductsByCategory(@Path("categoryId") int categoryId);
 
-    @GET("api/products/{id}")
-    Call<Product> getProductById(@Path("id") int productId);
+    @GET("api/products/{Id}")
+    Call<Product> getProductById(@Path("Id") int productId);
 }
