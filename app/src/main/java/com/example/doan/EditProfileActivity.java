@@ -1,8 +1,9 @@
 package com.example.doan;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,10 +18,6 @@ import com.example.doan.api.RetrofitClient;
 import com.example.doan.models.ApiResponse;
 import com.example.doan.models.UpdateUserRequest;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,11 +27,10 @@ public class EditProfileActivity extends AppCompatActivity {
     private ImageView btnBack;
     private TextView titleProfile;
     private Button btnSave;
-    private EditText editName, editGender, editBirthday;
-    private ImageView genderSelector, birthdayPicker;
+    private EditText editName, editEmail, editPhone;
     private ProgressBar progressBar;
     private String token;
-    private static final String DATE_PATTERN = "dd/MM/yyyy";
+    private String oldName, oldEmail, oldPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,72 +42,105 @@ public class EditProfileActivity extends AppCompatActivity {
         titleProfile = findViewById(R.id.title_profile);
         btnSave = findViewById(R.id.btn_save);
         editName = findViewById(R.id.edit_name);
-        editGender = findViewById(R.id.edit_gender);
-        editBirthday = findViewById(R.id.edit_birthday);
-        genderSelector = findViewById(R.id.gender_selector);
-        birthdayPicker = findViewById(R.id.birthday_picker);
+        editEmail = findViewById(R.id.edit_email);
+        editPhone = findViewById(R.id.edit_phone);
         progressBar = findViewById(R.id.progressBar);
 
         // Lấy dữ liệu từ Intent
         Intent intent = getIntent();
         token = intent.getStringExtra("token");
-        String name = intent.getStringExtra("name");
-        String gender = intent.getStringExtra("gender");
-        String birthday = intent.getStringExtra("birthday");
+        oldName = intent.getStringExtra("name");
+        oldEmail = intent.getStringExtra("email");
+        oldPhone = intent.getStringExtra("phone");
+
+        // Đảm bảo dữ liệu cũ không null
+        oldName = oldName != null ? oldName : "";
+        oldEmail = oldEmail != null ? oldEmail : "";
+        oldPhone = oldPhone != null ? oldPhone : "";
 
         // Hiển thị dữ liệu hiện tại
-        editName.setText(name);
-        editGender.setText(gender);
-        editBirthday.setText(birthday);
+        editName.setText(oldName);
+        editEmail.setText(oldEmail);
+        editPhone.setText(oldPhone);
 
         // Xử lý nút Back
         btnBack.setOnClickListener(v -> finish());
 
-        // Xử lý chọn giới tính
-        genderSelector.setOnClickListener(v -> {
-            String currentGender = editGender.getText().toString();
-            if (currentGender.equals("Nam")) {
-                editGender.setText("Nữ");
-            } else {
-                editGender.setText("Nam");
-            }
-        });
-
-        // Xử lý chọn ngày sinh
-        birthdayPicker.setOnClickListener(v -> {
-            final Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-            DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    EditProfileActivity.this,
-                    (view, selectedYear, selectedMonth, selectedDay) -> {
-                        calendar.set(selectedYear, selectedMonth, selectedDay);
-                        SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN, Locale.getDefault());
-                        editBirthday.setText(sdf.format(calendar.getTime()));
-                    },
-                    year, month, day);
-            datePickerDialog.show();
-        });
-
         // Xử lý nút Lưu
         btnSave.setOnClickListener(v -> {
             String newName = editName.getText().toString().trim();
-            String newGender = editGender.getText().toString().trim();
-            String newBirthday = editBirthday.getText().toString().trim();
+            String newEmail = editEmail.getText().toString().trim();
+            String newPhone = editPhone.getText().toString().trim();
 
-            // Kiểm tra dữ liệu đầu vào
-            if (newName.isEmpty()) {
+            // Kiểm tra dữ liệu đầu vào: không bắt buộc nhập tất cả, nhưng nếu nhập thì phải đúng định dạng
+            if (!newEmail.isEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
+                editEmail.setError("Email không hợp lệ!");
+                return;
+            }
+            if (!newPhone.isEmpty() && !newPhone.matches("^0\\d{9}$")) {
+                editPhone.setError("Số điện thoại phải có 10 số và bắt đầu bằng 0!");
+                return;
+            }
+
+            // Kiểm tra xem có thay đổi nào không
+            boolean hasChanges = false;
+            if (!newName.equals(oldName)) {
+                hasChanges = true;
+            }
+            if (!newEmail.equals(oldEmail)) {
+                hasChanges = true;
+            }
+            if (!newPhone.equals(oldPhone)) {
+                hasChanges = true;
+            }
+
+            if (!hasChanges) {
+                Toast.makeText(EditProfileActivity.this, "Không có thay đổi để cập nhật!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Kiểm tra dữ liệu gửi lên API
+            String nameToUpdate = newName.isEmpty() ? oldName : newName;
+            String emailToUpdate = newEmail.isEmpty() ? oldEmail : newEmail;
+            String phoneToUpdate = newPhone.isEmpty() ? oldPhone : newPhone;
+
+            // Nếu dữ liệu cũ là "N/A", yêu cầu nhập giá trị mới
+            if (nameToUpdate.equals("N/A") || nameToUpdate.isEmpty()) {
                 editName.setError("Tên không được để trống!");
                 return;
             }
-            if (newGender.isEmpty()) {
-                editGender.setError("Giới tính không được để trống!");
+            if (emailToUpdate.equals("N/A") || emailToUpdate.isEmpty()) {
+                editEmail.setError("Email không được để trống!");
                 return;
             }
-            if (newBirthday.isEmpty()) {
-                editBirthday.setError("Ngày sinh không được để trống!");
+            if (phoneToUpdate.equals("N/A") || phoneToUpdate.isEmpty()) {
+                editPhone.setError("Số điện thoại không được để trống!");
+                return;
+            }
+
+            // Kiểm tra định dạng email và phone cho dữ liệu gửi lên
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailToUpdate).matches()) {
+                editEmail.setError("Email không hợp lệ!");
+                return;
+            }
+            if (!phoneToUpdate.matches("^0\\d{9}$")) {
+                editPhone.setError("Số điện thoại phải có 10 số và bắt đầu bằng 0!");
+                return;
+            }
+
+            // Kiểm tra token
+            if (token == null || token.isEmpty()) {
+                Toast.makeText(EditProfileActivity.this, "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
+                // Xóa token cũ khỏi SharedPreferences
+                SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove("token");
+                editor.apply();
+
+                Intent loginIntent = new Intent(EditProfileActivity.this, SigninActivity.class);
+                loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(loginIntent);
+                finish();
                 return;
             }
 
@@ -119,10 +148,13 @@ public class EditProfileActivity extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             btnSave.setEnabled(false);
 
-            // Tạo request để gửi lên API
-            UpdateUserRequest request = new UpdateUserRequest(newName, newGender, newBirthday);
+            // In token để debug
+            Log.d("EditProfileActivity", "Token: " + token);
 
-            // Gọi API để cập nhật thông tin
+            // Tạo request để gửi lên API
+            UpdateUserRequest request = new UpdateUserRequest(nameToUpdate, emailToUpdate, phoneToUpdate);
+
+            // Gọi API để cập nhật thông tin (sửa từ POST sang PUT)
             RetrofitClient.getApiService().updateUser("Bearer " + token, request).enqueue(new Callback<ApiResponse>() {
                 @Override
                 public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -135,16 +167,36 @@ public class EditProfileActivity extends AppCompatActivity {
                             Toast.makeText(EditProfileActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             // Trả kết quả về ProfileActivity
                             Intent resultIntent = new Intent();
-                            resultIntent.putExtra("updatedName", newName);
-                            resultIntent.putExtra("updatedGender", newGender);
-                            resultIntent.putExtra("updatedBirthday", newBirthday);
+                            resultIntent.putExtra("name", nameToUpdate);
+                            resultIntent.putExtra("email", emailToUpdate);
+                            resultIntent.putExtra("phone", phoneToUpdate);
                             setResult(RESULT_OK, resultIntent);
                             finish();
                         } else {
-                            Toast.makeText(EditProfileActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfileActivity.this,
+                                    apiResponse.getMessage() != null ? apiResponse.getMessage() : "Lỗi không xác định",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(EditProfileActivity.this, "Lỗi khi cập nhật thông tin!", Toast.LENGTH_SHORT).show();
+                        try {
+                            String errorBody = response.errorBody() != null ? response.errorBody().string() : "Không có thông tin lỗi";
+                            Toast.makeText(EditProfileActivity.this, "Lỗi: " + errorBody, Toast.LENGTH_SHORT).show();
+                            if (response.code() == 401) {
+                                Toast.makeText(EditProfileActivity.this, "Phiên của bạn đã hết hạn. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
+                                // Xóa token cũ khỏi SharedPreferences
+                                SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.remove("token");
+                                editor.apply();
+
+                                Intent loginIntent = new Intent(EditProfileActivity.this, SigninActivity.class);
+                                loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(loginIntent);
+                                finish();
+                            }
+                        } catch (Exception e) {
+                            Toast.makeText(EditProfileActivity.this, "Lỗi xử lý phản hồi!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
 

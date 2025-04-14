@@ -1,14 +1,21 @@
 package com.example.doan.models;
 
-public class UpdateUserRequest {
-    private String name;
-    private String gender;
-    private String birthday;
+import com.google.gson.annotations.SerializedName;
 
-    public UpdateUserRequest(String name, String gender, String birthday) {
+public class UpdateUserRequest {
+    @SerializedName("name")
+    private String name;
+
+    @SerializedName("email")
+    private String email;
+
+    @SerializedName("phone")
+    private String phone;
+
+    public UpdateUserRequest(String name, String email, String phone) {
         this.name = name;
-        this.gender = gender;
-        this.birthday = birthday;
+        this.email = email;
+        this.phone = phone;
     }
 
     public String getName() {
@@ -19,19 +26,19 @@ public class UpdateUserRequest {
         this.name = name;
     }
 
-    public String getGender() {
-        return gender;
+    public String getEmail() {
+        return email;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getBirthday() {
-        return birthday;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

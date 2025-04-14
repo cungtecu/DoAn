@@ -1,92 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:fillViewport="true">
 
-    <!-- Nút Back -->
-    <ImageView
-        android:id="@+id/btn_back"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_alignParentStart="true"
-        android:padding="5dp"
-        android:src="@drawable/back" />
-
-    <!-- Tiêu đề -->
-    <TextView
-        android:id="@+id/title_profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Chỉnh sửa hồ sơ"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginTop="16dp" />
-
-    <!-- Trường nhập tên -->
-    <EditText
-        android:id="@+id/edit_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Tên"
-        android:layout_marginTop="60dp" />
-
-    <!-- Trường nhập giới tính -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="100dp">
-        <EditText
-            android:id="@+id/edit_gender"
-            android:layout_width="0dp"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Giới tính"
-            android:enabled="false" />
-        <ImageView
-            android:id="@+id/gender_selector"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:id="@+id/title_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Chỉnh Sửa Hồ Sơ"
+                android:textColor="@color/brown"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <!-- Tên -->
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_dropdown" />
-    </LinearLayout>
+            android:text="Tên"
+            android:textColor="@color/brown" />
 
-    <!-- Trường nhập ngày sinh -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="140dp">
         <EditText
-            android:id="@+id/edit_birthday"
-            android:layout_width="0dp"
+            android:id="@+id/edit_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Ngày sinh"
-            android:enabled="false" />
-        <ImageView
-            android:id="@+id/birthday_picker"
+            android:hint="Nhập tên"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Email -->
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_calendar" />
+            android:text="Email"
+            android:textColor="@color/brown" />
+
+        <EditText
+            android:id="@+id/edit_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập email"
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Số điện thoại -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số Điện Thoại"
+            android:textColor="@color/brown" />
+
+        <EditText
+            android:id="@+id/edit_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập số điện thoại"
+            android:inputType="phone"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Giới tính -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giới Tính"
+            android:textColor="@color/brown" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp">
+
+            <EditText
+                android:id="@+id/edit_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Chọn giới tính"
+                android:inputType="none" />
+
+            <ImageView
+                android:id="@+id/gender_selector"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_dropdown" />
+        </RelativeLayout>
+
+        <!-- Ngày sinh -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngày Sinh"
+            android:textColor="@color/brown" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp">
+
+            <EditText
+                android:id="@+id/edit_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Chọn ngày sinh"
+                android:inputType="none" />
+
+            <ImageView
+                android:id="@+id/birthday_picker"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_calendar" />
+        </RelativeLayout>
+
+        <!-- ProgressBar -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <!-- Nút Lưu -->
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Lưu" />
+
     </LinearLayout>
-
-    <!-- ProgressBar -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:layout_marginTop="200dp" />
-
-    <!-- Nút Lưu -->
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Lưu"
-        android:layout_marginTop="260dp" />
-
-</RelativeLayout>
+</ScrollView>

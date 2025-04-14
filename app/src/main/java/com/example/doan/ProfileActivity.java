@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +17,7 @@ import retrofit2.Response;
 public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "ProfileActivity";
+    private static final int REQUEST_CODE_EDIT_PROFILE = 100;
     private ImageView btnBack;
     private TextView titleProfile;
     private ImageView profileImage;
@@ -26,11 +26,8 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView generalInfoTitle;
     private TextView editButton;
     private TextView txtProfileName;
-    private TextView txtProfileGender;
-    private TextView txtProfileBirthday;
     private TextView txtProfilePhone;
     private TextView txtProfileEmail;
-
     private String token;
 
     @Override
@@ -47,8 +44,6 @@ public class ProfileActivity extends AppCompatActivity {
         generalInfoTitle = findViewById(R.id.general_info_title);
         editButton = findViewById(R.id.edit_button);
         txtProfileName = findViewById(R.id.txtprofile_name);
-        txtProfileGender = findViewById(R.id.txtprofile_gender);
-        txtProfileBirthday = findViewById(R.id.txtprofile_birthday);
         txtProfilePhone = findViewById(R.id.txtprofile_phone);
         txtProfileEmail = findViewById(R.id.txtprofile_email);
 
@@ -56,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         token = sharedPreferences.getString("token", null);
 
-        if (token == null) {
+        if (token == null || token.isEmpty()) {
             Toast.makeText(this, "Token không tồn tại. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(ProfileActivity.this, SigninActivity.class);
             startActivity(intent);
@@ -68,26 +63,29 @@ public class ProfileActivity extends AppCompatActivity {
         loadUserProfile();
 
         // Xử lý sự kiện nút Back
-        if (btnBack != null) {
-            btnBack.setOnClickListener(v -> {
-                finish();
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            });
-        }
+        btnBack.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        });
 
         // Xử lý sự kiện nút Edit
-        if (editButton != null) {
-            editButton.setOnClickListener(v -> {
-                Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
-                intent.putExtra("token", token);
-                intent.putExtra("name", txtProfileName.getText().toString());
-                intent.putExtra("gender", txtProfileGender.getText().toString());
-                intent.putExtra("birthday", txtProfileBirthday.getText().toString());
-                intent.putExtra("phone", txtProfilePhone.getText().toString());
-                intent.putExtra("email", txtProfileEmail.getText().toString());
+        editButton.setOnClickListener(v -> {
+            // Kiểm tra lại token trước khi mở EditProfileActivity
+            if (token == null || token.isEmpty()) {
+                Toast.makeText(ProfileActivity.this, "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ProfileActivity.this, SigninActivity.class);
                 startActivity(intent);
-            });
-        }
+                finish();
+                return;
+            }
+
+            Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+            intent.putExtra("token", token);
+            intent.putExtra("name", txtProfileName.getText().toString());
+            intent.putExtra("email", txtProfileEmail.getText().toString());
+            intent.putExtra("phone", txtProfilePhone.getText().toString());
+            startActivityForResult(intent, REQUEST_CODE_EDIT_PROFILE);
+        });
     }
 
     private void loadUserProfile() {
@@ -99,8 +97,6 @@ public class ProfileActivity extends AppCompatActivity {
                     txtProfileName.setText(user.getName() != null ? user.getName() : "N/A");
                     txtProfilePhone.setText(user.getPhone() != null ? user.getPhone() : "N/A");
                     txtProfileEmail.setText(user.getEmail() != null ? user.getEmail() : "N/A");
-                    txtProfileGender.setText(user.getGender() != null ? user.getGender() : "N/A");
-                    txtProfileBirthday.setText(user.getBirthday() != null ? user.getBirthday() : "N/A");
                     dripsPoints.setText(String.valueOf(user.getPoints() != null ? user.getPoints() : 0));
                 } else {
                     Log.e(TAG, "Lỗi tải thông tin người dùng: " + response.code());
@@ -114,5 +110,19 @@ public class ProfileActivity extends AppCompatActivity {
                 Toast.makeText(ProfileActivity.this, "Lỗi kết nối. Vui lòng kiểm tra mạng!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_EDIT_PROFILE && resultCode == RESULT_OK && data != null) {
+            // Cập nhật giao diện với thông tin mới
+            String name = data.getStringExtra("name");
+            String email = data.getStringExtra("email");
+            String phone = data.getStringExtra("phone");
+            txtProfileName.setText(name != null ? name : "N/A");
+            txtProfileEmail.setText(email != null ? email : "N/A");
+            txtProfilePhone.setText(phone != null ? phone : "N/A");
+        }
     }
 }

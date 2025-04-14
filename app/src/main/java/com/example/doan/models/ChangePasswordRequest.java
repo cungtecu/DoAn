@@ -3,10 +3,12 @@ package com.example.doan.models;
 public class ChangePasswordRequest {
     private String oldPassword;
     private String newPassword;
+    private String confirmPassword;
 
-    public ChangePasswordRequest(String oldPassword, String newPassword) {
+    public ChangePasswordRequest(String oldPassword, String newPassword, String confirmPassword) {
         this.oldPassword = oldPassword;
         this.newPassword = newPassword;
+        this.confirmPassword = confirmPassword;
     }
 
     public String getOldPassword() {
@@ -23,5 +25,13 @@ public class ChangePasswordRequest {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }
