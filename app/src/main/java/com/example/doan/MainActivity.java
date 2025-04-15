@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         btnCart.setOnClickListener(v -> {
             if (currentSelectedButton != btnCart) {
                 updateButtonState(btnCart);
-                loadFragment(new CartFragment());
+                loadFragment(new OrderFragment());
             }
         });
 

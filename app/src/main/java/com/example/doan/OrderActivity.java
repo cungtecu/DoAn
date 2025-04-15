@@ -1,15 +1,20 @@
 package com.example.doan;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.doan.api.RetrofitClient;
 import com.example.doan.models.Category;
 import com.example.doan.models.Product;
@@ -30,6 +35,8 @@ public class OrderActivity extends AppCompatActivity {
     private List<Product> productList;
     private Call<List<Category>> categoryCall;
     private Call<List<Product>> productByCategoryCall;
+
+    private ImageButton btnHome, btnCart, btnOther;
     private int currentCategoryIndex = 0; // Theo dõi danh mục đang thử load sản phẩm
 
     @Override
@@ -67,6 +74,30 @@ public class OrderActivity extends AppCompatActivity {
 
         // Load danh mục
         loadCategories();
+
+        btnHome = findViewById(R.id.btn_home);
+        btnCart = findViewById(R.id.cartIcon);
+        btnOther = findViewById(R.id.btn_other);
+
+
+        btnHome.setOnClickListener(view -> {
+            Intent intent = new Intent(OrderActivity.this, MainActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            finish();
+        });
+
+        btnCart.setOnClickListener(view -> {
+            // Không cần chuyển vì đã ở CartActivity
+        });
+
+        btnOther.setOnClickListener(view -> {
+            Intent intent = new Intent(OrderActivity.this, OtherActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            finish();
+        });
+
     }
 
     private void loadCategories() {
