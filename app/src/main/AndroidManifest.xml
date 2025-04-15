@@ -30,6 +30,7 @@
         </activity>
 
         <activity android:name=".SigninActivity" android:exported="true" />
+        <activity android:name=".OrderActivity" android:exported="true" />
         <activity android:name=".MainActivity" android:exported="true" />
         <activity android:name=".CartActivity" android:exported="true" />
         <activity android:name=".OtherActivity" android:exported="true" />

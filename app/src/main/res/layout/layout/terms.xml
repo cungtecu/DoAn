@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F0EDED">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:padding="16dp">
+
+            <!-- Nút Back -->
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/back"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:padding="5dp"/>
+
+            <!-- Tiêu đề Hồ Sơ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Điều Khoản Dịch Vụ"
+                android:textColor="@color/brown"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="12dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Cài đặt tài khoản -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ĐIỀU KHOẢN VÀ ĐIỀU KIỆN ÁP DỤNG CỦA ỨNG DỤNG TroisH"
+                    android:textSize="16sp"
+                    android:textColor="@color/brown"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="\t\tVUI LÒNG ĐỌC NHỮNG ĐIỀU KHOẢN SỬ DỤNG NÀY CẨN THẬN.\n\t\tVIỆC TẢI XUỐNG, CÀI ĐẶT, TRUY CẬP HOẶC SỬ DỤNG ỨNG DỤNG DI ĐỘNG TroisH NÀY (“ỨNG DỤNG”) CÓ NGHĨA LÀ BẠN ĐÃ ĐỒNG Ý CÁC ĐIỀU KHOẢN SỬ DỤNG (“ĐIỀU KHOẢN”) MÀ (“TroisH”, “chúng tôi”, hoặc “của chúng tôi”) CÓ THỂ SỬA ĐỔI THEO TỪNG THỜI ĐIỂM, VÀ TRỞ THÀNH THỎA THUẬN RÀNG BUỘC GIỮA BẠN, VỚI TƯ CÁCH CÁ NHÂN HOẶC THAY MẶT MỘT TỔ CHỨC (“NGƯỜI DÙNG” HOẶC “BẠN”) VÀ TroisH ĐIỀU CHỈNH VIỆC TRUY CẬP VÀO VÀ SỬ DỤNG ỨNG DỤNG. NẾU NGƯỜI DÙNG KHÔNG ĐỒNG Ý VỚI TẤT CẢ CÁC ĐIỀU KHOẢN NÀY, THÌ NGƯỜI DÙNG KHÔNG ĐƯỢC SỬ DỤNG ỨNG DỤNG VÀ PHẢI NGƯNG SỬ DỤNG NGAY LẬP TỨC.\n \t\tNHỮNG ĐIỀU KHOẢN NÀY BAO GỒM CÁC TUYÊN BỐ MIỄN TRỪ VÀ CÁC QUY ĐỊNH KHÁC VỀ GIỚI HẠN TRÁCH NHIỆM PHÁP LÝ CỦA CHÚNG TÔI ĐỐI VỚI NGƯỜI DÙNG.\n \t\tChúng tôi bảo lưu quyền, theo quyết định riêng của chúng tôi, để thực hiện các thay đổi hoặc sửa đổi các Điều khoản này bất cứ lúc nào và vì bất kỳ lý do gì. Các điều khoản và điều kiện bổ sung hoặc tài liệu có thể được đăng trên website của TroisH theo từng thời điểm được thể hiện rõ ràng trong Điều khoản này. Chúng tôi sẽ thông báo cho bạn về bất kỳ thay đổi nào bằng cách cập nhật Ngày cập nhật cuối cùng của Điều khoản này và bạn từ bỏ mọi quyền để nhận thông báo cụ thể về từng thay đổi đó. Bạn sẽ phải tuân theo và sẽ được coi là đã được biết và chấp nhận, những thay đổi và sửa đổi trong mọi Điều khoản sửa đổi khi tiếp tục sử dụng Ứng dụng sau ngày Điều khoản sửa đổi đó được đăng tải."
+                    android:textSize="14sp"
+                    android:textColor="@color/brown"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:justificationMode="inter_word"/>
+
+
+                <!-- Bảo Mật -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bảo mật"
+                    android:textSize="18sp"
+                    android:textColor="@color/brown"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="\t\tVui lòng đọc kỹ Chính sách bảo mật để hiểu cách TroisH thu thập, sử dụng và tiết lộ thông tin nhận dạng cá nhân từ người dùng. Bằng cách tải xuống, cài đặt, truy cập hoặc sử dụng Ứng dụng, bạn đồng ý bị ràng buộc bởi Chính sách bảo mật của chúng tôi, là một phần của Điều khoản này và đồng ý với mọi hành động mà chúng tôi thực hiện đối với dữ liệu của bạn tuân thủ Chính sách bảo mật của chúng tôi."
+                    android:textSize="14sp"
+                    android:textColor="@color/brown"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:justificationMode="inter_word"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cam Kết Người Dùng"
+                    android:textSize="18sp"
+                    android:textColor="@color/brown"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="\t\tBằng cách sử dụng Ứng dụng, bạn tuyên bố và bảo đảm rằng: (a) bạn chỉ tạo một tài khoản; (b) tất cả thông tin đăng ký bạn gửi sẽ chính xác, trung thực, cập nhật và đầy đủ; (c) bạn sẽ duy trì tính chính xác của thông tin đó và cập nhật kịp thời thông tin đăng ký đó khi cần thiết; (d) bạn có năng lực pháp lý và bạn đồng ý tuân thủ các Điều khoản này; (e) bạn sẽ duy trì bảo mật tài khoản của mình bằng cách không chia sẻ mật khẩu với người khác và hạn chế người khác truy cập vào tài khoản và điện thoại di động của bạn; (e) bạn sẽ kịp thời thông báo cho TroisH nếu bạn phát hiện hoặc nghi ngờ bất kỳ vi phạm bảo mật nào liên quan đến Ứng dụng; và (f) chịu trách nhiệm cho tất cả các hoạt động xảy ra trong tài khoản của bạn và chấp nhận mọi rủi ro về truy cập trái phép.\n\t\tNếu bạn cung cấp bất kỳ thông tin nào không đúng sự thật, không chính xác, không hiện hành hoặc không đầy đủ, chúng tôi có quyền đình chỉ hoặc chấm dứt tài khoản của bạn và từ chối mọi hoạt động sử dụng Ứng dụng (hoặc một phần Ứng dụng) hiện tại hoặc trong tương lai.\n\t\tNgười dùng đồng ý rằng, TroisH có quyền khóa, xóa tài khoản và tên của người dùng ngay lập tức hoặc gỡ bỏ, hủy bất kỳ nội dung nào mà không cần thông báo hay chịu trách nhiệm với người dùng hoặc bên thứ ba nào khác trong trường hợp người dùng: (i) Vi phạm điều khoản sử dụng; (ii) có những hành vi vi phạm điều cấm, bất hợp pháp; (iii) Có hành vi gây hại đến người dùng khác, đến quyền và lợi ích của TroisH. Việc sử dụng tài khoản TroisH với bất kỳ mục đích bất hợp pháp nào đều có thể bị tố cáo đến Cơ quan Nhà nước có thẩm quyền mà không cần thông báo trước cho Người dùng.\n\t\tNgười dùng có thể yêu cầu xóa Tài khoản bằng cách thông báo đến TroisH. Bất kể việc xóa tài khoản như vậy, người dùng vấn phải chịu trách nhiệm và nghĩa vụ đối với bất kỳ giao dịch nào chưa hoàn thành (phát sinh trước hoặc sau khi tài khoản bị xóa) hay việc vận chuyển hàng hóa. Khi đó, theo Điều khoản Dịch vụ này, Người dùng phải liên hệ với TroisH sau khi đã hoàn thành các giao dịch chưa hoàn tất. TroisH không có trách nhiệm và không chịu trách nhiệm đối với bất kỳ tổn thất nào phát sinh từ bất kỳ hành động nào liên quan đến Mục này."
+                    android:textSize="14sp"
+                    android:textColor="@color/brown"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:justificationMode="inter_word"/>
+
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

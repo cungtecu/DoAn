@@ -68,8 +68,7 @@ public class SettingUserActivity extends AppCompatActivity {
     }
 
     private void deleteAccount() {
-        Call<ApiResponse> call = RetrofitClient.getApiService().deleteProfile("Bearer " + token);
-        call.enqueue(new Callback<ApiResponse>() {
+        Call<ApiResponse> call = RetrofitClient.getApiService(this).deleteProfile("Bearer " + token);        call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

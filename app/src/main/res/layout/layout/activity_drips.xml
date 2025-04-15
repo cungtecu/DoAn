@@ -1,0 +1,207 @@
+<!-- res/layout/your_activity_layout.xml -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_header"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        >
+        <!-- User -->
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/person"
+            android:clickable="true"
+            android:onClick="onUserClicked"
+            android:layout_marginEnd="16dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Xin chào, người dùng!"
+            android:fontFamily="@font/font_main"
+            android:textSize="16sp"
+            android:textColor="@color/brown"
+            android:layout_marginEnd="16dp"
+            />
+        <!-- Khoảng trắng để đẩy các icon còn lại về bên phải -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Tìm kiếm -->
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/search"
+            android:clickable="true"
+            android:onClick="onSearchClicked"
+            />
+
+    </LinearLayout>
+    <!-- Phần Đơn Đặt Hàng và Điểm Dripst -->
+    <LinearLayout
+        android:id="@+id/order_dripst_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:paddingBottom="8dp"
+        android:background="@color/white">
+
+        <!-- Cột Đơn Đặt Hàng -->
+        <LinearLayout
+            android:id="@+id/order_column"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:onClick="onOrderColumnClicked">
+
+            <TextView
+                android:id="@+id/order_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Đơn Đặt Hàng"
+                android:textSize="16sp"
+                android:textColor="@color/brown"
+                />
+        </LinearLayout>
+
+        <!-- Cột Điểm Dripst -->
+        <LinearLayout
+            android:id="@+id/dripst_column"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:onClick="onDripstColumnClicked">
+
+            <TextView
+                android:id="@+id/dripst_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Điểm Dripst"
+                android:textSize="16sp"
+                android:textColor="@color/brown"
+                android:textStyle="bold"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/green"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ScrollView cho phần body -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/order_dripst_layout"
+        android:layout_above="@+id/bottom_navigation"
+        android:fillViewport="true">
+
+        <!-- Thêm nội dung body vào đây -->
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:gravity="center"
+        android:background="@color/blackgreen">
+
+        <!-- Nút Trang Chủ -->
+        <!--        <TextView-->
+        <!--            android:layout_width="30dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:text="Trang Chủ"-->
+        <!--            android:textColor="@color/white"-->
+        <!--            android:fontFamily="@font/font_bigger"-->
+        <!--            android:textSize="14sp"-->
+        <!--            android:gravity="center"-->
+        <!--            android:padding="10dp"-->
+        <!--            android:clickable="true"-->
+        <!--            android:focusable="true"/>-->
+        <ImageView
+            android:id="@+id/btn_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_home"/>
+
+        <!-- Nút Add To Order (Cao hơn) -->
+        <!--        <FrameLayout-->
+        <!--            android:id="@+id/addToCartButton"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="70dp"-->
+        <!--            android:layout_weight="2"-->
+        <!--            android:gravity="center"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:paddingHorizontal="30dp"-->
+        <!--            android:paddingVertical="20dp">-->
+
+        <ImageView
+            android:id="@+id/cartIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_cart"
+            android:contentDescription="Cart Icon"
+            android:scaleType="centerInside"/>
+        <!--        </FrameLayout>-->
+
+
+        <!-- Nút Khác -->
+        <!--    <TextView-->
+        <!--        android:layout_width="30dp"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_weight="1"-->
+        <!--        android:text="Khác"-->
+        <!--        android:textColor="@color/white"-->
+        <!--        android:fontFamily="@font/font_bigger"-->
+        <!--        android:textSize="14sp"-->
+        <!--        android:gravity="center"-->
+        <!--        android:padding="10dp"-->
+        <!--        android:clickable="true"-->
+        <!--        android:focusable="true"/>-->
+        <ImageView
+            android:id="@+id/btn_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_other"/>
+    </LinearLayout>
+</RelativeLayout>

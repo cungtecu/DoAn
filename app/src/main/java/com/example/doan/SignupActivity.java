@@ -144,8 +144,7 @@ public class SignupActivity extends AppCompatActivity {
         SignupRequest signupRequest = new SignupRequest(name, email, phone, password, confirmPassword);
         Log.d(TAG, "Gửi yêu cầu đăng ký tới /api/users/register/initiate với dữ liệu: " + signupRequest.toString());
 
-        RetrofitClient.getApiService().initiateRegistration(signupRequest).enqueue(new Callback<SignupResponse>() {
-            @Override
+        RetrofitClient.getApiService(this).initiateRegistration(signupRequest).enqueue(new Callback<SignupResponse>() {            @Override
             public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
                 Log.d(TAG, "Mã phản hồi: " + response.code());
                 if (progressBar != null) {
@@ -277,8 +276,7 @@ public class SignupActivity extends AppCompatActivity {
         btnSignup.setEnabled(false);
 
         Log.d(TAG, "Gửi yêu cầu xác nhận OTP tới /api/users/register/complete với OTP: " + otp);
-        RetrofitClient.getApiService().completeRegistration(signupRequest, otp).enqueue(new Callback<SignupResponse>() {
-            @Override
+        RetrofitClient.getApiService(this).completeRegistration(signupRequest, otp).enqueue(new Callback<SignupResponse>() {            @Override
             public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
                 Log.d(TAG, "Mã phản hồi: " + response.code());
                 if (progressBar != null) {
@@ -341,7 +339,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void loginAutomatically(String phone, String password) {
         LoginRequest loginRequest = new LoginRequest(phone, password);
-        RetrofitClient.getApiService().loginUser(loginRequest).enqueue(new Callback<LoginResponse>() {
+        RetrofitClient.getApiService(this).loginUser(loginRequest).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {

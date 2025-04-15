@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F0EDED">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:padding="16dp">
+
+            <!-- Nút Back -->
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/back"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:padding="5dp"/>
+
+            <!-- Tiêu đề Hồ Sơ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Chính Sách Bảo Mật"
+                android:textColor="@color/brown"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="12dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Cài đặt tài khoản -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ĐIỀU KIỆN THAM GIA"
+                    android:textSize="16sp"
+                    android:textColor="@color/brown"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="\t\tĐể tham gia chương trình thành viên TroisH, khách hàng cần tải ứng dụng TroisH Google Play (Android) và đăng ký tài khoản thành viên bằng cách cung cấp số điện thoại và (không bắt buộc): họ tên, thư điện tử, giới tính và ngày tháng năm sinh.\n\t\tChương trình chỉ áp dụng cho khách hàng cá nhân, không áp dụng cho nhóm, công ty, tập thể với mục đích thương mại dưới mọi hình thức.\n\t\tMỗi khách hàng chỉ được sở hữu (01) tài khoản thành viên TroisH."
+                    android:textSize="14sp"
+                    android:textColor="@color/brown"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:justificationMode="inter_word"/>
+
+
+                <!-- Bảo Mật -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="QUY ĐỊNH CHUNG"
+                    android:textSize="18sp"
+                    android:textColor="@color/brown"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="\t\tTroisH có quyền đình chỉ/chấm dứt tài khoản hoặc sự tham gia của bất cứ thành viên nào mà không cần thông báo trước nếu phía TroisH xác định: (i) khách hàng sở hữu nhiều hơn 01 tài khoản (ii) khách hàng vi phạm Điều Khoản và Điều Kiện Áp Dụng chương trình (iii) việc sử dụng tài khoản của khách hàng là trái phép, lừa đảo, gian lận hoặc trái pháp luật. Trong trường hợp tài khoản thành viên của khách hàng bị đình chỉ/chấm dứt, tất cả các drips/quyền lợi/ưu đãi/quà tặng trong tài khoản đều không có giá trị.\n\t\tTroisH sẽ không chịu trách nhiệm nào trong trường hợp thông tin khách hàng cung cấp là không chính xác hoặc sai lệch trong quá trình tham gia chương trình.\n\t\tDrip, quyền lợi, ưu đãi và/hoặc quà tặng dành cho khách hàng TroisH sẽ không được quy đổi thành tiền mặt và không thể chuyển nhượng cho bất kỳ cá nhân nào khác.\n\t\tKhách hàng chỉ có thể sở hữu một tài khoản thành viên TroisH dành riêng cho cá nhân. Drip, quyền lợi, ưu đãi, quà tặng trong tài khoản thành viên đã đăng ký chỉ thuộc về 01 chủ tài khoản thành viên duy nhất, không thể bán, chuyển nhượng hoặc chia sẻ với gia đình, bạn bè, người khác, hoặc sử dụng bởi chủ tài khoản thành viên dưới mục đích thương mại nào.\n\t\tChương trình thành viên TroisH được thực hiện trong khoảng thời gian như đã thông báo với cơ quan Nhà nước có thẩm quyền.\n\t\tTất cả các khiếu nại hoặc tranh chấp phát sinh từ các điều khoản và điều kiện của chương trình sẽ được giải quyết theo pháp luật Việt nam.\n\t\tTroisH có quyền thay đổi, cập nhật các điều kiện, điều khoản, quy định hoặc đình chỉ/hủy bỏ chương trình thành viên bất cứ lúc nào theo quyết định riêng của TroisH mà không cần phải thông báo trước với khách hàng.\n\t\tTroisH có thể thay đổi giao diện, hình thức và cách diễn đạt của ứng dụng hoặc màn hình hiển thị bất cứ lúc nào.\n\t\tKhách hàng phải luôn theo dõi và cập nhật thường xuyên thông tin chi tiết chương trình thông qua ứng dụng TroisH."
+                    android:textSize="14sp"
+                    android:textColor="@color/brown"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:justificationMode="inter_word"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>
