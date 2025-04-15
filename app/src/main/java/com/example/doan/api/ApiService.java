@@ -1,9 +1,11 @@
 package com.example.doan.api;
 
 import com.example.doan.models.ApiResponse;
+import com.example.doan.models.Category;
 import com.example.doan.models.ChangePasswordRequest;
 import com.example.doan.models.LoginRequest;
 import com.example.doan.models.LoginResponse;
+import com.example.doan.models.Product;
 import com.example.doan.models.ResetPasswordRequest;
 import com.example.doan.models.SendResetLinkRequest;
 import com.example.doan.models.SignupRequest;
@@ -11,6 +13,9 @@ import com.example.doan.models.SignupResponse;
 import com.example.doan.models.UpdateUserRequest;
 import com.example.doan.models.User;
 import com.example.doan.models.UserProfileResponse;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -18,6 +23,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -55,4 +61,16 @@ public interface ApiService {
 
     @DELETE("/api/users/profile")
     Call<ApiResponse> deleteProfile(@Header("Authorization") String token);
+    @GET("api/categories")
+    Call<List<Category>> getCategories();
+    @GET("api/products")
+    Call<List<Product>> getProducts();
+
+    //Endpoint lấy danh sách sản phẩm theo danh mục (mới thêm)
+    @GET("api/products/category/{categoryId}")
+    Call<List<Product>> getProductsByCategory(@Path("categoryId") int categoryId);
+
+    @GET("api/products/{Id}")
+    Call<Product> getProductById(@Path("Id") int productId);
+
 }

@@ -137,8 +137,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     private void resetPassword(String email, String resetCode, String newPassword, String confirmPassword) {
         ResetPasswordRequest request = new ResetPasswordRequest(email, resetCode, newPassword, confirmPassword);
-        Call<String> call = RetrofitClient.getApiServiceForText().resetPassword(request);
-
+        Call<String> call = RetrofitClient.getApiServiceForText(this).resetPassword(request);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {

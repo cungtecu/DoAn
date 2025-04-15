@@ -68,8 +68,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
         SendResetLinkRequest request = new SendResetLinkRequest(email);
         Log.d(TAG, "Gửi yêu cầu tới API: /api/auth/forgot-password với dữ liệu: " + request.toString());
-        Call<String> call = RetrofitClient.getApiServiceForText().sendOtp(request);
-
+        Call<String> call = RetrofitClient.getApiServiceForText(this).sendOtp(request);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {

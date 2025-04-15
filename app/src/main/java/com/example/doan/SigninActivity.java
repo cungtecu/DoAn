@@ -87,7 +87,7 @@ public class SigninActivity extends AppCompatActivity {
         btnSignin.setEnabled(false);
 
         LoginRequest loginRequest = new LoginRequest(phone, password);
-        RetrofitClient.getApiService().loginUser(loginRequest).enqueue(new Callback<LoginResponse>() {
+        RetrofitClient.getApiService(this).loginUser(loginRequest).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 progressBar.setVisibility(View.GONE);
@@ -104,10 +104,11 @@ public class SigninActivity extends AppCompatActivity {
                     editor.putString("token", loginResponse.getToken());
                     editor.apply();
 
-                    // Chuyển sang MainActivity
-                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                    // Chuyển sang OrderActivity
+                    Intent intent = new Intent(SigninActivity.this, OrderActivity.class);
                     intent.putExtra("token", loginResponse.getToken());
                     intent.putExtra("phone", loginResponse.getPhone());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Xóa stack activity
                     startActivity(intent);
                     finish();
                 } else {
