@@ -23,7 +23,7 @@ public class Admin_User_Detail_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_detail_user);
+        setContentView(R.layout.admin_user_detail);
 
         // Lấy token từ SharedPreferences
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);

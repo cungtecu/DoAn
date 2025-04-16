@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.doan.models.Product;
-import com.example.doan.R;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -28,7 +28,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.productList = productList;
         this.listener = listener;
         // Lấy token từ SharedPreferences
-        SharedPreferences prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         authToken = "Bearer " + prefs.getString("token", null);
     }
 
@@ -43,7 +43,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.admin_item_product, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.admin_product_item, parent, false);
         return new ProductViewHolder(view);
     }
 

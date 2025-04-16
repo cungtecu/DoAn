@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.doan.admin.Admin_Product_Activity;
 import com.example.doan.R;
 import com.example.doan.SigninActivity;
 
@@ -77,7 +76,7 @@ public class Admin_Main_Activity extends AppCompatActivity {
         adminPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Admin_Main_Activity.this, Admin_Point_Activity.class);
+                Intent intent = new Intent(Admin_Main_Activity.this, Admin_SystemConfig_Activity.class);
                 startActivity(intent);
             }
         });

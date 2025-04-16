@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:text="TroisH History Price"
+            android:text="TroisH Currencies"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -56,7 +56,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lịch Sử Thay Đổi"
+                android:text="Tiền Tệ"
                 android:fontFamily="@font/font_main"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -80,56 +80,40 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="10dp">
-            <TextView
-                android:id="@+id/tv_oldprice"
+            <EditText
+                android:id="@+id/editcurrencyName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/top_button_background2"
                 android:padding="15dp"
                 android:textSize="16sp"
-                android:hint="Giá cũ"
+                android:hint="currencyName"
                 android:textColor="@color/brown" />
 
-            <TextView
-                android:id="@+id/tv_newprice"
+            <EditText
+                android:id="@+id/editcurrencyCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/top_button_background2"
                 android:padding="15dp"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp"
-                android:hint="Giá mới"
-                android:textColor="@color/brown"/>
-
-            <TextView
-                android:id="@+id/tv_datechange"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/top_button_background2"
-                android:padding="15dp"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp"
-                android:hint="Ngày thay đổi"
+                android:hint="currencyCode"
                 android:textColor="@color/brown"
                 />
             <Button
-                android:id="@+id/btn_back_user"
+                android:id="@+id/btnSaveCurrencies"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Trở lại"
+                android:layout_marginTop="10dp"
+                android:text="Lưu"
                 android:textStyle="bold"
                 android:textSize="16sp"
+                android:padding="15dp"
                 android:focusable="true"
                 android:clickable="true"
                 android:textColor="@color/white"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
                 android:background="@drawable/top_button_background_white"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_historyprice"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

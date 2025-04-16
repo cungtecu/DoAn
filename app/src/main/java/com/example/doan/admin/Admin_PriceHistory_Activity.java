@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.doan.models.PriceHistoryAdapter; // Sửa tên package nếu cần
+import com.example.doan.models.PriceHistoryAdapter;
 import com.example.doan.R;
 import com.example.doan.api.ApiService;
 import com.example.doan.api.RetrofitClient;
@@ -21,7 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Admin_HistoryPrice_Activity extends AppCompatActivity {
+public class Admin_PriceHistory_Activity extends AppCompatActivity {
 
     private TextView tvOldPrice, tvNewPrice, tvDateChange;
     private RecyclerView rcvHistoryPrice;
@@ -31,11 +31,12 @@ public class Admin_HistoryPrice_Activity extends AppCompatActivity {
     private String authToken;
     private int productId;
     private String productName;
+    private String productImage; // Thêm biến lưu imageUrl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_history_price);
+        setContentView(R.layout.admin_pricehistory);
 
         // Lấy token từ SharedPreferences
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
@@ -64,7 +65,7 @@ public class Admin_HistoryPrice_Activity extends AppCompatActivity {
 
         // Thiết lập RecyclerView
         priceHistoryList = new ArrayList<>();
-        priceHistoryAdapter = new PriceHistoryAdapter(this, priceHistoryList, productName);
+        priceHistoryAdapter = new PriceHistoryAdapter(this, priceHistoryList, productName, productImage);
         rcvHistoryPrice.setLayoutManager(new LinearLayoutManager(this));
         rcvHistoryPrice.setAdapter(priceHistoryAdapter);
 
@@ -77,8 +78,8 @@ public class Admin_HistoryPrice_Activity extends AppCompatActivity {
     }
 
     private void loadProduct() {
-        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
-        Call<Product> call = apiService.getProductById(authToken, productId); // Sửa tham số
+        ApiService apiService = RetrofitClient.getApiService(this);
+        Call<Product> call = apiService.getProductById(authToken, productId);
         call.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Call<Product> call, Response<Product> response) {
@@ -86,23 +87,27 @@ public class Admin_HistoryPrice_Activity extends AppCompatActivity {
                     Product product = response.body();
                     DecimalFormat df = new DecimalFormat("#,##0 VNĐ");
                     tvNewPrice.setText(df.format(product.getPrice()));
-                    // tvOldPrice và tvDateChange sẽ được cập nhật từ lịch sử giá
+                    productImage = product.getImage(); // Lưu imageUrl
+                    // Cập nhật adapter nếu cần
+                    priceHistoryAdapter = new PriceHistoryAdapter(Admin_PriceHistory_Activity.this,
+                            priceHistoryList, productName, productImage);
+                    rcvHistoryPrice.setAdapter(priceHistoryAdapter);
                 } else {
-                    Toast.makeText(Admin_HistoryPrice_Activity.this, "Lỗi tải sản phẩm: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Admin_PriceHistory_Activity.this, "Lỗi tải sản phẩm: " + response.code(), Toast.LENGTH_SHORT).show();
                     tvNewPrice.setText("N/A");
                 }
             }
 
             @Override
             public void onFailure(Call<Product> call, Throwable t) {
-                Toast.makeText(Admin_HistoryPrice_Activity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Admin_PriceHistory_Activity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 tvNewPrice.setText("N/A");
             }
         });
     }
 
     private void loadPriceHistory() {
-        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
+        ApiService apiService = RetrofitClient.getApiService(this);
         Call<List<PriceHistory>> call = apiService.getPriceHistory(authToken, productId);
         call.enqueue(new Callback<List<PriceHistory>>() {
             @Override
@@ -110,36 +115,28 @@ public class Admin_HistoryPrice_Activity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     priceHistoryList.clear();
                     priceHistoryList.addAll(response.body());
+                    // Sắp xếp priceHistoryList theo changedAt giảm dần (mới nhất ở đầu)
+                    priceHistoryList.sort((ph1, ph2) -> ph2.getChangedAt().compareTo(ph1.getChangedAt()));
                     priceHistoryAdapter.updatePriceHistory(priceHistoryList);
 
-                    // Hiển thị bản ghi mới nhất ở TextView
                     if (!priceHistoryList.isEmpty()) {
-                        PriceHistory latestHistory = priceHistoryList.get(0); // Giả sử danh sách được sắp xếp giảm dần theo thời gian
+                        PriceHistory latestHistory = priceHistoryList.get(0);
                         DecimalFormat df = new DecimalFormat("#,##0 VNĐ");
-                        tvOldPrice.setText(latestHistory.getOldPrice() != null ? df.format(latestHistory.getOldPrice()) : "N/A");
-                        tvDateChange.setText(latestHistory.getChangedAt() != null ? formatDate(latestHistory.getChangedAt()) : "N/A");
+                        tvOldPrice.setText(latestHistory.getOldPrice() != null ? df.format(latestHistory.getOldPrice()) : "");
+                        tvDateChange.setText(latestHistory.getChangedAt() != null ? formatDate(latestHistory.getChangedAt()) : "");
                     } else {
-                        tvOldPrice.setText("N/A");
-                        tvDateChange.setText("N/A");
-                        Toast.makeText(Admin_HistoryPrice_Activity.this, "Không có lịch sử thay đổi giá", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Admin_PriceHistory_Activity.this, "Không có lịch sử thay đổi giá", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    tvOldPrice.setText("N/A");
-                    tvDateChange.setText("N/A");
-                    Toast.makeText(Admin_HistoryPrice_Activity.this, "Lỗi tải lịch sử giá: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<PriceHistory>> call, Throwable t) {
-                tvOldPrice.setText("N/A");
-                tvDateChange.setText("N/A");
-                Toast.makeText(Admin_HistoryPrice_Activity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Admin_PriceHistory_Activity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // Định dạng ngày từ ISO sang dạng dễ đọc
     private String formatDate(String isoDate) {
         try {
             return isoDate.replace("T", " ").substring(0, 19);

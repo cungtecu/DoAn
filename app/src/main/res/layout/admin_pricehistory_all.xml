@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:text="TroisH Category"
+            android:text="TroisH History Price"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -42,6 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
         <LinearLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
@@ -49,36 +50,21 @@
             android:background="@drawable/rounded_search"
             android:orientation="horizontal"
             android:layout_marginTop="30dp"
-            android:gravity="center_vertical"
-            android:padding="5dp">
-            <EditText
-                android:id="@+id/edt_search"
+            android:gravity="center"
+            android:padding="13dp">
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Name, description ... "
+                android:text="Lịch Sử Thay Đổi"
                 android:fontFamily="@font/font_main"
                 android:textSize="16sp"
-                android:inputType="text"
-                android:imeOptions="actionSearch"
+                android:textStyle="bold"
                 android:textColor="@color/brown"
-                android:layout_marginEnd="16dp" />
-            <!-- Khoảng trắng để đẩy các icon còn lại về bên phải -->
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <!-- Tìm kiếm -->
-            <ImageView
-                android:id="@+id/search_icon"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/search"
-                android:clickable="true"
-                android:onClick="onSearchClicked"
-                />
+                android:gravity="center"/>
         </LinearLayout>
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -89,25 +75,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-            <!-- Nút chọn ảnh -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_historyprice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
             <Button
-                android:id="@+id/btnAddCategory"
+                android:id="@+id/btn_back_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Thêm danh mục"
+                android:text="Trở lại"
                 android:textStyle="bold"
-                android:layout_margin="5dp"
-                android:padding="15dp"
                 android:textSize="16sp"
-                android:textColor="@color/white"
                 android:focusable="true"
                 android:clickable="true"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
                 android:background="@drawable/top_button_background_white"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_category"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"/>
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -137,7 +137,7 @@ public class SigninActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     User user = response.body();
                     Intent intent;
-                    if ("ADMIN".equalsIgnoreCase(user.getRole())) {
+                    if ("ADMIN".equalsIgnoreCase(user.getName())) {
                         intent = new Intent(SigninActivity.this, Admin_Main_Activity.class);
                     } else {
                         intent = new Intent(SigninActivity.this, MainActivity.class);

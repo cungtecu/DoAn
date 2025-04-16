@@ -45,7 +45,7 @@ public class Admin_Product_Edit_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_edit_product);
+        setContentView(R.layout.admin_product_edit);
 
         // Lấy token từ SharedPreferences
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
@@ -85,7 +85,7 @@ public class Admin_Product_Edit_Activity extends AppCompatActivity {
 
         // Sự kiện xem lịch sử giá
         btnHisPrice.setOnClickListener(v -> {
-            Intent intent = new Intent(Admin_Product_Edit_Activity.this, Admin_HistoryPrice_Activity.class);
+            Intent intent = new Intent(Admin_Product_Edit_Activity.this, Admin_PriceHistory_Activity.class);
             intent.putExtra("PRODUCT_ID", productId);
             intent.putExtra("PRODUCT_NAME", product != null ? product.getName() : "Sản phẩm");
             startActivity(intent);
@@ -249,12 +249,46 @@ public class Admin_Product_Edit_Activity extends AppCompatActivity {
     }
 
     private void saveProduct() {
-        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
-        Call<Product> call = apiService.updateProduct(authToken, product.getId(), product);
-        call.enqueue(new Callback<Product>() {
+        ApiService apiService = RetrofitClient.getApiService(this);
+
+        // Kiểm tra xem giá có thay đổi không
+        BigDecimal oldPrice = product.getPrice();
+        BigDecimal newPrice;
+        try {
+            newPrice = new BigDecimal(editPrice.getText().toString().trim());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Giá không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Cập nhật sản phẩm
+        Call<Product> productCall = apiService.updateProduct(authToken, product.getId(), product);
+        productCall.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Call<Product> call, Response<Product> response) {
                 if (response.isSuccessful()) {
+                    // Nếu giá thay đổi, gọi API cập nhật lịch sử giá
+                    if (!oldPrice.equals(newPrice)) {
+                        Call<Void> priceHistoryCall = apiService.updatePriceHistory(authToken, product.getId(), newPrice);
+                        priceHistoryCall.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (!response.isSuccessful()) {
+                                    try {
+                                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
+                                        Toast.makeText(Admin_Product_Edit_Activity.this, "Lỗi cập nhật lịch sử giá: " + errorBody, Toast.LENGTH_LONG).show();
+                                    } catch (IOException e) {
+                                        Toast.makeText(Admin_Product_Edit_Activity.this, "Lỗi cập nhật lịch sử giá: " + response.code(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(Admin_Product_Edit_Activity.this, "Lỗi cập nhật lịch sử giá: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                     Toast.makeText(Admin_Product_Edit_Activity.this, "Cập nhật sản phẩm thành công", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();

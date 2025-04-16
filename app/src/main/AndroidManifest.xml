@@ -63,13 +63,19 @@
             android:name=".admin.Admin_Cat_Activity"
             android:exported="true" />
         <activity
+            android:name=".admin.Admin_Cat_Add_Activity"
+            android:exported="true" />
+        <activity
             android:name=".admin.Admin_Cat_Edit_Activity"
             android:exported="true" />
         <activity
             android:name=".admin.Admin_Order_Activity"
             android:exported="true" />
         <activity
-            android:name=".admin.Admin_Point_Activity"
+            android:name=".admin.Admin_SystemConfig_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".admin.Admin_Product_Add_Activity"
             android:exported="true" />
         <activity
             android:name=".admin.Admin_Product_Activity"
@@ -84,8 +90,24 @@
             android:name=".admin.Admin_User_Detail_Activity"
             android:exported="true" />
         <activity
-            android:name=".admin.Admin_HistoryPrice_Activity"
+            android:name=".admin.Admin_PriceHistory_Activity"
             android:exported="true" />
+        <activity
+            android:name=".admin.Admin_PriceHistory_All_Activity"
+            android:exported="true" />
+
+        <activity
+            android:name=".admin.Admin_Currencies_Activity"
+            android:exported="true" />
+
+        <activity
+            android:name=".admin.Admin_Currencies_Edit_Activity"
+            android:exported="true" />
+
+        <activity
+            android:name=".admin.Admin_SystemConfig_Edit_Activity"
+            android:exported="true" />
+
         <activity android:name=".PolicyActivity" />
         <activity android:name=".ProfileActivity" android:exported="true" />
         <activity android:name=".TermsActivity" android:exported="true" />

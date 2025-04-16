@@ -64,11 +64,11 @@
 
         <ImageButton
             android:id="@+id/btn_delete_product"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/close"
+            android:src="@drawable/recycling_bin"
             android:background="@color/white"
             android:focusable="true"
             android:clickable="true"/>

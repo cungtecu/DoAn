@@ -2,6 +2,7 @@ package com.example.doan.api;
 
 import com.example.doan.models.ApiResponse;
 import com.example.doan.models.Category;
+import com.example.doan.models.Currencies;
 import com.example.doan.models.LoginResponse;
 import com.example.doan.models.ChangePasswordRequest;
 import com.example.doan.models.LoginRequest;
@@ -10,13 +11,15 @@ import com.example.doan.models.Product;
 import com.example.doan.models.ResetPasswordRequest;
 import com.example.doan.models.SendResetLinkRequest;
 import com.example.doan.models.SignupRequest;
+import com.example.doan.models.SystemConfig;
 import com.example.doan.models.User;
 import com.example.doan.models.UserSummaryDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import okhttp3.MultipartBody;
 import com.example.doan.models.SignupResponse;
 import com.example.doan.models.UpdateUserRequest;
 import com.example.doan.models.UserProfileResponse;
@@ -25,10 +28,8 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -42,7 +43,6 @@ public interface ApiService {
     Call<User> getCurrentUser(@Header("Authorization") String token);
 
 
-
     @GET("api/users/list")
     Call<List<UserSummaryDTO>> getUsers(@Header("Authorization") String token);
 
@@ -51,7 +51,6 @@ public interface ApiService {
 
     @GET("api/users/{id}")
     Call<Map<String, Object>> getUserDetails(@Header("Authorization") String token, @Path("id") Integer id);
-
 
 
     // Category-related endpoints (Customer)
@@ -82,7 +81,6 @@ public interface ApiService {
     Call<Product> getProductById(@Path("Id") int productId);
 
 
-
     // Product-related endpoints (Admin)
     @GET("/api/products")
     Call<List<Product>> getAllProducts(@Header("Authorization") String authToken);
@@ -102,6 +100,7 @@ public interface ApiService {
 
     @GET("api/products/{id}")
     Call<Product> getProductById(@Header("Authorization") String authToken, @Path("id") int id);
+
     @GET("/api/users/me")
     Call<UserProfileResponse> getUserProfile(@Header("Authorization") String token);
 
@@ -127,5 +126,44 @@ public interface ApiService {
 
     @DELETE("/api/users/profile")
     Call<ApiResponse> deleteProfile(@Header("Authorization") String token);
+
+
+    //Api cho PriceHistory---------------------------------------------------------------
+
+    @POST("api/price-history/update")
+    Call<Void> updatePriceHistory(@Header("Authorization") String token, @Query("productId") Integer productId, @Query("newPrice") BigDecimal newPrice);
+
+    @GET("api/price-history/all")
+    Call<List<PriceHistory>> getAllPriceHistory(@Header("Authorization") String authToken);
+
+
+    // API cho Currencies-------------------------------------------------------------------
+    @GET("api/currencies")
+    Call<List<Currencies>> getAllCurrencies(@Header("Authorization") String authToken);
+
+    @GET("api/currencies/{id}")
+    Call<Optional<Currencies>> getCurrencyById(@Header("Authorization") String authToken, @Path("id") Integer id);
+
+    @POST("api/currencies")
+    Call<Currencies> addCurrency(@Header("Authorization") String authToken, @Body Currencies currency);
+
+    @PUT("api/currencies/{id}")
+    Call<Currencies> updateCurrency(@Header("Authorization") String authToken, @Path("id") Integer id, @Body Currencies currency);
+
+    @DELETE("api/currencies/{id}")
+    Call<Void> deleteCurrency(@Header("Authorization") String authToken, @Path("id") Integer id);
+
+
+    // API cho SystemConfig----------------------------------------------------------------------------
+    @GET("api/system-config")
+    Call<List<SystemConfig>> getAllSystemConfigs(@Header("Authorization") String authToken);
+
+    @POST("/api/system-config")
+    Call<SystemConfig> addSystemConfig(@Header("Authorization") String authToken, @Body SystemConfig systemConfig);
+
+    @DELETE("/api/system-config/{id}")
+    Call<Void> deleteSystemConfig(@Header("Authorization") String authToken, @Path("id") int id);
+    @PUT("/api/system-config/{id}")
+    Call<SystemConfig> updateSystemConfig(@Header("Authorization") String authToken, @Path("id") Integer id, @Body SystemConfig systemConfig);
 
 }

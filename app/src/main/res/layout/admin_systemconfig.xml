@@ -87,6 +87,8 @@
                 android:background="@drawable/top_button_background2"
                 android:padding="15dp"
                 android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
                 android:hint="Ngày bắt đầu"
                 android:textColor="@color/brown" />
 
@@ -96,6 +98,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/top_button_background2"
                 android:padding="15dp"
+                android:focusable="true"
+                android:clickable="true"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp"
                 android:hint="Ngày kết thúc"
@@ -109,7 +113,7 @@
                 android:layout_marginTop="10dp">
                 <EditText
                     android:id="@+id/edit_FromValuePrice"
-                    android:layout_width="250dp"
+                    android:layout_width="240dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/top_button_background2"
                     android:hint="Money"
@@ -120,22 +124,31 @@
                     android:layout_marginRight="10dp"/>
 
                 <Spinner
-                    android:id="@+id/spinnerFromValuePrice"
-                    android:layout_width="match_parent"
+                    android:id="@+id/spinnerCurrencies"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
                     android:padding="15dp"
                     android:textSize="16sp"
                     android:background="@drawable/top_button_background3"
                     android:focusable="true"
                     android:clickable="true"/>
+                <ImageButton
+                    android:id="@+id/btnCurrencies"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/setting"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:textColor="@color/white"/>
 
             </LinearLayout>
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/renew"
-                android:padding="15dp"
-                android:textSize="16sp"
+                android:padding="5dp"
                 android:layout_marginLeft="90dp"/>
 
             <LinearLayout
@@ -145,7 +158,7 @@
 
                 <EditText
                     android:id="@+id/edit_ToValuePoint"
-                    android:layout_width="250dp"
+                    android:layout_width="240dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/top_button_background2"
                     android:hint="Point"
@@ -155,10 +168,11 @@
                     android:inputType="number"
                     android:layout_marginRight="10dp"/>
                 <Button
-                    android:id="@+id/btnSaveSystem"
-                    android:layout_width="match_parent"
+                    android:id="@+id/btnAddSystem"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Lưu"
+                    android:layout_weight="0.11"
+                    android:text="Thêm"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:padding="15dp"
@@ -167,11 +181,11 @@
                     android:textColor="@color/white"
                     android:background="@drawable/top_button_background_white"/>
             </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_systemconfig"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp" />
         </LinearLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_systemconfig"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

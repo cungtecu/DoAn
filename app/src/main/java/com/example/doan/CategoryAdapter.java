@@ -53,7 +53,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         View view;
         if (actionListener != null) {
             // Dùng layout admin_item_category cho Admin_Cat_Activity
-            view = LayoutInflater.from(context).inflate(R.layout.admin_item_category, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.admin_category_item, parent, false);
         } else {
             // Dùng layout cat_item_order cho OrderActivity (nếu có)
             view = LayoutInflater.from(context).inflate(R.layout.cat_item_order, parent, false);

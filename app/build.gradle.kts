@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.doan"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -67,4 +67,5 @@ dependencies {
 
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("org.projectlombok:lombok:1.18.34")
+    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
 }
