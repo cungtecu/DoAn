@@ -16,14 +16,6 @@ public class User {
         this.email = email;
     }
 
-    // Constructor mới với 4 tham số (name, email, phone, password)
-    public User(String name, String email, String phone, String password) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-    }
-
     // Constructor đầy đủ với tất cả các tham số (bao gồm gender, birthday, points)
     public User(Integer id, String name, String email, String phone, String password, String gender, String birthday, Integer points) {
         this.id = id;
