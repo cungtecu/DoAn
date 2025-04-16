@@ -107,8 +107,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Gọi API để lấy thông tin người dùng
-        RetrofitClient.getApiService().getUserProfile("Bearer " + token).enqueue(new Callback<UserProfileResponse>() {
-            @Override
+        RetrofitClient.getApiService(this).getUserProfile("Bearer " + token).enqueue(new Callback<UserProfileResponse>() {            @Override
             public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
                 Log.d(TAG, "Mã phản hồi: " + response.code());
                 if (response.isSuccessful()) {

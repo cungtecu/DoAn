@@ -197,8 +197,7 @@ public class OtherActivity extends AppCompatActivity {
             return;
         }
 
-        RetrofitClient.getApiService().getUserProfile("Bearer " + token).enqueue(new Callback<UserProfileResponse>() {
-            @Override
+        RetrofitClient.getApiService(this).getUserProfile("Bearer " + token).enqueue(new Callback<UserProfileResponse>() {            @Override
             public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
                 Log.d(TAG, "Mã phản hồi: " + response.code());
                 if (response.isSuccessful()) {

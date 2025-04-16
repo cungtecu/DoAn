@@ -1,7 +1,11 @@
 package com.example.doan.api;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -10,9 +14,10 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class RetrofitClient {
     private static Retrofit retrofitWithGson = null;
     private static Retrofit retrofitForText = null;
+    private static final String PREFS_NAME = "MyAppPrefs";
 
     // Dùng cho các endpoint trả về JSON
-    public static ApiService getApiService() {
+    public static ApiService getApiService(Context context) {
         if (retrofitWithGson == null) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -22,6 +27,19 @@ public class RetrofitClient {
                     .readTimeout(30, TimeUnit.SECONDS)
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(logging)
+                    .addInterceptor(chain -> {
+                        Request originalRequest = chain.request();
+                        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                        String token = prefs.getString("token", null);
+
+                        Request.Builder requestBuilder = originalRequest.newBuilder();
+                        if (token != null) {
+                            requestBuilder.addHeader("Authorization", "Bearer " + token);
+                        }
+
+                        Request newRequest = requestBuilder.build();
+                        return chain.proceed(newRequest);
+                    })
                     .build();
 
             retrofitWithGson = new Retrofit.Builder()
@@ -34,7 +52,7 @@ public class RetrofitClient {
     }
 
     // Dùng cho các endpoint trả về text/plain nhưng gửi JSON
-    public static ApiService getApiServiceForText() {
+    public static ApiService getApiServiceForText(Context context) {
         if (retrofitForText == null) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -44,6 +62,19 @@ public class RetrofitClient {
                     .readTimeout(30, TimeUnit.SECONDS)
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(logging)
+                    .addInterceptor(chain -> {
+                        Request originalRequest = chain.request();
+                        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                        String token = prefs.getString("token", null);
+
+                        Request.Builder requestBuilder = originalRequest.newBuilder();
+                        if (token != null) {
+                            requestBuilder.addHeader("Authorization", "Bearer " + token);
+                        }
+
+                        Request newRequest = requestBuilder.build();
+                        return chain.proceed(newRequest);
+                    })
                     .build();
 
             retrofitForText = new Retrofit.Builder()

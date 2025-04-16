@@ -154,8 +154,7 @@ public class EditProfileActivity extends AppCompatActivity {
             UpdateUserRequest request = new UpdateUserRequest(nameToUpdate, emailToUpdate, phoneToUpdate);
 
             // Gọi API để cập nhật thông tin (sửa từ POST sang PUT)
-            RetrofitClient.getApiService().updateUser("Bearer " + token, request).enqueue(new Callback<ApiResponse>() {
-                @Override
+            RetrofitClient.getApiService(this).updateUser("Bearer " + token, request).enqueue(new Callback<ApiResponse>() {                @Override
                 public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                     progressBar.setVisibility(View.GONE);
                     btnSave.setEnabled(true);

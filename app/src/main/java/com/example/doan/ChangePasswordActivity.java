@@ -152,8 +152,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         ChangePasswordRequest request = new ChangePasswordRequest(oldPassword, newPassword, confirmPassword);
         Log.d(TAG, "Gửi yêu cầu đổi mật khẩu: oldPassword=" + oldPassword + ", newPassword=" + newPassword + ", confirmPassword=" + confirmPassword);
-        Call<ApiResponse> call = RetrofitClient.getApiService().changePassword("Bearer " + token, request);
-
+        Call<ApiResponse> call = RetrofitClient.getApiService(this).changePassword("Bearer " + token, request);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {

@@ -89,7 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadUserProfile() {
-        RetrofitClient.getApiService().getCurrentUser("Bearer " + token).enqueue(new Callback<User>() {
+        RetrofitClient.getApiService(this).getCurrentUser("Bearer " + token).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
