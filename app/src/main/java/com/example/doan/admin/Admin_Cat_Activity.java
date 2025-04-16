@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,10 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.example.doan.CategoryAdapter;
 import com.example.doan.R;
 import com.example.doan.api.ApiService;
 import com.example.doan.api.RetrofitClient;
-import com.example.doan.CategoryAdapter;
 import com.example.doan.models.Category;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +147,10 @@ public class Admin_Cat_Activity extends AppCompatActivity implements CategoryAda
 
         Category newCategory = new Category();
         newCategory.setName(name);
-        newCategory.setImage(imageUri != null ? imageUri.toString() : "");
+        // KHÔNG đặt ID
+        if (imageUri != null) {
+            newCategory.setImage(imageUri.toString());
+        }
 
         ApiService apiService = RetrofitClient.getApiService();
         Call<Category> call = apiService.createCategory(authToken, newCategory);

@@ -1,63 +1,70 @@
 package com.example.doan;
 
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.doan.models.Product;
 import com.example.doan.R;
+import de.hdodenhof.circleimageview.CircleImageView;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private Context context;
     private List<Product> productList;
+    private OnProductClickListener listener;
+    private String authToken;
 
-    public ProductAdapter(Context context, List<Product> productList) {
+    public ProductAdapter(Context context, List<Product> productList, OnProductClickListener listener) {
         this.context = context;
         this.productList = productList;
+        this.listener = listener;
+        // Lấy token từ SharedPreferences
+        SharedPreferences prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
+        authToken = "Bearer " + prefs.getString("token", null);
+    }
+
+    public ProductAdapter(OrderActivity context, List<Product> productList) {
+    }
+
+    public interface OnProductClickListener {
+        void onEditClick(Product product);
+        void onDeleteClick(Product product);
     }
 
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.menu_item_order, parent, false); // Đảm bảo layout là product_item
+        View view = LayoutInflater.from(context).inflate(R.layout.admin_item_product, parent, false);
         return new ProductViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
-        holder.productNameTextView.setText(product.getName());
-        holder.productPriceTextView.setText(String.format("%,.0f VNĐ", product.getPrice())); // Định dạng giá với dấu phẩy
+        holder.productName.setText(product.getName());
+        DecimalFormat df = new DecimalFormat("#,##0");
+        holder.productPrice.setText(df.format(product.getPrice()) + " VNĐ");
 
         if (product.getImage() != null && !product.getImage().isEmpty()) {
             Glide.with(context)
                     .load(product.getImage())
                     .placeholder(android.R.drawable.ic_menu_gallery)
-                    .into(holder.productImageView);
+                    .into(holder.productImage);
         } else {
-            holder.productImageView.setImageResource(android.R.drawable.ic_menu_gallery);
+            holder.productImage.setImageResource(android.R.drawable.ic_menu_gallery);
         }
 
-        if (product.getDescription() != null && !product.getDescription().isEmpty()) {
-            holder.productDescriptionTextView.setText(product.getDescription());
-            holder.productDescriptionTextView.setVisibility(View.VISIBLE);
-        } else {
-            holder.productDescriptionTextView.setVisibility(View.GONE);
-        }
-
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ProductDetailActivity.class);
-            intent.putExtra("productId", product.getId());
-            context.startActivity(intent);
-        });
+        holder.btnEdit.setOnClickListener(v -> listener.onEditClick(product));
+        holder.btnDelete.setOnClickListener(v -> listener.onDeleteClick(product));
     }
 
     @Override
@@ -66,22 +73,28 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
-        ImageView productImageView; // Thay CircleImageView thành ImageView
-        TextView productNameTextView;
-        TextView productPriceTextView;
-        TextView productDescriptionTextView;
+        CircleImageView productImage;
+        TextView productName;
+        TextView productPrice;
+        ImageButton btnEdit;
+        ImageButton btnDelete;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
-            productImageView = itemView.findViewById(R.id.product_image);
-            productNameTextView = itemView.findViewById(R.id.product_name);
-            productPriceTextView = itemView.findViewById(R.id.product_price);
-            productDescriptionTextView = itemView.findViewById(R.id.product_description);
+            productImage = itemView.findViewById(R.id.product_image);
+            productName = itemView.findViewById(R.id.product_name);
+            productPrice = itemView.findViewById(R.id.product_price);
+            btnEdit = itemView.findViewById(R.id.btn_edit_product);
+            btnDelete = itemView.findViewById(R.id.btn_delete_product);
         }
     }
 
     public void updateProducts(List<Product> newProductList) {
         this.productList = newProductList;
         notifyDataSetChanged();
+    }
+
+    public String getAuthToken() {
+        return authToken;
     }
 }

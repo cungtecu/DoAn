@@ -27,6 +27,7 @@ public class Admin_Cat_Edit_Activity extends AppCompatActivity {
     private String authToken;
     private int categoryId;
     private Uri imageUri;
+    private Category category; // Biến để lưu danh mục gốc
     private static final int PICK_IMAGE_REQUEST = 1;
 
     @Override
@@ -74,23 +75,29 @@ public class Admin_Cat_Edit_Activity extends AppCompatActivity {
         call.enqueue(new Callback<Category>() {
             @Override
             public void onResponse(Call<Category> call, Response<Category> response) {
-                if (response.isSuccessful()) {
-                    Category category = response.body();
+                if (response.isSuccessful() && response.body() != null) {
+                    category = response.body(); // Lưu vào biến thành viên
                     editNameCategory.setText(category.getName());
                     editDesCategory.setText(category.getDescription());
                     if (category.getImage() != null && !category.getImage().isEmpty()) {
                         Glide.with(Admin_Cat_Edit_Activity.this)
                                 .load(category.getImage())
+                                .placeholder(android.R.drawable.ic_menu_gallery)
+                                .error(android.R.drawable.ic_menu_report_image)
                                 .into(imgCategory);
+                    } else {
+                        imgCategory.setImageResource(android.R.drawable.ic_menu_gallery);
                     }
                 } else {
                     Toast.makeText(Admin_Cat_Edit_Activity.this, "Không thể tải danh mục: " + response.code(), Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
 
             @Override
             public void onFailure(Call<Category> call, Throwable t) {
                 Toast.makeText(Admin_Cat_Edit_Activity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
@@ -113,9 +120,13 @@ public class Admin_Cat_Edit_Activity extends AppCompatActivity {
     private void saveCategory() {
         String name = editNameCategory.getText().toString().trim();
         String description = editDesCategory.getText().toString().trim();
-
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(this, "Vui lòng nhập tên danh mục", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (category == null) {
+            Toast.makeText(this, "Danh mục chưa được tải, vui lòng thử lại", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -123,17 +134,22 @@ public class Admin_Cat_Edit_Activity extends AppCompatActivity {
         updatedCategory.setId(categoryId);
         updatedCategory.setName(name);
         updatedCategory.setDescription(description);
-        updatedCategory.setImage(imageUri != null ? imageUri.toString() : "");
+        // Chỉ set image nếu chọn ảnh mới, nếu không giữ nguyên ảnh hiện tại
+        if (imageUri != null) {
+            updatedCategory.setImage(imageUri.toString());
+        } else {
+            updatedCategory.setImage(category.getImage());
+        }
 
         ApiService apiService = RetrofitClient.getApiService();
         Call<Category> call = apiService.updateCategory(authToken, categoryId, updatedCategory);
         call.enqueue(new Callback<Category>() {
             @Override
             public void onResponse(Call<Category> call, Response<Category> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(Admin_Cat_Edit_Activity.this, "Cập nhật danh mục thành công!", Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK); // Báo hiệu cập nhật thành công
-                    finish(); // Quay lại Admin_Cat_Activity
+                    setResult(RESULT_OK);
+                    finish();
                 } else {
                     Toast.makeText(Admin_Cat_Edit_Activity.this, "Lỗi khi cập nhật: " + response.code(), Toast.LENGTH_SHORT).show();
                 }

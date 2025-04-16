@@ -1,18 +1,19 @@
 package com.example.doan.models;
 
+import java.math.BigDecimal;
+
 public class Product {
-    private int id;
+    private Integer id;
     private String name;
     private String description;
-    private double price;
+    private BigDecimal price;
     private String image;
     private Category categories;
     private boolean isDeleted;
-    private int stock;
 
     public Product() {}
 
-    public Product(int id, String name, String description, double price, String image, Category categories, boolean isDeleted, int stock) {
+    public Product(Integer id, String name, String description, BigDecimal price, String image, Category categories, boolean isDeleted) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -20,25 +21,23 @@ public class Product {
         this.image = image;
         this.categories = categories;
         this.isDeleted = isDeleted;
-        this.stock = stock;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }
     public Category getCategories() { return categories; }
     public void setCategories(Category categories) { this.categories = categories; }
     public boolean isDeleted() { return isDeleted; }
-    public void setDeleted(boolean isDeleted) { this.isDeleted = isDeleted; }
-    public int getStock() { return stock; }
-    public void setStock(int stock) { this.stock = stock; }
+    public void setDeleted(boolean deleted) { this.isDeleted = deleted; }
 
     public int getCategoryId() {
         return categories != null ? categories.getId() : -1;

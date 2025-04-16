@@ -1,22 +1,22 @@
 package com.example.doan.models;
 
 public class Category {
-    private int id;
+    private Integer id;
     private String name;
     private String image; // Đồng bộ với Products
     private String description;
 
     public Category() {}
 
-    public Category(int id, String name, String image, String description) {
+    public Category(Integer id, String name, String image, String description) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.description = description;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getImage() { return image; } // Đổi từ getImageUrl

@@ -24,10 +24,10 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:srcCompat="@drawable/btn2"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="120dp"
-            tools:layout_editor_absoluteY="16dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -47,21 +47,21 @@
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_search"
-            android:orientation="horizontal"
             android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_search"
             android:gravity="center"
+            android:orientation="horizontal"
             android:padding="13dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sửa Sản Phẩm"
                 android:fontFamily="@font/font_main"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:gravity="center"
+                android:text="Sửa Sản Phẩm"
                 android:textColor="@color/brown"
-                android:gravity="center"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 
@@ -75,6 +75,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -85,72 +86,91 @@
                 android:id="@+id/editNameProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tên"
-                android:textSize="16sp"
                 android:background="@drawable/top_button_background2"
+                android:hint="Tên"
                 android:padding="15dp"
-                android:textColor="@color/brown"/>
+                android:textColor="@color/brown"
+                android:textSize="16sp" />
 
             <Spinner
                 android:id="@+id/spinnerSelectCat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:textSize="16sp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/top_button_background3"/>
+                android:background="@drawable/top_button_background3"
+                android:padding="15dp"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/editDesProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/top_button_background2"
-                android:padding="15dp"
-                android:textSize="16sp"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/top_button_background2"
                 android:hint="Mô Tả"
-                android:textColor="@color/brown"/>
-
-            <EditText
-                android:id="@+id/editPriceProduct"
+                android:padding="15dp"
+                android:textColor="@color/brown"
+                android:textSize="16sp" />
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/top_button_background2"
-                android:padding="15dp"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp"
-                android:hint="Giá"
-                android:textColor="@color/brown"/>
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="10dp">
+                <EditText
+                    android:id="@+id/editPriceProduct"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:background="@drawable/top_button_background2"
+                    android:hint="Giá"
+                    android:padding="15dp"
+                    android:textColor="@color/brown"
+                    android:textSize="16sp" />
+                <Button
+                    android:id="@+id/btnHistoryPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:text="..."
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:background="@drawable/top_button_background_white"/>
+            </LinearLayout>
 
             <!-- Chọn ảnh sản phẩm -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="10dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <!-- Hiển thị ảnh sản phẩm -->
                 <ImageView
                     android:id="@+id/imgProduct"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/top_button_background2"/>
+                    android:background="@drawable/top_button_background2"
+                    android:scaleType="centerCrop" />
 
                 <!-- Nút chọn ảnh -->
                 <Button
                     android:id="@+id/btnChooseImageProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chọn Ảnh"
-                    android:textStyle="bold"
-                    android:padding="15dp"
-                    android:textSize="16sp"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/top_button_background_white"/>
+                    android:background="@drawable/top_button_background_white"
+                    android:padding="15dp"
+                    android:text="Chọn Ảnh"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
 
@@ -158,13 +178,13 @@
                 android:id="@+id/btnSaveProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Lưu"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:layout_marginTop="10dp"
                 android:layout_gravity="center"
-                android:background="@drawable/top_button_background_white"/>
+                android:layout_marginTop="10dp"
+                android:background="@drawable/top_button_background_white"
+                android:text="Lưu"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

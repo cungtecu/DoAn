@@ -51,8 +51,40 @@
         <activity
             android:name=".ForgetPasswordActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".admin.Admin_Main_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".admin.Admin_Cat_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".admin.Admin_Cat_Edit_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".admin.Admin_Order_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".admin.Admin_Point_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".admin.Admin_Product_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".admin.Admin_Product_Edit_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".admin.Admin_User_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".admin.Admin_User_Detail_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".admin.Admin_HistoryPrice_Activity"
+            android:exported="true" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 
 </manifest>
