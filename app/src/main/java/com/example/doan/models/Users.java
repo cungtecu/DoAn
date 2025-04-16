@@ -1,30 +1,38 @@
 package com.example.doan.models;
 
-public class Users {
+public class User {
     private Integer id;
     private String name;
     private String email;
     private String phone;
     private String password;
-    private Integer points;
-    private String role; // Đổi từ Integer sang String để khớp với enum Role trong Spring Boot
+    private String gender;  // Thêm trường gender
+    private String birthday;  // Thêm trường birthday
+    private Integer points;  // Thêm trường points
 
-    // Constructor mặc định (yêu cầu bởi Gson)
-    public Users() {}
-
-    // Constructor với 2 tham số (name và email) - nếu cần dùng trong code khác
-    public Users(String name, String email) {
+    // Constructor cũ với 2 tham số (name và email)
+    public User(String name, String email) {
         this.name = name;
         this.email = email;
     }
 
-    // Constructor với 4 tham số (name, email, phone, password) - sửa lỗi và bỏ points/role
-    public Users(String name, String email, String phone, String password, Integer points, String role) {
+    // Constructor mới với 4 tham số (name, email, phone, password)
+    public User(String name, String email, String phone, String password) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.role = role;
+    }
+
+    // Constructor đầy đủ với tất cả các tham số (bao gồm gender, birthday, points)
+    public User(Integer id, String name, String email, String phone, String password, String gender, String birthday, Integer points) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.gender = gender;
+        this.birthday = birthday;
         this.points = points;
     }
 
@@ -49,12 +57,16 @@ public class Users {
         return password;
     }
 
-    public Integer getPoints() {
-        return points;
+    public String getGender() {
+        return gender;
     }
 
-    public String getRole() { // Đổi từ Integer sang String
-        return role;
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public Integer getPoints() {
+        return points;
     }
 
     // Setter methods
@@ -78,11 +90,15 @@ public class Users {
         this.password = password;
     }
 
-    public void setPoints(Integer points) {
-        this.points = points;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public void setRole(String role) { // Đổi từ Integer sang String
-        this.role = role;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 }
