@@ -32,7 +32,6 @@ public class DeleteAccountDialogFragment extends DialogFragment {
 
         // Ánh xạ các view trong dialog
         Button btnDelete = view.findViewById(R.id.btn_delete);
-        ImageView btnClose = view.findViewById(R.id.btn_close);
 
         // Xử lý sự kiện nhấn nút "Xóa Tài Khoản"
         btnDelete.setOnClickListener(v -> {
@@ -43,7 +42,7 @@ public class DeleteAccountDialogFragment extends DialogFragment {
         });
 
         // Xử lý sự kiện nhấn nút "Đóng"
-        btnClose.setOnClickListener(v -> dismiss());
+
 
         return view;
     }

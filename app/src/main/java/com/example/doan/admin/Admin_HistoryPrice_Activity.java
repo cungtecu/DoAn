@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.doan.models.PriceHistoryAdapter;
+import com.example.doan.models.PriceHistoryAdapter; // Sửa tên package nếu cần
 import com.example.doan.R;
 import com.example.doan.api.ApiService;
 import com.example.doan.api.RetrofitClient;
@@ -38,7 +38,7 @@ public class Admin_HistoryPrice_Activity extends AppCompatActivity {
         setContentView(R.layout.admin_history_price);
 
         // Lấy token từ SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         authToken = "Bearer " + prefs.getString("token", null);
         if (authToken == null) {
             Toast.makeText(this, "Không tìm thấy token, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
@@ -77,8 +77,8 @@ public class Admin_HistoryPrice_Activity extends AppCompatActivity {
     }
 
     private void loadProduct() {
-        ApiService apiService = RetrofitClient.getApiService();
-        Call<Product> call = apiService.getProductById(productId);
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
+        Call<Product> call = apiService.getProductById(authToken, productId); // Sửa tham số
         call.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Call<Product> call, Response<Product> response) {
@@ -89,18 +89,20 @@ public class Admin_HistoryPrice_Activity extends AppCompatActivity {
                     // tvOldPrice và tvDateChange sẽ được cập nhật từ lịch sử giá
                 } else {
                     Toast.makeText(Admin_HistoryPrice_Activity.this, "Lỗi tải sản phẩm: " + response.code(), Toast.LENGTH_SHORT).show();
+                    tvNewPrice.setText("N/A");
                 }
             }
 
             @Override
             public void onFailure(Call<Product> call, Throwable t) {
                 Toast.makeText(Admin_HistoryPrice_Activity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                tvNewPrice.setText("N/A");
             }
         });
     }
 
     private void loadPriceHistory() {
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<List<PriceHistory>> call = apiService.getPriceHistory(authToken, productId);
         call.enqueue(new Callback<List<PriceHistory>>() {
             @Override

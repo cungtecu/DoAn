@@ -46,7 +46,7 @@ public class Admin_Cat_Activity extends AppCompatActivity implements CategoryAda
         setContentView(R.layout.admin_category);
 
         // Lấy token từ SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         authToken = "Bearer " + prefs.getString("token", null);
         if (authToken == null) {
             Toast.makeText(this, "Không tìm thấy token, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
@@ -84,7 +84,7 @@ public class Admin_Cat_Activity extends AppCompatActivity implements CategoryAda
     }
 
     private void fetchCategories() {
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<List<Category>> call = apiService.getAllCategories(authToken);
         call.enqueue(new Callback<List<Category>>() {
             @Override
@@ -152,7 +152,7 @@ public class Admin_Cat_Activity extends AppCompatActivity implements CategoryAda
             newCategory.setImage(imageUri.toString());
         }
 
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<Category> call = apiService.createCategory(authToken, newCategory);
         call.enqueue(new Callback<Category>() {
             @Override
@@ -198,7 +198,7 @@ public class Admin_Cat_Activity extends AppCompatActivity implements CategoryAda
     }
 
     private void deleteCategory(int categoryId) {
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<Map<String, String>> call = apiService.deleteCategory(authToken, categoryId);
         call.enqueue(new Callback<Map<String, String>>() {
             @Override

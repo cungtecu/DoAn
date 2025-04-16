@@ -36,7 +36,7 @@ public class Admin_Cat_Edit_Activity extends AppCompatActivity {
         setContentView(R.layout.admin_edit_category);
 
         // Lấy token từ SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         authToken = "Bearer " + prefs.getString("token", null);
         if (authToken == null) {
             Toast.makeText(this, "Không tìm thấy token, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
@@ -70,7 +70,7 @@ public class Admin_Cat_Edit_Activity extends AppCompatActivity {
     }
 
     private void fetchCategoryDetails(int categoryId) {
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<Category> call = apiService.getCategoryById(authToken, categoryId);
         call.enqueue(new Callback<Category>() {
             @Override
@@ -141,7 +141,7 @@ public class Admin_Cat_Edit_Activity extends AppCompatActivity {
             updatedCategory.setImage(category.getImage());
         }
 
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<Category> call = apiService.updateCategory(authToken, categoryId, updatedCategory);
         call.enqueue(new Callback<Category>() {
             @Override

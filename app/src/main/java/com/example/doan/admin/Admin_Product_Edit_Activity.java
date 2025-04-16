@@ -38,9 +38,9 @@ public class Admin_Product_Edit_Activity extends AppCompatActivity {
     private Button btnChooseImage, btnSave, btnHisPrice;
     private List<Category> categoryList;
     private Product product;
-    private Uri imageUri; // Đổi từ selectedImageUri thành imageUri
+    private Uri imageUri;
     private String authToken;
-    private static final int PICK_IMAGE_REQUEST = 1; // Đồng bộ với Admin_Product_Activity
+    private static final int PICK_IMAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class Admin_Product_Edit_Activity extends AppCompatActivity {
         setContentView(R.layout.admin_edit_product);
 
         // Lấy token từ SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         authToken = "Bearer " + prefs.getString("token", null);
         if (authToken == null) {
             Toast.makeText(this, "Không tìm thấy token, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
@@ -83,18 +83,17 @@ public class Admin_Product_Edit_Activity extends AppCompatActivity {
         // Sự kiện lưu sản phẩm
         btnSave.setOnClickListener(v -> updateProduct());
 
+        // Sự kiện xem lịch sử giá
+        btnHisPrice.setOnClickListener(v -> {
+            Intent intent = new Intent(Admin_Product_Edit_Activity.this, Admin_HistoryPrice_Activity.class);
+            intent.putExtra("PRODUCT_ID", productId);
+            intent.putExtra("PRODUCT_NAME", product != null ? product.getName() : "Sản phẩm");
+            startActivity(intent);
+        });
+
         // Load danh mục trước, sau đó load sản phẩm
         loadCategories(productId);
-
-        btnHisPrice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Admin_Product_Edit_Activity.this, Admin_HistoryPrice_Activity.class);
-                startActivity(intent);
-            }
-        });
     }
-
 
     private void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -107,13 +106,13 @@ public class Admin_Product_Edit_Activity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
-            Glide.with(this).load(imageUri).into(imgProduct); // Sử dụng Glide thay vì setImageURI
+            Glide.with(this).load(imageUri).into(imgProduct);
         }
     }
 
     private void loadProduct(int productId) {
-        ApiService apiService = RetrofitClient.getApiService();
-        Call<Product> call = apiService.getProductById(productId); // Thêm authToken
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
+        Call<Product> call = apiService.getProductById(authToken, productId); // Thêm authToken
         call.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Call<Product> call, Response<Product> response) {
@@ -184,7 +183,7 @@ public class Admin_Product_Edit_Activity extends AppCompatActivity {
     }
 
     private void loadCategories(int productId) {
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<List<Category>> call = apiService.getAllCategories(authToken);
         call.enqueue(new Callback<List<Category>>() {
             @Override
@@ -233,19 +232,24 @@ public class Admin_Product_Edit_Activity extends AppCompatActivity {
             return;
         }
 
+        if (product == null) {
+            Toast.makeText(this, "Sản phẩm chưa được tải, vui lòng thử lại", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         product.setName(name);
         product.setDescription(description);
         product.setPrice(price);
         product.setCategories(selectedCategory);
         if (imageUri != null) {
-            product.setImage(imageUri.toString()); // Gán trực tiếp imageUri.toString()
+            product.setImage(imageUri.toString());
         }
 
         saveProduct();
     }
 
     private void saveProduct() {
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<Product> call = apiService.updateProduct(authToken, product.getId(), product);
         call.enqueue(new Callback<Product>() {
             @Override

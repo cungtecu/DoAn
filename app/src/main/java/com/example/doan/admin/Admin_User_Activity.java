@@ -24,7 +24,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Admin_User_Activity extends AppCompatActivity {
@@ -34,7 +33,7 @@ public class Admin_User_Activity extends AppCompatActivity {
     private List<UserSummaryDTO> filteredUserList = new ArrayList<>();
     private EditText edtSearch;
     private ImageView searchIcon;
-    private String authToken; // Token sẽ được lấy từ SharedPreferences
+    private String authToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +41,11 @@ public class Admin_User_Activity extends AppCompatActivity {
         setContentView(R.layout.admin_user);
 
         // Lấy token từ SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         authToken = "Bearer " + prefs.getString("token", null);
         if (authToken == null) {
             Toast.makeText(this, "Không tìm thấy token, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
-            finish(); // Thoát activity nếu không có token
+            finish();
             return;
         }
 
@@ -63,14 +62,14 @@ public class Admin_User_Activity extends AppCompatActivity {
     }
 
     private void showUserDetails(UserSummaryDTO user) {
-        // Chuyển sang Admin_User_Detail_Activity thay vì hiển thị AlertDialog
+        // Chuyển sang Admin_User_Detail_Activity
         Intent intent = new Intent(Admin_User_Activity.this, Admin_User_Detail_Activity.class);
         intent.putExtra("USER_ID", user.getId());
         startActivity(intent);
     }
 
     private void fetchUsers() {
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<List<UserSummaryDTO>> call = apiService.getUsers(authToken);
         call.enqueue(new Callback<List<UserSummaryDTO>>() {
             @Override
@@ -86,7 +85,7 @@ public class Admin_User_Activity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<UserSummaryDTO>> call, Throwable t) {
-                Toast.makeText(Admin_User_Activity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Admin_User_Activity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -101,7 +100,7 @@ public class Admin_User_Activity extends AppCompatActivity {
                         boolean matchesName = user.getName() != null && user.getName().toLowerCase().contains(lowerQuery);
                         boolean matchesEmail = user.getEmail() != null && user.getEmail().toLowerCase().contains(lowerQuery);
                         boolean matchesPhone = user.getPhone() != null && user.getPhone().toLowerCase().contains(lowerQuery);
-                        return matchesName || matchesEmail || matchesPhone; // Trả về true nếu khớp tên, email hoặc số điện thoại
+                        return matchesName || matchesEmail || matchesPhone;
                     })
                     .collect(Collectors.toList());
         }
@@ -115,7 +114,7 @@ public class Admin_User_Activity extends AppCompatActivity {
         builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ApiService apiService = RetrofitClient.getApiService();
+                ApiService apiService = RetrofitClient.getApiService(Admin_User_Activity.this); // Thêm this
                 Call<Void> call = apiService.deleteUser(authToken, user.getId());
                 call.enqueue(new Callback<Void>() {
                     @Override
@@ -137,7 +136,7 @@ public class Admin_User_Activity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(Admin_User_Activity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Admin_User_Activity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

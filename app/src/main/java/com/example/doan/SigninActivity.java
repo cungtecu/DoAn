@@ -13,9 +13,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.doan.admin.Admin_Main_Activity;
 import com.example.doan.api.RetrofitClient;
 import com.example.doan.models.LoginRequest;
 import com.example.doan.models.LoginResponse;
+import com.example.doan.models.User;
+import com.example.doan.api.ApiService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -90,29 +94,23 @@ public class SigninActivity extends AppCompatActivity {
         RetrofitClient.getApiService(this).loginUser(loginRequest).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                progressBar.setVisibility(View.GONE);
-                btnSignin.setEnabled(true);
-
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
                     Log.d(TAG, "Đăng nhập thành công: token=" + loginResponse.getToken());
-                    Toast.makeText(SigninActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
 
                     // Lưu token vào SharedPreferences
                     SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("token", loginResponse.getToken());
+                    editor.putString("phone", loginResponse.getPhone());
                     editor.apply();
 
-                    // Chuyển sang OrderActivity
-                    Intent intent = new Intent(SigninActivity.this, OrderActivity.class);
-                    intent.putExtra("token", loginResponse.getToken());
-                    intent.putExtra("phone", loginResponse.getPhone());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Xóa stack activity
-                    startActivity(intent);
-                    finish();
+                    // Kiểm tra vai trò người dùng
+                    checkUserRole(loginResponse.getToken());
                 } else {
                     handleLoginError(response);
+                    progressBar.setVisibility(View.GONE);
+                    btnSignin.setEnabled(true);
                 }
             }
 
@@ -122,6 +120,52 @@ public class SigninActivity extends AppCompatActivity {
                 btnSignin.setEnabled(true);
                 Log.e(TAG, "Lỗi kết nối: " + t.getMessage());
                 Toast.makeText(SigninActivity.this, "Lỗi kết nối. Vui lòng kiểm tra mạng!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void checkUserRole(String token) {
+        String authToken = "Bearer " + token;
+        ApiService apiService = RetrofitClient.getApiService(this);
+        Call<User> call = apiService.getCurrentUser(authToken);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                progressBar.setVisibility(View.GONE);
+                btnSignin.setEnabled(true);
+
+                if (response.isSuccessful() && response.body() != null) {
+                    User user = response.body();
+                    Intent intent;
+                    if ("ADMIN".equalsIgnoreCase(user.getRole())) {
+                        intent = new Intent(SigninActivity.this, Admin_Main_Activity.class);
+                    } else {
+                        intent = new Intent(SigninActivity.this, MainActivity.class);
+                    }
+                    intent.putExtra("token", token);
+                    intent.putExtra("phone", user.getPhone());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    Toast.makeText(SigninActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    try {
+                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
+                        Log.e(TAG, "Lỗi tải thông tin người dùng: " + response.code() + " - " + errorBody);
+                        Toast.makeText(SigninActivity.this, "Không thể xác minh vai trò: " + response.code(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        Log.e(TAG, "Lỗi parse lỗi: " + e.getMessage());
+                        Toast.makeText(SigninActivity.this, "Lỗi không xác định", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                btnSignin.setEnabled(true);
+                Log.e(TAG, "Lỗi kết nối khi tải thông tin người dùng: " + t.getMessage());
+                Toast.makeText(SigninActivity.this, "Lỗi kết nối khi xác minh vai trò", Toast.LENGTH_SHORT).show();
             }
         });
     }

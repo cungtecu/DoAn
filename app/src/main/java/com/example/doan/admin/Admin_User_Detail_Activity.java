@@ -17,7 +17,7 @@ import java.util.Map;
 public class Admin_User_Detail_Activity extends AppCompatActivity {
     private TextView tvName, tvEmail, tvPhone, tvPoints;
     private Button btnBackUser;
-    private String authToken; // Token sẽ được lấy từ SharedPreferences
+    private String authToken;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -26,11 +26,13 @@ public class Admin_User_Detail_Activity extends AppCompatActivity {
         setContentView(R.layout.admin_detail_user);
 
         // Lấy token từ SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         authToken = "Bearer " + prefs.getString("token", null);
         if (authToken == null) {
+            // Khởi tạo tvName trước khi sử dụng
+            tvName = findViewById(R.id.tv_NameUser);
             tvName.setText("Không tìm thấy token, vui lòng đăng nhập lại");
-            finish(); // Thoát activity nếu không có token
+            finish();
             return;
         }
 
@@ -50,25 +52,25 @@ public class Admin_User_Detail_Activity extends AppCompatActivity {
     }
 
     private void fetchUserDetails(int userId) {
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<Map<String, Object>> call = apiService.getUserDetails(authToken, userId);
         call.enqueue(new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Map<String, Object> userDetails = response.body();
-                    tvName.setText("Name: " + userDetails.get("name"));
-                    tvEmail.setText("Email: " + userDetails.get("email"));
-                    tvPhone.setText("Phone: " + (userDetails.get("phone") != null ? userDetails.get("phone") : "N/A"));
-                    tvPoints.setText("Points: " + userDetails.get("points"));
+                    tvName.setText("Tên: " + (userDetails.get("name") != null ? userDetails.get("name") : "N/A"));
+                    tvEmail.setText("Email: " + (userDetails.get("email") != null ? userDetails.get("email") : "N/A"));
+                    tvPhone.setText("SĐT: " + (userDetails.get("phone") != null ? userDetails.get("phone") : "N/A"));
+                    tvPoints.setText("Điểm: " + (userDetails.get("points") != null ? userDetails.get("points") : "0"));
                 } else {
-                    tvName.setText("Error: " + response.code());
+                    tvName.setText("Lỗi: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                tvName.setText("Error: " + t.getMessage());
+                tvName.setText("Lỗi: " + t.getMessage());
             }
         });
     }

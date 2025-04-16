@@ -10,6 +10,7 @@ import com.example.doan.models.Product;
 import com.example.doan.models.ResetPasswordRequest;
 import com.example.doan.models.SendResetLinkRequest;
 import com.example.doan.models.SignupRequest;
+import com.example.doan.models.User;
 import com.example.doan.models.UserSummaryDTO;
 
 import java.util.List;
@@ -33,12 +34,12 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
-    // User-related endpoints
-    @POST("api/users/register")
-    Call<LoginResponse> createUser(@Body SignupRequest signupRequest);
 
     @POST("api/users/login")
     Call<LoginResponse> loginUser(@Body LoginRequest loginRequest);
+
+    @GET("/api/users/me")
+    Call<User> getCurrentUser(@Header("Authorization") String token);
 
 
 
@@ -74,11 +75,6 @@ public interface ApiService {
     Call<Map<String, String>> deleteCategory(@Header("Authorization") String authToken, @Path("id") int id);
 
 
-
-    // Product-related endpoints (Customer)
-    @GET("api/products")
-    Call<List<Product>> getProducts();
-
     @GET("api/products/category/{categoryId}")
     Call<List<Product>> getProductsByCategory(@Path("categoryId") int categoryId);
 
@@ -94,9 +90,6 @@ public interface ApiService {
     @POST("/api/products")
     Call<Product> createProduct(@Header("Authorization") String authToken, @Body Product product);
 
-    @Multipart
-    @POST("/api/upload")
-    Call<String> uploadImage(@Header("Authorization") String authToken, @Part MultipartBody.Part file);
 
     @PUT("/api/products/{id}")
     Call<Product> updateProduct(@Header("Authorization") String authToken, @Path("id") int id, @Body Product product);
@@ -115,8 +108,6 @@ public interface ApiService {
     @PUT("/api/users/profile")
     Call<ApiResponse> updateUser(@Header("Authorization") String token, @Body UpdateUserRequest request);
 
-    @POST("/api/users/register")
-    Call<ApiResponse> registerUser(@Body LoginRequest registerRequest);
 
     @POST("/api/users/register/initiate")
     Call<SignupResponse> initiateRegistration(@Body SignupRequest signupRequest);
@@ -136,4 +127,5 @@ public interface ApiService {
 
     @DELETE("/api/users/profile")
     Call<ApiResponse> deleteProfile(@Header("Authorization") String token);
+
 }

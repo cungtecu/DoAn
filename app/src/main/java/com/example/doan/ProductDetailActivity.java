@@ -364,7 +364,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) {
                         product = response.body();
                         // Lưu giá gốc (size S)
-                        basePrice = product.getPrice();
+//                        basePrice = product.getPrice();
                         displayPrice = basePrice; // Giá ban đầu là giá của size S
                         displayProductDetails();
                         Log.d(TAG, "Loaded product: " + product.getName());

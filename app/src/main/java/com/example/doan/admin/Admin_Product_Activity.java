@@ -51,14 +51,14 @@ public class Admin_Product_Activity extends AppCompatActivity implements Product
     private String authToken;
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int EDIT_PRODUCT_REQUEST = 2;
-    private boolean isProcessing = false; // Thêm lại để kiểm soát yêu cầu
+    private boolean isProcessing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_product);
 
-        SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         authToken = "Bearer " + prefs.getString("token", null);
         if (authToken == null) {
             Toast.makeText(this, "Không tìm thấy token, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
@@ -157,7 +157,7 @@ public class Admin_Product_Activity extends AppCompatActivity implements Product
     }
 
     private void loadCategories() {
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<List<Category>> call = apiService.getAllCategories(authToken);
         call.enqueue(new Callback<List<Category>>() {
             @Override
@@ -180,7 +180,7 @@ public class Admin_Product_Activity extends AppCompatActivity implements Product
     }
 
     private void loadProducts() {
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<List<Product>> call = apiService.getAllProducts(authToken);
         call.enqueue(new Callback<List<Product>>() {
             @Override
@@ -245,11 +245,11 @@ public class Admin_Product_Activity extends AppCompatActivity implements Product
         newProduct.setPrice(price);
         newProduct.setCategories(selectedCategory);
 
-         if (imageUri != null) {
-             newProduct.setImage(imageUri.toString());
-         }
+        if (imageUri != null) {
+            newProduct.setImage(imageUri.toString());
+        }
 
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<Product> call = apiService.createProduct(authToken, newProduct);
         call.enqueue(new Callback<Product>() {
             @Override
@@ -292,7 +292,7 @@ public class Admin_Product_Activity extends AppCompatActivity implements Product
         }
         isProcessing = true;
 
-        ApiService apiService = RetrofitClient.getApiService();
+        ApiService apiService = RetrofitClient.getApiService(this); // Thêm this
         Call<Map<String, String>> call = apiService.deleteProduct(authToken, productId);
         call.enqueue(new Callback<Map<String, String>>() {
             @Override

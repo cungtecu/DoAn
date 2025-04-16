@@ -9,6 +9,7 @@ public class User {
     private String gender;  // Thêm trường gender
     private String birthday;  // Thêm trường birthday
     private Integer points;  // Thêm trường points
+    private String role;
 
     // Constructor cũ với 2 tham số (name và email)
     public User(String name, String email) {
@@ -26,6 +27,7 @@ public class User {
         this.gender = gender;
         this.birthday = birthday;
         this.points = points;
+        this.role = role;
     }
 
     // Getter methods
@@ -57,6 +59,10 @@ public class User {
         return birthday;
     }
 
+    public String getRole() {
+        return role;
+    }
+
     public Integer getPoints() {
         return points;
     }
@@ -80,6 +86,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public void setGender(String gender) {
