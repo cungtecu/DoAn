@@ -2,12 +2,16 @@ package com.example.doan;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -43,6 +47,9 @@ public class OrderActivity extends AppCompatActivity {
     private Call<List<Category>> categoryCall;
     private Call<List<Product>> productByCategoryCall;
     private int currentCategoryIndex = 0;
+    private ImageButton btnHome, btnCart, btnOther;
+    private ImageView btnBack;
+    private Button btnGoToMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +60,19 @@ public class OrderActivity extends AppCompatActivity {
         productRecyclerView = findViewById(R.id.product_recycler_view);
         progressBar = findViewById(R.id.progress_bar);
         searchEditText = findViewById(R.id.search_edit_text);
+        btnHome = findViewById(R.id.btn_home);
+        btnCart = findViewById(R.id.cartIcon);
+        btnOther = findViewById(R.id.btn_other);
+        btnBack = findViewById(R.id.btn_back);
+        btnGoToMain = findViewById(R.id.btn_go_to_main);
 
         if (categoryRecyclerView == null || productRecyclerView == null || progressBar == null || searchEditText == null) {
             Log.e(TAG, "One or more views not found in layout");
             return;
+        }
+
+        if (btnHome == null || btnCart == null || btnOther == null || btnBack == null || btnGoToMain == null) {
+            Log.e(TAG, "One or more navigation buttons not found in layout");
         }
 
         progressBar.setVisibility(View.VISIBLE);
@@ -79,6 +95,54 @@ public class OrderActivity extends AppCompatActivity {
         setupSearch();
 
         loadCategories();
+
+        highlightCurrentPage();
+
+        // Sự kiện cho các nút điều hướng
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> {
+                Intent intent = new Intent(OrderActivity.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+            });
+        }
+
+        if (btnHome != null) {
+            btnHome.setOnClickListener(v -> {
+                Intent intent = new Intent(OrderActivity.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+            });
+        }
+
+        if (btnCart != null) {
+            btnCart.setOnClickListener(v -> {
+                Intent intent = new Intent(OrderActivity.this, CartActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+            });
+        }
+
+        if (btnOther != null) {
+            btnOther.setOnClickListener(v -> {
+                Intent intent = new Intent(OrderActivity.this, OtherActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+            });
+        }
+
+        if (btnGoToMain != null) {
+            btnGoToMain.setOnClickListener(v -> {
+                Intent intent = new Intent(OrderActivity.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+            });
+        }
     }
 
     private void setupSearch() {
@@ -272,6 +336,14 @@ public class OrderActivity extends AppCompatActivity {
         if (!categoryList.isEmpty() && !productList.isEmpty()) {
             progressBar.setVisibility(View.GONE);
             Log.d(TAG, "Loading complete, hiding progress bar");
+        }
+    }
+
+    private void highlightCurrentPage() {
+        if (btnHome != null && btnCart != null && btnOther != null) {
+            btnHome.setBackgroundColor(Color.TRANSPARENT);
+            btnCart.setBackgroundColor(Color.TRANSPARENT);
+            btnOther.setBackgroundColor(Color.GRAY);
         }
     }
 
