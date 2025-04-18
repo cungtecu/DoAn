@@ -114,7 +114,7 @@ public class SignupActivity extends AppCompatActivity {
         SignupRequest signupRequest = new SignupRequest(name, email, phone, password, confirmPassword);
         Log.d(TAG, "Gửi yêu cầu đăng ký với dữ liệu: " + signupRequest.toString());
 
-        RetrofitClient.getApiService().createUser(signupRequest).enqueue(new Callback<ApiResponse>() {
+        RetrofitClient.getApiService(this).createUser(signupRequest).enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful()) {

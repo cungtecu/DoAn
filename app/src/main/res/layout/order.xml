@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
-    <!-- Thanh tìm kiếm -->
+
     <LinearLayout
         android:id="@+id/search_bar_layout"
         android:layout_width="match_parent"
@@ -37,28 +37,108 @@
     </LinearLayout>
 
     <!-- Main Content (Categories, Cart, and Product List) -->
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_above="@id/bottom_navigation"
-        android:layout_below="@id/search_bar_layout"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:layout_below="@id/search_bar_layout">
 
-        <!-- Categories and Cart (Left) -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:layout_weight="0.25"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-            <!-- Categories CardView -->
+            <!-- Categories and Cart (Left) -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="0.25"
+                android:orientation="vertical">
+
+                <!-- Categories CardView -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.85"
+                    android:backgroundTint="@color/gray"
+                    app:cardCornerRadius="15dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/category_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:gravity="center"
+                            android:text="Danh Mục"
+                            android:textColor="@color/brown"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/category_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:maxHeight="200dp"
+                            android:minHeight="100dp"
+                            android:padding="8dp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Cart CardView -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cart_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="0.15"
+                    android:backgroundTint="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/cart_icon"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="8dp"
+                            android:src="@drawable/ic_cart3" />
+
+                        <TextView
+                            android:id="@+id/quantity_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/blackgreen"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <!-- Product List (Right) -->
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.85"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="0.75"
                 android:backgroundTint="@color/gray"
                 app:cardCornerRadius="15dp">
 
@@ -67,95 +147,15 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/category_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:gravity="center"
-                        android:text="Danh Mục"
-                        android:textColor="@color/brown"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/category_recycler_view"
+                        android:id="@+id/product_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:maxHeight="200dp"
-                        android:minHeight="100dp"
                         android:padding="8dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <!-- Cart CardView -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cart_layout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="0.15"
-                android:backgroundTint="@color/white"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center"
-                    android:background="@color/white"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:id="@+id/cart_icon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_cart3"/>
-
-                    <TextView
-                        android:id="@+id/quantity_text"
-                        android:layout_width="38dp"
-                        android:layout_height="25dp"
-                        android:layout_alignTop="@id/cart_icon"
-                        android:layout_alignEnd="@id/cart_icon"
-                        android:layout_marginTop="5dp"
-                        android:background="@android:color/transparent"
-                        android:gravity="center"
-                        android:text="20"
-                        android:textColor="@color/blackgreen"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
         </LinearLayout>
-
-        <!-- Product List (Right) -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:layout_weight="0.75"
-            android:backgroundTint="@color/gray"
-            app:cardCornerRadius="15dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/product_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:padding="8dp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -163,23 +163,23 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="gone" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/bottom_navigation"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
         android:background="@color/blackgreen"
-        android:weightSum="5"
+        android:gravity="center"
+        android:orientation="horizontal"
         android:padding="5dp"
-        android:gravity="center">
+        android:weightSum="3">
 
         <ImageButton
             android:id="@+id/btn_home"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/blackgreen"
@@ -189,44 +189,51 @@
             android:src="@drawable/ic_home" />
 
         <ImageButton
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_placeholder_1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@color/blackgreen"
             android:clickable="true"
             android:focusable="true"
-            android:padding="14dp" />
+            android:padding="14dp"
+            android:src="@android:drawable/ic_menu_help"
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/cartIcon"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="10dp"
             android:background="@color/blackgreen"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_cart"
             android:clickable="true"
-            android:focusable="true"
             android:contentDescription="Cart Icon"
-            android:scaleType="centerInside"/>
+            android:focusable="true"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_cart" />
 
         <ImageButton
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_placeholder_2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@color/blackgreen"
             android:clickable="true"
             android:focusable="true"
-            android:padding="14dp" />
+            android:padding="14dp"
+            android:src="@android:drawable/ic_menu_help"
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/btn_other"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="14dp"
             android:background="@color/blackgreen"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_other"/>
+            android:padding="14dp"
+            android:src="@drawable/ic_other" />
     </LinearLayout>
 </RelativeLayout>

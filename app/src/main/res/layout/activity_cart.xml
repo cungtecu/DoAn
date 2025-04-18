@@ -15,13 +15,14 @@
         android:orientation="horizontal"
         android:padding="16dp"> <!-- Thêm bóng nhẹ cho header -->
 
-        <ImageView
+        <ImageButton
             android:id="@+id/btn_cancel"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:clickable="true"
             android:contentDescription="Đóng giỏ hàng"
             android:focusable="true"
+            android:background="@color/white"
             android:padding="4dp"
             android:src="@drawable/ic_cancel" />
 
@@ -82,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="115.000 VNĐ"
+                android:text="0 VNĐ"
                 android:textColor="@color/dark_red"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -99,7 +100,7 @@
             android:paddingTop="8dp"
             android:paddingEnd="16dp"
             android:paddingBottom="8dp"
-            android:text="Đặt hàng"
+            android:text="Thanh Toán"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>
