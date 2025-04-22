@@ -50,7 +50,7 @@ public class OrderActivity extends AppCompatActivity {
     private Call<List<Product>> allProductsCall; // Call để lấy tất cả sản phẩm
     private Call<CartDTO> cartCall;
 
-    private ImageButton btnHome, btnOrder, btnOther;
+    private ImageButton btnHome, btnOther;
     private ImageView btnCart;
     private TextView quantityText;
     private int currentCategoryIndex = 0;
@@ -102,13 +102,12 @@ public class OrderActivity extends AppCompatActivity {
 
         // Load categories and all products
         loadCategories();
-        loadAllProducts(); // Tải tất cả sản phẩm
+        loadAllProducts();
 
         // Initialize buttons
         btnHome = findViewById(R.id.btn_home);
-        btnOrder = findViewById(R.id.cartIcon);
         btnOther = findViewById(R.id.btn_other);
-        btnCart = findViewById(R.id.cartIcon);
+        btnCart = findViewById(R.id.cart_icon);
 
         // Set button listeners
         btnHome.setOnClickListener(view -> {
@@ -118,15 +117,9 @@ public class OrderActivity extends AppCompatActivity {
             finish();
         });
 
-        btnOrder.setOnClickListener(view -> {
-            Intent intent = new Intent(OrderActivity.this, CartActivity.class);
-            startActivity(intent);
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            finish();
-        });
-
         btnCart.setOnClickListener(view -> {
             Intent intent = new Intent(OrderActivity.this, CartActivity.class);
+            intent.putExtra("token", authToken); // Truyền token
             startActivity(intent);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             finish();
@@ -152,11 +145,11 @@ public class OrderActivity extends AppCompatActivity {
                 String query = s.toString().trim();
                 if (query.isEmpty()) {
                     isSearching = false;
-                    loadProductsForNextCategory(); // Quay lại hiển thị sản phẩm theo danh mục
+                    loadProductsForNextCategory();
                 } else {
                     isSearching = true;
-                    productAdapter.updateProducts(allProducts); // Cập nhật adapter với tất cả sản phẩm
-                    productAdapter.filter(query); // Lọc trên tất cả sản phẩm
+                    productAdapter.updateProducts(allProducts);
+                    productAdapter.filter(query);
                 }
             }
 
