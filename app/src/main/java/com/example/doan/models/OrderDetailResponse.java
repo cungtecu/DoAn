@@ -1,27 +1,27 @@
 package com.example.doan.models;
 
-public class OrderDetailResponse {
-    private Integer id;
-    private Integer productId;
-    private String productName;
-    private Integer quantity;
-    private double unitPrice;
-    private double itemTotalPrice;
+import java.math.BigDecimal;
 
-    // Getters và Setters
-    public Integer getId() {
+public class OrderDetailResponse {
+    private int id;
+    private int productId;
+    private String productName;
+    private int quantity;
+    private BigDecimal itemTotalPrice;
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 
@@ -33,27 +33,19 @@ public class OrderDetailResponse {
         this.productName = productName;
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    public double getItemTotalPrice() {
+    public BigDecimal getItemTotalPrice() {
         return itemTotalPrice;
     }
 
-    public void setItemTotalPrice(double itemTotalPrice) {
+    public void setItemTotalPrice(BigDecimal itemTotalPrice) {
         this.itemTotalPrice = itemTotalPrice;
     }
 }

@@ -19,6 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -38,8 +39,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     private Call<Product> productCall;
     private Call<CartDTO> addToCartCall;
     private boolean isImageZoomed = false;
-    private double basePrice;
-    private double displayPrice;
+    private BigDecimal basePrice;
+    private BigDecimal displayPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,11 +236,11 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         displayPrice = basePrice;
         if (selectedSize.equals("M")) {
-            displayPrice = basePrice + 5000;
+            displayPrice = basePrice.add(new BigDecimal("5000"));
         } else if (selectedSize.equals("L")) {
-            displayPrice = basePrice + 10000;
+            displayPrice = basePrice.add(new BigDecimal("10000"));
         }
-        displayPrice *= quantity;
+        displayPrice = displayPrice.multiply(new BigDecimal(quantity));
 
         NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
         numberFormat.setMinimumFractionDigits(0);

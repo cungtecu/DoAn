@@ -6,6 +6,8 @@ import com.example.doan.models.CartDTO;
 import com.example.doan.models.CartUpdateRequest;
 import com.example.doan.models.Category;
 import com.example.doan.models.LoginResponse;
+import com.example.doan.models.LoyaltyPointDTO;
+import com.example.doan.models.OrderConfirmRequest;
 import com.example.doan.models.OrderResponse;
 import com.example.doan.models.Product;
 import com.example.doan.models.ApiResponse;
@@ -13,6 +15,7 @@ import com.example.doan.models.LoginRequest;
 import com.example.doan.models.SignupRequest;
 import com.example.doan.models.UpdateUserRequest;
 import com.example.doan.models.User;
+import com.example.doan.models.UserProfileDTO;
 import com.example.doan.models.UserProfileResponse;
 
 import retrofit2.Call;
@@ -29,11 +32,15 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
-    @GET("/api/users/me")
-    Call<User> getCurrentUser(@Header("Authorization") String token);
+//    @GET("/api/users/me")
+//    Call<User> getCurrentUser(@Header("Authorization") String token);
+
+    @GET("api/users/me")
+    Call<UserProfileDTO> getCurrentUser(@Header("Authorization") String authorization);
 
     @GET("/api/users/me")
     Call<UserProfileResponse> getUserProfile(@Header("Authorization") String token);
+
 
     @PUT("/api/users/profile")
     Call<ApiResponse> updateUser(@Header("Authorization") String token, @Body UpdateUserRequest request);
@@ -93,14 +100,15 @@ public interface ApiService {
 
     @POST("api/cart/checkout")
     Call<OrderResponse> checkout(@Body CartCheckoutRequest request);
-
-    // Phương thức mới cho PaymentActivity
+//
+//    // Phương thức mới cho PaymentActivity
     @GET("order/{orderId}")
     Call<OrderResponse> getOrderDetails(@Path("orderId") String orderId);
-
-//    @GET("vouchers")
-//    Call<List<Voucher>> getAvailableVouchers();
 //
-//    @POST("order/confirm")
-//    Call<OrderResponse> confirmOrder(@Body OrderConfirmRequest request);
+
+    @GET("api/loyalty-points/{userId}")
+    Call<List<LoyaltyPointDTO>> getLoyaltyPoints(@Path("userId") int userId);
+
+    @POST("order/confirm")
+    Call<OrderResponse> confirmOrder(@Body OrderConfirmRequest request);
 }

@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.doan.models.Product;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +45,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         Product product = productList.get(position);
         holder.productNameTextView.setText(product.getName() != null ? product.getName() : "N/A");
-        holder.productPriceTextView.setText(product.getPrice() != 0 ? String.format("%,.0f VNĐ", product.getPrice()) : "N/A");
+        DecimalFormat df = new DecimalFormat("#,##0");
+        holder.productPriceTextView.setText(df.format(product.getPrice()) + " %,.0f VNĐ");
         Log.d("ProductAdapter", "Binding product: " + product.getName() + ", position: " + position);
 
         if (product.getImage() != null && !product.getImage().isEmpty()) {

@@ -50,4 +50,9 @@ public class CartDTO {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public List<CartItemDTO> getItems() {
+        return cartItems;
+
+    }
 }

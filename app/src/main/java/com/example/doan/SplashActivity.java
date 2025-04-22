@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
 
         // Khi video kết thúc, chuyển sang SigninActivity
         videoView.setOnCompletionListener(mp -> {
-            Intent intent = new Intent(SplashActivity.this, SigninActivity.class);
+            Intent intent = new Intent(SplashActivity.this, SigninActivity .class);
             startActivity(intent);
             finish(); // Đóng SplashActivity để không quay lại
         });

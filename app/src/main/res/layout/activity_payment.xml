@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:aandroid="http://schemas.android.com/tools"
     android:background="#F0EDED"
     android:fillViewport="true">
 
@@ -20,7 +19,6 @@
             android:elevation="4dp"
             android:padding="16dp">
 
-            <!-- Nút Back -->
             <ImageView
                 android:id="@+id/btn_back"
                 android:layout_width="25dp"
@@ -30,7 +28,6 @@
                 android:padding="5dp"
                 android:src="@drawable/back" />
 
-            <!-- Tiêu đề Giỏ Hàng -->
             <TextView
                 android:id="@+id/title_profile"
                 android:layout_width="wrap_content"
@@ -40,11 +37,9 @@
                 android:textColor="@color/brown"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-
-            <!-- Nút Xóa Giỏ Hàng (dạng Text) -->
         </RelativeLayout>
 
-        <!-- Nội dung chi tiết đơn hàng (sử dụng CardView để tạo hiệu ứng nổi) -->
+        <!-- Nội dung chi tiết đơn hàng -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,17 +52,15 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp">
 
-                <!-- Line 1 -->
                 <TextView
                     android:id="@+id/tv_added_at"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="added_at"
+                    android:text="Ngày tạo đơn: "
                     android:textSize="16sp"
                     android:textColor="@color/brown"
                     android:textStyle="bold" />
 
-                <!-- Line 2 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -103,7 +96,7 @@
                 </LinearLayout>
 
                 <TableRow
-                    aandroid:layout_width="match_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:stretchColumns="*">
                     <TextView
@@ -140,48 +133,17 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <TableRow
+                <!-- Danh sách sản phẩm sẽ được thêm động -->
+                <TableLayout
+                    android:id="@+id/product_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:stretchColumns="*">
-                    <TextView
-                        android:id="@+id/tv_name_product"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="name_product"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:id="@+id/tv_quantity"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="quantity"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:id="@+id/tv_itemtotalprice"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="item_price đ"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:padding="8dp" />
-                </TableRow>
+                    android:stretchColumns="*" />
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Thanh Toán"
+                    android:layout_height="60dp"
+                    android:text=""
                     android:textSize="16sp"
                     android:textColor="@color/brown"
                     android:textStyle="bold"
@@ -189,60 +151,80 @@
                     android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingTop="20dp"/>
-                <!-- Line 3 -->
+
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Voucher:"
+                        android:text="Sử dụng Drips"
                         android:textColor="@color/brown"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_voucher"
+                        android:id="@+id/tv_points"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:text="Thêm"
-                        android:textColor="@color/green"
-                        android:textSize="16sp"
+                        android:text="0"
+                        android:textColor="@color/gray2"
+                        android:textSize="20sp"
                         android:textStyle="bold"
-                        android:clickable="true"
-                        android:focusable="true"
                         android:paddingBottom="20dp"/>
+                    <CheckBox
+                        android:id="@+id/is_use_points"/>
                 </TableRow>
-                <!-- Line 4 -->
+
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Phương thức thanh toán:"
-                        android:textColor="@color/brown"
+                        android:text="Tổng giá trị đơn hàng:"
+                        android:textColor="@color/silver"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_payment_method_select"
+                        android:id="@+id/tv_total_price_temp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:text="Thêm"
-                        android:textColor="@color/green"
-                        android:textSize="16sp"
+                        android:text="0 VNĐ"
+                        android:textColor="@color/silver"
+                        android:textSize="18sp"
                         android:textStyle="bold"
-                        android:clickable="true"
-                        android:focusable="true"
                         android:paddingBottom="20dp"/>
                 </TableRow>
-                <!-- Line 5 -->
+
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tổng tiền:"
+                        android:text="Giảm giá:"
+                        android:textColor="@color/silver"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_sale_price"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="0 VNĐ"
+                        android:textColor="@color/dark_red"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="20dp"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tổng thanh toán:"
                         android:textColor="@color/brown"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -253,13 +235,13 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:text="total_price đ"
+                        android:text="0 VNĐ"
                         android:textColor="@color/brown"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:paddingBottom="20dp"/>
                 </TableRow>
-                <!-- Line 6 -->
+
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
@@ -276,7 +258,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:text="point_drips"
+                        android:text="0"
                         android:textColor="@color/brown"
                         android:textSize="16sp"
                         android:paddingBottom="20dp"/>
@@ -284,7 +266,6 @@
             </TableLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Nút dat hang -->
         <Button
             android:id="@+id/btn_oder_cart"
             android:layout_width="match_parent"
@@ -292,7 +273,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:background="@drawable/background_button"
-            android:text="ĐẶT HÀNG"
+            android:text="Thanh toán"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
