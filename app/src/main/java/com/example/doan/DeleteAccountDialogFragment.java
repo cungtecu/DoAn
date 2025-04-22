@@ -1,5 +1,7 @@
 package com.example.doan;
 
+import static com.example.doan.R.id.btn_close;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

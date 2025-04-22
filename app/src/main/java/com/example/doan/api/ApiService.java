@@ -10,6 +10,7 @@ import com.example.doan.models.ChangePasswordRequest;
 import com.example.doan.models.CheckoutResponse;
 import com.example.doan.models.LoginRequest;
 import com.example.doan.models.LoginResponse;
+import com.example.doan.models.LoyaltyPointDTO;
 import com.example.doan.models.OrderResponse;
 import com.example.doan.models.Product;
 import com.example.doan.models.ResetPasswordRequest;
@@ -88,4 +89,9 @@ public interface ApiService {
 
     @POST("api/cart/add")
     Call<CartDTO> addToCart(@Body CartAddRequest request);
+
+    @GET("order/{orderId}")
+    Call<OrderResponse> getOrderDetails(@Path("orderId") String orderId);
+
+    Call<List<LoyaltyPointDTO>> getLoyaltyPoints(@Path("userId") int userId);
 }

@@ -349,7 +349,7 @@ public class CartActivity extends AppCompatActivity {
                         cartItems.clear();
                         cartAdapter.notifyDataSetChanged();
                         updateTotalPriceAndQuantity();
-                        Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
+                        Intent intent = new Intent(CartActivity.this, MainActivity.class);
                         intent.putExtra("orderId", order.getId());
                         startActivity(intent);
                         finish();
