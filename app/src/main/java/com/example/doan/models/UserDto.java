@@ -1,14 +1,15 @@
 package com.example.doan.models;
 
 public class UserDto {
-    private int id;
+    private Integer id;
     private String name;
 
-    public int getId() {
+    // Getters và setters
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

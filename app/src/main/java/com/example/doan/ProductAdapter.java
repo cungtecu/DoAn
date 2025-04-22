@@ -12,9 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.doan.models.Product;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +20,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private Context context;
     private List<Product> productList;
+    private List<Product> productListFull;
 
     public ProductAdapter(Context context, List<Product> productList) {
         this.context = context;
-        this.productList = productList != null ? productList : new ArrayList<>();
+        this.productList = productList != null ? new ArrayList<>(productList) : new ArrayList<>();
+        this.productListFull = productList != null ? new ArrayList<>(productList) : new ArrayList<>();
         Log.d("ProductAdapter", "Initialized with " + this.productList.size() + " products");
     }
 
@@ -45,8 +45,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         Product product = productList.get(position);
         holder.productNameTextView.setText(product.getName() != null ? product.getName() : "N/A");
-        DecimalFormat df = new DecimalFormat("#,##0");
-        holder.productPriceTextView.setText(df.format(product.getPrice()) + " %,.0f VNĐ");
+        holder.productPriceTextView.setText(product.getPrice() != 0 ? String.format("%,.0f VNĐ", product.getPrice()) : "N/A");
         Log.d("ProductAdapter", "Binding product: " + product.getName() + ", position: " + position);
 
         if (product.getImage() != null && !product.getImage().isEmpty()) {
@@ -82,9 +81,35 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     public void updateProducts(List<Product> newProductList) {
-        this.productList = newProductList != null ? newProductList : new ArrayList<>();
+        this.productList = newProductList != null ? new ArrayList<>(newProductList) : new ArrayList<>();
+        this.productListFull = newProductList != null ? new ArrayList<>(newProductList) : new ArrayList<>();
         Log.d("ProductAdapter", "Updated products: " + this.productList.size());
         notifyDataSetChanged();
+    }
+
+    public void filter(String query) {
+        productList.clear();
+        if (query == null || query.trim().isEmpty()) {
+            productList.addAll(productListFull);
+        } else {
+            String normalizedQuery = normalizeString(query.toLowerCase());
+            for (Product product : productListFull) {
+                String normalizedProductName = normalizeString(product.getName() != null ? product.getName().toLowerCase() : "");
+                if (normalizedProductName.contains(normalizedQuery)) {
+                    productList.add(product);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    private String normalizeString(String input) {
+        if (input == null) return "";
+        // Bỏ dấu tiếng Việt
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+        // Giữ khoảng trắng, chỉ chuẩn hóa hoa/thường
+        return normalized;
     }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {

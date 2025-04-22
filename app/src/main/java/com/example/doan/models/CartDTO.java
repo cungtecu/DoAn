@@ -1,15 +1,13 @@
 package com.example.doan.models;
 
-import org.threeten.bp.LocalDateTime;
 import java.util.List;
 
 public class CartDTO {
     private Integer id;
-    private UserDto user;
+    private UserDto user; // Thay ApiResponse.UserDto thành UserDto
     private List<CartItemDTO> cartItems;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String createdAt;
+    private String updatedAt;
 
     public Integer getId() {
         return id;
@@ -35,24 +33,19 @@ public class CartDTO {
         this.cartItems = cartItems;
     }
 
-    public LocalDateTime getCreatAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatAt(LocalDateTime creatAt) {
-        this.createdAt = creatAt;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public List<CartItemDTO> getItems() {
-        return cartItems;
-
     }
 }

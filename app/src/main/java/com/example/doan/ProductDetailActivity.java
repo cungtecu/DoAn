@@ -15,11 +15,11 @@ import com.example.doan.api.RetrofitClient;
 import com.example.doan.models.CartAddRequest;
 import com.example.doan.models.CartDTO;
 import com.example.doan.models.Product;
+import com.example.doan.models.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -38,9 +38,11 @@ public class ProductDetailActivity extends AppCompatActivity {
     private String authToken;
     private Call<Product> productCall;
     private Call<CartDTO> addToCartCall;
+    private Call<User> userCall; // Thêm Call để lấy userId
     private boolean isImageZoomed = false;
-    private BigDecimal basePrice;
-    private BigDecimal displayPrice;
+    private double basePrice;
+    private double displayPrice;
+    private Integer userId; // Thêm biến để lưu userId
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
+
         try {
             setContentView(R.layout.product_detail);
         } catch (Exception e) {
@@ -89,6 +92,9 @@ public class ProductDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        // Lấy userId ngay khi activity khởi tạo
+        fetchUserId();
 
         // Kiểm tra đăng nhập trước khi tải sản phẩm
         if (isLoggedIn()) {
@@ -185,6 +191,30 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void fetchUserId() {
+        userCall = RetrofitClient.getApiService(this).getCurrentUser(authToken);
+        userCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    userId = response.body().getId();
+                    Log.d(TAG, "Lấy userId thành công: " + userId);
+                } else {
+                    Log.e(TAG, "Lỗi khi lấy userId, code: " + response.code());
+                    Toast.makeText(ProductDetailActivity.this, "Lỗi khi lấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+                    redirectToSignin();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e(TAG, "Lỗi kết nối khi lấy userId: " + t.getMessage());
+                Toast.makeText(ProductDetailActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                redirectToSignin();
+            }
+        });
+    }
+
     private void loadProductFromApi(int productId) {
         productCall = RetrofitClient.getApiService(this).getProductById(productId);
         productCall.enqueue(new Callback<Product>() {
@@ -236,11 +266,11 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         displayPrice = basePrice;
         if (selectedSize.equals("M")) {
-            displayPrice = basePrice.add(new BigDecimal("5000"));
+            displayPrice = basePrice + 5000;
         } else if (selectedSize.equals("L")) {
-            displayPrice = basePrice.add(new BigDecimal("10000"));
+            displayPrice = basePrice + 10000;
         }
-        displayPrice = displayPrice.multiply(new BigDecimal(quantity));
+        displayPrice *= quantity;
 
         NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
         numberFormat.setMinimumFractionDigits(0);
@@ -250,7 +280,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void displayProductDetails() {
         if (product != null) {
-            // Log để kiểm tra product.getName()
             Log.d(TAG, "product.getName(): " + product.getName() + ", length: " + (product.getName() != null ? product.getName().length() : "null"));
 
             if (product.getImage() != null && !product.getImage().isEmpty()) {
@@ -278,11 +307,18 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void addToCart() {
         if (product != null) {
-            // Log để kiểm tra các giá trị trước khi gửi request
+            if (userId == null) {
+                Log.e(TAG, "userId không tồn tại, chuyển về màn hình đăng nhập");
+                Toast.makeText(this, "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
+                redirectToSignin();
+                return;
+            }
+
             Log.d(TAG, "product.getName(): " + product.getName() + ", length: " + (product.getName() != null ? product.getName().length() : "null"));
             Log.d(TAG, "selectedSize: " + selectedSize + ", length: " + (selectedSize != null ? selectedSize.length() : "null"));
 
             CartAddRequest request = new CartAddRequest();
+            request.setUserId(userId); // Thêm userId vào request
             request.setProductId(product.getId());
             request.setQuantity(quantity);
             request.setSize(selectedSize);
@@ -293,7 +329,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 public void onResponse(Call<CartDTO> call, Response<CartDTO> response) {
                     if (!isFinishing()) {
                         if (response.isSuccessful() && response.body() != null) {
-                            // Xử lý chuỗi an toàn trong Toast
+                            CartDTO cart = response.body();
                             String safeProductName = product.getName() != null && product.getName().length() >= 23 ? product.getName().substring(0, 23) : product.getName();
                             String safeSelectedSize = selectedSize != null && selectedSize.length() >= 23 ? selectedSize.substring(0, 23) : selectedSize;
                             String toastMessage = "Đã thêm " + quantity + " " + safeProductName + " (Kích thước: " + safeSelectedSize + ", Giá: " + NumberFormat.getNumberInstance(new Locale("vi", "VN")).format(displayPrice) + " VNĐ) vào giỏ hàng";
@@ -340,6 +376,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
         if (addToCartCall != null && !addToCartCall.isCanceled()) {
             addToCartCall.cancel();
+        }
+        if (userCall != null && !userCall.isCanceled()) {
+            userCall.cancel();
         }
     }
 }

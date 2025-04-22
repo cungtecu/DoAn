@@ -9,9 +9,9 @@ public class OrderResponse {
     private String userName;
     private double totalPrice; // Chuyển BigDecimal thành double cho client
     private String status;
-    private LocalDateTime createdAt; // LocalDateTime có thể cần xử lý đặc biệt nếu API trả về dạng chuỗi
+    private LocalDateTime orderDate; // LocalDateTime có thể cần xử lý đặc biệt nếu API trả về dạng chuỗi
     private List<OrderDetailResponse> orderDetails;
-    private List<PaymentsDTO> payments;
+//    private List<PaymentsDTO> payments;
 
     // Getters và Setters
     public Integer getId() {
@@ -54,12 +54,12 @@ public class OrderResponse {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getOrderDate() {
+        return orderDate;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
     }
 
     public List<OrderDetailResponse> getOrderDetails() {
@@ -70,11 +70,11 @@ public class OrderResponse {
         this.orderDetails = orderDetails;
     }
 
-    public List<PaymentsDTO> getPayments() {
+   /* public List<PaymentsDTO> getPayments() {
         return payments;
     }
 
     public void setPayments(List<PaymentsDTO> payments) {
         this.payments = payments;
-    }
+    }*/
 }

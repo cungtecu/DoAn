@@ -1,97 +1,12 @@
-//package com.example.doan.models;
-//
-//public class Product {
-//    private int id;
-//    private String name;
-//    private String description;
-//    private double price;
-//    private int imageResId; // Path or resource ID to the image
-//    private int categoryId;
-//    private int isDeleted;  // Add this field
-//
-//    public Product() {
-//    }
-//
-//    public Product(int id, String name, String description, double price, int imageResId, int categoryId, int isDeleted) {
-//        this.id = id;
-//        this.name = name;
-//        this.description = description;
-//        this.price = price;
-//        this.imageResId = imageResId;
-//        this.categoryId = categoryId;
-//        this.isDeleted = isDeleted;
-//    }
-//
-//    public Product(int product1, String t, String s) {
-//    }
-//
-//    // Getters and setters for all fields
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
-//
-//    public double getPrice() {
-//        return price;
-//    }
-//
-//    public void setPrice(double price) {
-//        this.price = price;
-//    }
-//
-//    public int getImageResId() {
-//        return imageResId;
-//    }
-//
-//    public void setImageResId(int imageResId) {
-//        this.imageResId = imageResId;
-//    }
-//
-//    public int getCategoryId() {
-//        return categoryId;
-//    }
-//
-//    public void setCategoryId(int categoryId) {
-//        this.categoryId = categoryId;
-//    }
-//
-//    public int getIsDeleted() {
-//        return isDeleted;
-//    }
-//
-//    public void setIsDeleted(int isDeleted) {
-//        this.isDeleted = isDeleted;
-//    }
-//}
-//
 package com.example.doan.models;
 
-import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Product {
     private int id;
     private String name;
     private String description;
-    private BigDecimal price;
+    private double price;
     private String image;
     private Category categories;
     private boolean isDeleted;
@@ -99,7 +14,7 @@ public class Product {
 
     public Product() {}
 
-    public Product(int id, String name, String description, BigDecimal price, String image, Category categories, boolean isDeleted, int stock) {
+    public Product(int id, String name, String description, double price, String image, Category categories, boolean isDeleted, int stock) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -116,8 +31,8 @@ public class Product {
     public void setName(String name) { this.name = name; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal price) { this.price = price; }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }
     public Category getCategories() { return categories; }
@@ -129,5 +44,18 @@ public class Product {
 
     public int getCategoryId() {
         return categories != null ? categories.getId() : -1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
