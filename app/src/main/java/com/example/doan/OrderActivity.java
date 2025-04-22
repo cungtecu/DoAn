@@ -8,27 +8,26 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.doan.api.RetrofitClient;
+import com.example.doan.models.CartDTO;
+import com.example.doan.models.CartItemDTO;
 import com.example.doan.models.Category;
 import com.example.doan.models.Product;
-
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,164 +39,130 @@ public class OrderActivity extends AppCompatActivity {
     private CategoryAdapter categoryAdapter;
     private ProductAdapter productAdapter;
     private ProgressBar progressBar;
-    private EditText searchEditText;
     private List<Category> categoryList;
-    private List<Product> productList;
-    private List<Product> allProducts;
+    private List<Product> productList; // Danh sách sản phẩm của danh mục hiện tại
+    private List<Product> allProducts; // Danh sách tất cả sản phẩm
+    private EditText searchEditText;
+
+    private String authToken;
     private Call<List<Category>> categoryCall;
     private Call<List<Product>> productByCategoryCall;
+    private Call<List<Product>> allProductsCall; // Call để lấy tất cả sản phẩm
+    private Call<CartDTO> cartCall;
+
+    private ImageButton btnHome, btnOrder, btnOther;
+    private ImageView btnCart;
+    private TextView quantityText;
     private int currentCategoryIndex = 0;
-    private ImageButton btnHome, btnCart, btnOther;
-    private ImageView btnBack;
-    private Button btnGoToMain;
+    private boolean isSearching = false; // Trạng thái tìm kiếm
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order);
 
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        authToken = "Bearer " + prefs.getString("token", null);
+        if (authToken == null) {
+            Toast.makeText(this, "Không tìm thấy token, vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // Initialize views
         categoryRecyclerView = findViewById(R.id.category_recycler_view);
         productRecyclerView = findViewById(R.id.product_recycler_view);
         progressBar = findViewById(R.id.progress_bar);
+        quantityText = findViewById(R.id.quantity_text);
         searchEditText = findViewById(R.id.search_edit_text);
-        btnHome = findViewById(R.id.btn_home);
-        btnCart = findViewById(R.id.cartIcon);
-        btnOther = findViewById(R.id.btn_other);
-        btnBack = findViewById(R.id.btn_back);
-        btnGoToMain = findViewById(R.id.btn_go_to_main);
 
-        if (categoryRecyclerView == null || productRecyclerView == null || progressBar == null || searchEditText == null) {
+        if (categoryRecyclerView == null || productRecyclerView == null || progressBar == null || quantityText == null || searchEditText == null) {
             Log.e(TAG, "One or more views not found in layout");
             return;
         }
 
-        if (btnHome == null || btnCart == null || btnOther == null || btnBack == null || btnGoToMain == null) {
-            Log.e(TAG, "One or more navigation buttons not found in layout");
-        }
-
         progressBar.setVisibility(View.VISIBLE);
 
+        // Configure RecyclerViews
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         productRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
+        // Initialize lists
         categoryList = new ArrayList<>();
         productList = new ArrayList<>();
         allProducts = new ArrayList<>();
 
-        allProducts.clear();
-
+        // Initialize adapters
         categoryAdapter = new CategoryAdapter(this, categoryList, this::loadProductsByCategory);
         productAdapter = new ProductAdapter(this, productList);
 
+        // Set adapters
         categoryRecyclerView.setAdapter(categoryAdapter);
         productRecyclerView.setAdapter(productAdapter);
 
-        setupSearch();
-
+        // Load categories and all products
         loadCategories();
+        loadAllProducts(); // Tải tất cả sản phẩm
 
-        highlightCurrentPage();
+        // Initialize buttons
+        btnHome = findViewById(R.id.btn_home);
+        btnOrder = findViewById(R.id.cartIcon);
+        btnOther = findViewById(R.id.btn_other);
+        btnCart = findViewById(R.id.cartIcon);
 
-        // Sự kiện cho các nút điều hướng
-        if (btnBack != null) {
-            btnBack.setOnClickListener(v -> {
-                Intent intent = new Intent(OrderActivity.this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                finish();
-            });
-        }
+        // Set button listeners
+        btnHome.setOnClickListener(view -> {
+            Intent intent = new Intent(OrderActivity.this, MainActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            finish();
+        });
 
-        if (btnHome != null) {
-            btnHome.setOnClickListener(v -> {
-                Intent intent = new Intent(OrderActivity.this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                finish();
-            });
-        }
+        btnOrder.setOnClickListener(view -> {
+            Intent intent = new Intent(OrderActivity.this, CartActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            finish();
+        });
 
-        if (btnCart != null) {
-            btnCart.setOnClickListener(v -> {
-                Intent intent = new Intent(OrderActivity.this, CartActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                finish();
-            });
-        }
+        btnCart.setOnClickListener(view -> {
+            Intent intent = new Intent(OrderActivity.this, CartActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            finish();
+        });
 
-        if (btnOther != null) {
-            btnOther.setOnClickListener(v -> {
-                Intent intent = new Intent(OrderActivity.this, OtherActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                finish();
-            });
-        }
+        btnOther.setOnClickListener(view -> {
+            Intent intent = new Intent(OrderActivity.this, OtherActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            finish();
+        });
 
-        if (btnGoToMain != null) {
-            btnGoToMain.setOnClickListener(v -> {
-                Intent intent = new Intent(OrderActivity.this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                finish();
-            });
-        }
-    }
+        // Load cart quantity
+        loadCartQuantity();
 
-    private void setupSearch() {
+        // Thêm TextWatcher để xử lý tìm kiếm
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                filterProducts(s.toString());
-            }
-        });
-    }
-
-    private String removeDiacritics(String str) {
-        if (str == null) return "";
-        String normalized = Normalizer.normalize(str, Normalizer.Form.NFD);
-        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        return pattern.matcher(normalized).replaceAll("").replace('đ', 'd').replace('Đ', 'D');
-    }
-
-    private void filterProducts(String query) {
-        if (query == null || query.trim().isEmpty()) {
-            productList.clear();
-            if (!allProducts.isEmpty() && !categoryList.isEmpty() && currentCategoryIndex >= 0 && currentCategoryIndex < categoryList.size()) {
-                int currentCategoryId = categoryList.get(currentCategoryIndex).getId();
-                for (Product product : allProducts) {
-                    if (product.getCategoryId() == currentCategoryId) {
-                        productList.add(product);
-                    }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString().trim();
+                if (query.isEmpty()) {
+                    isSearching = false;
+                    loadProductsForNextCategory(); // Quay lại hiển thị sản phẩm theo danh mục
+                } else {
+                    isSearching = true;
+                    productAdapter.updateProducts(allProducts); // Cập nhật adapter với tất cả sản phẩm
+                    productAdapter.filter(query); // Lọc trên tất cả sản phẩm
                 }
             }
-            productAdapter.notifyDataSetChanged();
-            return;
-        }
 
-        String normalizedQuery = removeDiacritics(query).toLowerCase();
-        List<Product> filteredList = new ArrayList<>();
-        for (Product product : allProducts) {
-            String normalizedProductName = removeDiacritics(product.getName()).toLowerCase();
-            if (normalizedProductName.contains(normalizedQuery)) {
-                filteredList.add(product);
-            }
-        }
-
-        productList.clear();
-        productList.addAll(filteredList);
-        productAdapter.notifyDataSetChanged();
-
-        if (filteredList.isEmpty()) {
-            Toast.makeText(this, "Không tìm thấy sản phẩm nào", Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     private void loadCategories() {
@@ -206,7 +171,6 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if (!isFinishing()) {
-                    Log.d(TAG, "API getCategories response code: " + response.code());
                     if (response.isSuccessful() && response.body() != null) {
                         categoryList.clear();
                         categoryList.addAll(response.body());
@@ -214,6 +178,7 @@ public class OrderActivity extends AppCompatActivity {
                         Log.d(TAG, "Loaded " + categoryList.size() + " categories");
                         categoryRecyclerView.setVisibility(View.VISIBLE);
 
+                        // Load products of the first category
                         if (!categoryList.isEmpty()) {
                             currentCategoryIndex = 0;
                             loadProductsForNextCategory();
@@ -222,25 +187,7 @@ public class OrderActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
                         }
                     } else {
-                        Log.e(TAG, "Failed to load categories, code: " + response.code() + ", message: " + response.message());
-                        try {
-                            String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error body";
-                            Log.e(TAG, "Error body: " + errorBody);
-                        } catch (Exception e) {
-                            Log.e(TAG, "Error parsing error body: " + e.getMessage());
-                        }
-                        if (response.code() == 401) {
-                            Toast.makeText(OrderActivity.this, "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.", Toast.LENGTH_LONG).show();
-                            SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                            prefs.edit().remove("token").apply();
-                            Intent intent = new Intent(OrderActivity.this, SigninActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(OrderActivity.this, "Không thể tải danh mục", Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
-                        }
+                        handleApiError(response, "Failed to load categories");
                     }
                 }
             }
@@ -256,12 +203,36 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
+    private void loadAllProducts() {
+        allProductsCall = RetrofitClient.getApiService(this).getProducts();
+        allProductsCall.enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                if (!isFinishing()) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        allProducts.clear();
+                        allProducts.addAll(response.body());
+                        Log.d(TAG, "Loaded " + allProducts.size() + " products (all)");
+                    } else {
+                        handleApiError(response, "Failed to load all products");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+                if (!call.isCanceled() && !isFinishing()) {
+                    Log.e(TAG, "Error loading all products: " + t.getMessage());
+                    Toast.makeText(OrderActivity.this, "Lỗi kết nối khi tải tất cả sản phẩm: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     private void loadProductsForNextCategory() {
         if (currentCategoryIndex >= categoryList.size()) {
+            Toast.makeText(OrderActivity.this, "Hiện tại không có sản phẩm nào để hiển thị", Toast.LENGTH_LONG).show();
             progressBar.setVisibility(View.GONE);
-            if (allProducts.isEmpty()) {
-                Toast.makeText(OrderActivity.this, "Hiện tại không có sản phẩm nào để hiển thị", Toast.LENGTH_LONG).show();
-            }
             return;
         }
 
@@ -275,47 +246,24 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 if (!isFinishing()) {
-                    Log.d(TAG, "API getProductsByCategory response code: " + response.code());
                     if (response.isSuccessful() && response.body() != null) {
-                        List<Product> newProducts = response.body();
-                        for (Product product : newProducts) {
-                            if (!allProducts.contains(product)) {
-                                allProducts.add(product);
-                            }
-                        }
-                        Log.d(TAG, "All products after loading category " + categoryId + ": " + allProducts.toString());
                         productList.clear();
-                        productList.addAll(newProducts);
-                        productAdapter.notifyDataSetChanged();
+                        productList.addAll(response.body());
+                        if (!isSearching) {
+                            productAdapter.updateProducts(productList);
+                        }
                         Log.d(TAG, "Loaded " + productList.size() + " products for category " + categoryId);
                         checkLoadingComplete();
-
-                        currentCategoryIndex++;
-                        loadProductsForNextCategory();
                     } else {
-                        Log.e(TAG, "Failed to load products for category, code: " + response.code() + ", message: " + response.message());
-                        try {
-                            String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error body";
-                            Log.e(TAG, "Error body: " + errorBody);
-                        } catch (Exception e) {
-                            Log.e(TAG, "Error parsing error body: " + e.getMessage());
-                        }
                         if (response.code() == 404) {
                             productList.clear();
-                            productAdapter.notifyDataSetChanged();
+                            if (!isSearching) {
+                                productAdapter.updateProducts(productList);
+                            }
                             currentCategoryIndex++;
                             loadProductsForNextCategory();
-                        } else if (response.code() == 401) {
-                            Toast.makeText(OrderActivity.this, "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.", Toast.LENGTH_LONG).show();
-                            SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                            prefs.edit().remove("token").apply();
-                            Intent intent = new Intent(OrderActivity.this, SigninActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
                         } else {
-                            Toast.makeText(OrderActivity.this, "Không thể tải sản phẩm theo danh mục", Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
+                            handleApiError(response, "Failed to load products for category");
                         }
                     }
                 }
@@ -332,6 +280,55 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
+    private void loadCartQuantity() {
+        cartCall = RetrofitClient.getApiService(this).getCartItems();
+        cartCall.enqueue(new Callback<CartDTO>() {
+            @Override
+            public void onResponse(Call<CartDTO> call, Response<CartDTO> response) {
+                if (!isFinishing()) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        int totalQuantity = 0;
+                        for (CartItemDTO itemDTO : response.body().getCartItems()) {
+                            totalQuantity += itemDTO.getQuantity();
+                        }
+                        quantityText.setText(String.valueOf(totalQuantity));
+                        Log.d(TAG, "Cart quantity updated: " + totalQuantity);
+                    } else {
+                        handleApiError(response, "Failed to load cart items");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartDTO> call, Throwable t) {
+                if (!call.isCanceled() && !isFinishing()) {
+                    Log.e(TAG, "Error loading cart items: " + t.getMessage());
+                    Toast.makeText(OrderActivity.this, "Lỗi kết nối khi tải giỏ hàng: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void handleApiError(Response<?> response, String errorPrefix) {
+        Log.e(TAG, errorPrefix + ", code: " + response.code() + ", message: " + response.message());
+        try {
+            Log.e(TAG, "Error body: " + response.errorBody().string());
+        } catch (Exception e) {
+            Log.e(TAG, "Error parsing error body: " + e.getMessage());
+        }
+        if (response.code() == 401) {
+            Toast.makeText(OrderActivity.this, "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại", Toast.LENGTH_LONG).show();
+            SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+            prefs.edit().remove("token").apply();
+            Intent intent = new Intent(OrderActivity.this, SigninActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(OrderActivity.this, errorPrefix, Toast.LENGTH_SHORT).show();
+        }
+        progressBar.setVisibility(View.GONE);
+    }
+
     private void checkLoadingComplete() {
         if (!categoryList.isEmpty() && !productList.isEmpty()) {
             progressBar.setVisibility(View.GONE);
@@ -339,12 +336,10 @@ public class OrderActivity extends AppCompatActivity {
         }
     }
 
-    private void highlightCurrentPage() {
-        if (btnHome != null && btnCart != null && btnOther != null) {
-            btnHome.setBackgroundColor(Color.TRANSPARENT);
-            btnCart.setBackgroundColor(Color.TRANSPARENT);
-            btnOther.setBackgroundColor(Color.GRAY);
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadCartQuantity();
     }
 
     @Override
@@ -355,6 +350,12 @@ public class OrderActivity extends AppCompatActivity {
         }
         if (productByCategoryCall != null && !productByCategoryCall.isCanceled()) {
             productByCategoryCall.cancel();
+        }
+        if (allProductsCall != null && !allProductsCall.isCanceled()) {
+            allProductsCall.cancel();
+        }
+        if (cartCall != null && !cartCall.isCanceled()) {
+            cartCall.cancel();
         }
     }
 }

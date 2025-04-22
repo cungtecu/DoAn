@@ -11,10 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.doan.api.RetrofitClient;
-import com.example.doan.models.UserProfileResponse;
+import com.example.doan.models.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import java.io.IOException;
 
 public class OtherActivity extends AppCompatActivity {
 
@@ -113,16 +114,11 @@ public class OtherActivity extends AppCompatActivity {
         if (btnLogout != null) {
             btnLogout.setOnClickListener(v -> {
                 Log.d(TAG, "Nhấn nút Đăng Xuất");
-                // Xóa token khỏi SharedPreferences
                 SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.remove("token");
                 editor.apply();
-
-                // Hiển thị thông báo
                 Toast.makeText(OtherActivity.this, "Đã đăng xuất!", Toast.LENGTH_SHORT).show();
-
-                // Chuyển về SigninActivity và xóa stack Activity
                 Intent intent = new Intent(OtherActivity.this, SigninActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -142,7 +138,7 @@ public class OtherActivity extends AppCompatActivity {
                     Intent intent = new Intent(OtherActivity.this, MainActivity.class);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                    finish(); // Thêm finish() để đóng OtherActivity
+                    finish();
                 } catch (Exception e) {
                     Log.e(TAG, "Lỗi khi chuyển sang MainActivity: " + e.getMessage());
                     Toast.makeText(this, "Lỗi: Không thể mở Trang chủ", Toast.LENGTH_SHORT).show();
@@ -175,7 +171,6 @@ public class OtherActivity extends AppCompatActivity {
         if (btnOther != null) {
             btnOther.setOnClickListener(v -> {
                 Log.d(TAG, "Nhấn nút Other");
-                // Đã ở trong OtherActivity, không cần chuyển lại
                 Toast.makeText(this, "Bạn đang ở trang Khác", Toast.LENGTH_SHORT).show();
             });
         } else {
@@ -192,76 +187,70 @@ public class OtherActivity extends AppCompatActivity {
         if (token == null || token.isEmpty()) {
             Toast.makeText(this, "Token không hợp lệ. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
             Intent signinIntent = new Intent(OtherActivity.this, SigninActivity.class);
+            signinIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(signinIntent);
             finish();
             return;
         }
 
-        RetrofitClient.getApiService(this).getUserProfile("Bearer " + token).enqueue(new Callback<UserProfileResponse>() {            @Override
-            public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
-                Log.d(TAG, "Mã phản hồi: " + response.code());
+        RetrofitClient.getApiService(this).getCurrentUser(token).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                Log.d(TAG, "Mã phản hồi: " + response.code() + ", URL: " + call.request().url());
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "Phản hồi thành công từ server");
-                    UserProfileResponse userProfile = response.body();
-                    if (userProfile != null) {
-                        Log.d(TAG, "Thông tin người dùng: id=" + userProfile.getId() +
-                                ", name=" + userProfile.getName() +
-                                ", phone=" + userProfile.getPhone() +
-                                ", email=" + userProfile.getEmail() +
-                                ", points=" + userProfile.getPoints() +
-                                ", role=" + userProfile.getRole());
-
-                        if (userProfile.getName() != null && userProfile.getPhone() != null && userProfile.getEmail() != null) {
-                            try {
-                                Intent intent = new Intent(OtherActivity.this, ProfileActivity.class);
-                                intent.putExtra("name", userProfile.getName());
-                                intent.putExtra("phone", userProfile.getPhone());
-                                intent.putExtra("email", userProfile.getEmail());
-                                intent.putExtra("token", token);
-                                intent.putExtra("points", userProfile.getPoints());
-                                intent.putExtra("role", userProfile.getRole());
-                                startActivity(intent);
-                                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                            } catch (Exception e) {
-                                Log.e(TAG, "Lỗi khi chuyển sang ProfileActivity: " + e.getMessage());
-                                Toast.makeText(OtherActivity.this, "Lỗi: Không thể mở Hồ Sơ", Toast.LENGTH_SHORT).show();
-                            }
+                    User user = response.body();
+                    if (user != null) {
+                        Log.d(TAG, "Thông tin người dùng: id=" + user.getId() +
+                                ", name=" + user.getName() +
+                                ", phone=" + user.getPhone() +
+                                ", email=" + user.getEmail() +
+                                ", points=" + user.getPoints() +
+                                ", role=" + user.getRole());
+                        if (user.getName() != null && user.getPhone() != null && user.getEmail() != null) {
+                            Intent intent = new Intent(OtherActivity.this, ProfileActivity.class);
+                            intent.putExtra("name", user.getName());
+                            intent.putExtra("phone", user.getPhone());
+                            intent.putExtra("email", user.getEmail());
+                            intent.putExtra("token", token);
+                            intent.putExtra("points", user.getPoints());
+                            intent.putExtra("role", user.getRole());
+                            startActivity(intent);
+                            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                         } else {
-                            Log.e(TAG, "Dữ liệu người dùng không đầy đủ: name=" + userProfile.getName() +
-                                    ", phone=" + userProfile.getPhone() +
-                                    ", email=" + userProfile.getEmail());
-                            Toast.makeText(OtherActivity.this, "Lỗi: Dữ liệu người dùng không đầy đủ", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "Dữ liệu người dùng không đầy đủ");
+                            Toast.makeText(OtherActivity.this, "Dữ liệu người dùng không đầy đủ", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Log.e(TAG, "UserProfileResponse không hợp lệ");
-                        Toast.makeText(OtherActivity.this, "Lỗi: Phản hồi từ server không hợp lệ", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Phản hồi từ server không hợp lệ");
+                        Toast.makeText(OtherActivity.this, "Phản hồi từ server không hợp lệ", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Log.e(TAG, "Lấy thông tin thất bại, mã lỗi: " + response.code());
+                    String errorBody = "";
                     try {
-                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "Không có thông tin lỗi";
-                        Log.e(TAG, "Error body: " + errorBody);
-                        if (response.code() == 401) {
-                            Toast.makeText(OtherActivity.this, "Token không hợp lệ. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
-                            Intent signinIntent = new Intent(OtherActivity.this, SigninActivity.class);
-                            startActivity(signinIntent);
-                            finish();
-                        } else if (response.code() == 404) {
-                            Toast.makeText(OtherActivity.this, "Không tìm thấy API. Vui lòng kiểm tra server!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(OtherActivity.this, "Lỗi: " + errorBody, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Log.e(TAG, "Lỗi parse phản hồi: " + e.getMessage());
-                        Toast.makeText(OtherActivity.this, "Lỗi khi lấy thông tin. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                        errorBody = response.errorBody() != null ? response.errorBody().string() : "Không có thông tin lỗi";
+                    } catch (IOException e) {
+                        Log.e(TAG, "Lỗi parse error body: " + e.getMessage());
+                    }
+                    Log.e(TAG, "Lấy thông tin thất bại, mã lỗi: " + response.code() + ", Error body: " + errorBody);
+                    if (response.code() == 401) {
+                        Toast.makeText(OtherActivity.this, "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove("token");
+                        editor.apply();
+                        Intent signinIntent = new Intent(OtherActivity.this, SigninActivity.class);
+                        signinIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(signinIntent);
+                        finish();
+                    } else {
+                        Toast.makeText(OtherActivity.this, "Lỗi: " + errorBody, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<UserProfileResponse> call, Throwable t) {
-                Log.e(TAG, "Lỗi kết nối khi lấy thông tin: " + t.getMessage());
-                Toast.makeText(OtherActivity.this, "Lỗi kết nối. Vui lòng kiểm tra mạng và thử lại!", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e(TAG, "Lỗi kết nối: " + t.getMessage());
+                Toast.makeText(OtherActivity.this, "Lỗi kết nối. Vui lòng kiểm tra mạng!", Toast.LENGTH_SHORT).show();
             }
         });
     }

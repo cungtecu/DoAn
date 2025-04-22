@@ -15,10 +15,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.doan.api.RetrofitClient;
-import com.example.doan.models.UserProfileResponse;
+import com.example.doan.models.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         // Highlight nút hiện tại (MainActivity)
         highlightCurrentPage();
 
-        // Load HomeFragment ngay khi khởi động (chức năng mới)
+        // Load HomeFragment ngay khi khởi động
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, new HomeFragment());
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         // Xử lý sự kiện nhấn vào search_icon
         searchIcon.setOnClickListener(v -> onSearchClicked(v));
 
-        // Xử lý sự kiện nhấn btn_home (đã ở MainActivity, reload HomeFragment)
+        // Xử lý sự kiện nhấn btn_home
         btnHome.setOnClickListener(v -> {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, new HomeFragment());
@@ -107,67 +108,73 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Gọi API để lấy thông tin người dùng
-        RetrofitClient.getApiService(this).getUserProfile("Bearer " + token).enqueue(new Callback<UserProfileResponse>() {            @Override
-            public void onResponse(Call<UserProfileResponse> call, Response<UserProfileResponse> response) {
-                Log.d(TAG, "Mã phản hồi: " + response.code());
+        RetrofitClient.getApiService(this).getCurrentUser(token).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                Log.d(TAG, "Mã phản hồi: " + response.code() + ", URL: " + call.request().url());
                 if (response.isSuccessful()) {
                     Log.d(TAG, "Phản hồi thành công từ server");
-                    UserProfileResponse userProfile = response.body();
-                    if (userProfile != null) {
+                    User user = response.body();
+                    if (user != null) {
                         // Log thông tin người dùng
-                        Log.d(TAG, "Thông tin người dùng: id=" + userProfile.getId() +
-                                ", name=" + userProfile.getName() +
-                                ", phone=" + userProfile.getPhone() +
-                                ", email=" + userProfile.getEmail() +
-                                ", points=" + userProfile.getPoints() +
-                                ", role=" + userProfile.getRole());
+                        Log.d(TAG, "Thông tin người dùng: id=" + user.getId() +
+                                ", name=" + user.getName() +
+                                ", phone=" + user.getPhone() +
+                                ", email=" + user.getEmail() +
+                                ", points=" + user.getPoints() +
+                                ", role=" + user.getRole());
 
                         // Kiểm tra dữ liệu trước khi chuyển
-                        if (userProfile.getName() != null && userProfile.getPhone() != null && userProfile.getEmail() != null) {
+                        if (user.getName() != null && user.getPhone() != null && user.getEmail() != null) {
                             // Chuyển hướng đến ProfileActivity và truyền dữ liệu
                             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                            intent.putExtra("name", userProfile.getName());
-                            intent.putExtra("phone", userProfile.getPhone());
-                            intent.putExtra("email", userProfile.getEmail());
+                            intent.putExtra("name", user.getName());
+                            intent.putExtra("phone", user.getPhone());
+                            intent.putExtra("email", user.getEmail());
                             intent.putExtra("token", token);
-                            intent.putExtra("points", userProfile.getPoints());
-                            intent.putExtra("role", userProfile.getRole());
+                            intent.putExtra("points", user.getPoints());
+                            intent.putExtra("role", user.getRole());
                             startActivity(intent);
                             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                         } else {
-                            Log.e(TAG, "Dữ liệu người dùng không đầy đủ: name=" + userProfile.getName() +
-                                    ", phone=" + userProfile.getPhone() +
-                                    ", email=" + userProfile.getEmail());
+                            Log.e(TAG, "Dữ liệu người dùng không đầy đủ: name=" + user.getName() +
+                                    ", phone=" + user.getPhone() +
+                                    ", email=" + user.getEmail());
                             Toast.makeText(MainActivity.this, "Lỗi: Dữ liệu người dùng không đầy đủ", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Log.e(TAG, "UserProfileResponse không hợp lệ");
+                        Log.e(TAG, "User không hợp lệ");
                         Toast.makeText(MainActivity.this, "Lỗi: Phản hồi từ server không hợp lệ", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Log.e(TAG, "Lấy thông tin thất bại, mã lỗi: " + response.code());
+                    String errorBody = "";
                     try {
-                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "Không có thông tin lỗi";
+                        errorBody = response.errorBody() != null ? response.errorBody().string() : "Không có thông tin lỗi";
                         Log.e(TAG, "Error body: " + errorBody);
-                        if (response.code() == 401) {
-                            Toast.makeText(MainActivity.this, "Token không hợp lệ. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
-                            Intent signinIntent = new Intent(MainActivity.this, SigninActivity.class);
-                            startActivity(signinIntent);
-                            finish();
-                        } else if (response.code() == 404) {
-                            Toast.makeText(MainActivity.this, "Không tìm thấy API. Vui lòng kiểm tra server!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(MainActivity.this, "Lỗi: " + errorBody, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Log.e(TAG, "Lỗi parse phản hồi: " + e.getMessage());
-                        Toast.makeText(MainActivity.this, "Lỗi khi lấy thông tin. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        Log.e(TAG, "Lỗi parse error body: " + e.getMessage());
+                    }
+                    Log.e(TAG, "Lấy thông tin thất bại, mã lỗi: " + response.code());
+                    if (response.code() == 401) {
+                        Toast.makeText(MainActivity.this, "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
+                        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove("token");
+                        editor.apply();
+                        Intent signinIntent = new Intent(MainActivity.this, SigninActivity.class);
+                        signinIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(signinIntent);
+                        finish();
+                    } else if (response.code() == 404) {
+                        Toast.makeText(MainActivity.this, "Không tìm thấy API. Vui lòng kiểm tra server!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Lỗi: " + errorBody, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<UserProfileResponse> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 Log.e(TAG, "Lỗi kết nối khi lấy thông tin: " + t.getMessage());
                 Toast.makeText(MainActivity.this, "Lỗi kết nối. Vui lòng kiểm tra mạng và thử lại!", Toast.LENGTH_SHORT).show();
             }

@@ -1,22 +1,42 @@
 package com.example.doan.models;
 
-public class User {
-    private Integer id;
-    private String name;
-    private String email;
-    private String phone;
-    private String password;
-    private String gender;  // Thêm trường gender
-    private String birthday;  // Thêm trường birthday
-    private Integer points;  // Thêm trường points
+import com.google.gson.annotations.SerializedName;
 
-    // Constructor cũ với 2 tham số (name và email)
+public class User {
+    @SerializedName("id")
+    private Integer id;
+
+    @SerializedName("name")
+    private String name;
+
+    @SerializedName("email")
+    private String email;
+
+    @SerializedName("phone")
+    private String phone;
+
+    @SerializedName("password")
+    private String password;
+
+    @SerializedName("gender")
+    private String gender;
+
+    @SerializedName("birthday")
+    private String birthday;
+
+    @SerializedName("points")
+    private Integer points;
+
+    @SerializedName("role")
+    private String role; // Thêm trường role
+
+    // Constructor với 2 tham số
     public User(String name, String email) {
         this.name = name;
         this.email = email;
     }
 
-    // Constructor mới với 4 tham số (name, email, phone, password)
+    // Constructor với 4 tham số
     public User(String name, String email, String phone, String password) {
         this.name = name;
         this.email = email;
@@ -24,8 +44,9 @@ public class User {
         this.password = password;
     }
 
-    // Constructor đầy đủ với tất cả các tham số (bao gồm gender, birthday, points)
-    public User(Integer id, String name, String email, String phone, String password, String gender, String birthday, Integer points) {
+    // Constructor đầy đủ
+    public User(Integer id, String name, String email, String phone, String password,
+                String gender, String birthday, Integer points, String role) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -34,6 +55,7 @@ public class User {
         this.gender = gender;
         this.birthday = birthday;
         this.points = points;
+        this.role = role;
     }
 
     // Getter methods
@@ -69,6 +91,10 @@ public class User {
         return points;
     }
 
+    public String getRole() {
+        return role;
+    }
+
     // Setter methods
     public void setId(Integer id) {
         this.id = id;
@@ -100,5 +126,9 @@ public class User {
 
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

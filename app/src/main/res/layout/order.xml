@@ -2,45 +2,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f0f0f0">
+    android:background="#ffffff">
 
-    <!-- Thanh tiêu đề -->
-    <RelativeLayout
-        android:id="@+id/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:elevation="4dp"
-        android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:padding="5dp"
-            android:src="@drawable/back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Đặt Hàng"
-            android:textColor="@color/brown"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <!-- Thanh tìm kiếm -->
     <LinearLayout
         android:id="@+id/search_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title_bar"
-        android:orientation="horizontal"
         android:layout_margin="16dp"
         android:background="@drawable/rounded_search"
+        android:orientation="horizontal"
         android:padding="5dp">
 
         <EditText
@@ -48,90 +19,143 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Tìm kiếm Tên món ăn"
-            android:textSize="16sp"
-            android:textColor="@color/black"
             android:background="@android:color/transparent"
-            android:singleLine="true"
+            android:hint="Tìm kiếm Tên món ăn"
             android:imeOptions="actionSearch"
             android:paddingStart="8dp"
-            android:paddingEnd="8dp"/>
+            android:paddingEnd="8dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/search"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/search" />
     </LinearLayout>
 
-    <!-- Main Content (Categories and Product List) -->
-    <LinearLayout
+    <!-- Main Content (Categories, Cart, and Product List) -->
+    <RelativeLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/search_bar_layout"
-        android:layout_above="@id/btn_go_to_main"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:layout_above="@id/bottom_navigation"
+        android:layout_below="@id/search_bar_layout">
 
-        <!-- Categories (Left) -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:layout_margin="8dp"
-            android:backgroundTint="@color/gray"
-            app:cardCornerRadius="15dp">
+            android:orientation="horizontal"
+            android:weightSum="1">
 
+            <!-- Categories and Cart (Left) -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="0.25"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/category_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:gravity="center"
-                    android:text="Danh Mục"
-                    android:textColor="@color/brown"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/category_recycler_view"
+                <!-- Categories CardView -->
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:maxHeight="300dp"
-                    android:minHeight="100dp"
-                    android:padding="8dp" />
+                    android:layout_weight="0.85"
+                    android:backgroundTint="@color/gray"
+                    app:cardCornerRadius="15dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/category_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:gravity="center"
+                            android:text="Danh Mục"
+                            android:textColor="@color/brown"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/category_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:maxHeight="200dp"
+                            android:minHeight="100dp"
+                            android:padding="8dp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Cart CardView -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cart_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="0.15"
+                    android:backgroundTint="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/cart_icon"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="8dp"
+                            android:src="@drawable/ic_cart3" />
+
+                        <TextView
+                            android:id="@+id/quantity_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/blackgreen"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
-        <!-- Product List (Right) -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.75"
-            android:layout_margin="8dp"
-            android:backgroundTint="@color/gray"
-            app:cardCornerRadius="15dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Product List (Right) -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/product_recycler_view"
+                android:layout_margin="8dp"
+                android:layout_weight="0.75"
+                android:backgroundTint="@color/gray"
+                app:cardCornerRadius="15dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:padding="8dp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/product_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -139,68 +163,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="gone" />
-    </LinearLayout>
-
-    <!-- Nút mới: Quay về Trang Chủ -->
-    <Button
-        android:id="@+id/btn_go_to_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/cart_layout"
-        android:layout_margin="8dp"
-        android:background="@drawable/round_banner"
-        android:backgroundTint="@color/blackgreen"
-        android:text="QUAY VỀ TRANG CHỦ"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <!-- Cart Layout (Bottom) -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cart_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/bottom_navigation"
-        android:layout_margin="8dp"
-        android:backgroundTint="@color/white"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="4dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:orientation="horizontal"
-            android:padding="16dp">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dp"
-                android:src="@drawable/ic_cart2"/>
-
-            <TextView
-                android:id="@+id/quantity_text"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="0"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/checkout_button"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="@color/blackgreen"
-                android:background="@drawable/round_banner"
-                android:layout_marginRight="16dp"
-                android:text="Thanh toán"
-                android:textColor="@color/white" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 
     <!-- Bottom Navigation -->
     <LinearLayout
@@ -216,7 +179,7 @@
 
         <ImageButton
             android:id="@+id/btn_home"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/blackgreen"
@@ -226,10 +189,21 @@
             android:src="@drawable/ic_home" />
 
         <ImageButton
-            android:id="@+id/cartIcon"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_placeholder_1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/blackgreen"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="14dp"
+            android:src="@android:drawable/ic_menu_help"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/cartIcon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/blackgreen"
             android:clickable="true"
@@ -240,8 +214,20 @@
             android:src="@drawable/ic_cart" />
 
         <ImageButton
+            android:id="@+id/btn_placeholder_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blackgreen"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="14dp"
+            android:src="@android:drawable/ic_menu_help"
+            android:visibility="gone" />
+
+        <ImageButton
             android:id="@+id/btn_other"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/blackgreen"
