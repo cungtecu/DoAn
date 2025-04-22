@@ -81,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Xử lý sự kiện nhấn btn_cart
         btnCart.setOnClickListener(v -> {
-            Intent cartIntent = new Intent(MainActivity.this, CartActivity.class);
-            cartIntent.putExtra("token", token);
-            startActivity(cartIntent);
+            Intent orderIntent = new Intent(MainActivity.this, OrderActivity.class);
+            orderIntent.putExtra("token", token);
+            startActivity(orderIntent);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             finish();
         });

@@ -105,10 +105,10 @@ public class SigninActivity extends AppCompatActivity {
                     editor.apply();
 
                     // Chuyển sang OrderActivity
-                    Intent intent = new Intent(SigninActivity.this, OrderActivity.class);
+                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
                     intent.putExtra("token", loginResponse.getToken());
                     intent.putExtra("phone", loginResponse.getPhone());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Xóa stack activity
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 } else {
