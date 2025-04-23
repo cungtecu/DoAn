@@ -2,7 +2,6 @@ package com.example.doan;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,13 +13,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.example.doan.api.RetrofitClient;
 import com.example.doan.models.CartDTO;
 import com.example.doan.models.CartItemDTO;
@@ -32,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrderActivity extends AppCompatActivity {
+public class OrderActivity extends BaseActivity {
 
     private static final String TAG = "OrderActivity";
     private RecyclerView categoryRecyclerView, productRecyclerView;
@@ -40,26 +35,23 @@ public class OrderActivity extends AppCompatActivity {
     private ProductAdapter productAdapter;
     private ProgressBar progressBar;
     private List<Category> categoryList;
-    private List<Product> productList; // Danh sách sản phẩm của danh mục hiện tại
-    private List<Product> allProducts; // Danh sách tất cả sản phẩm
+    private List<Product> productList;
+    private List<Product> allProducts;
     private EditText searchEditText;
-
     private String authToken;
     private Call<List<Category>> categoryCall;
     private Call<List<Product>> productByCategoryCall;
-    private Call<List<Product>> allProductsCall; // Call để lấy tất cả sản phẩm
+    private Call<List<Product>> allProductsCall;
     private Call<CartDTO> cartCall;
-
-    private ImageButton btnHome, btnOther;
-    private ImageView btnCart;
     private TextView quantityText;
+
+    private ImageView btnCart;
     private int currentCategoryIndex = 0;
-    private boolean isSearching = false; // Trạng thái tìm kiếm
+    private boolean isSearching = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.order);
 
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         authToken = "Bearer " + prefs.getString("token", null);
@@ -75,6 +67,7 @@ public class OrderActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         quantityText = findViewById(R.id.quantity_text);
         searchEditText = findViewById(R.id.search_edit_text);
+        btnCart = findViewById(R.id.cart_icon);
 
         if (categoryRecyclerView == null || productRecyclerView == null || progressBar == null || quantityText == null || searchEditText == null) {
             Log.e(TAG, "One or more views not found in layout");
@@ -104,36 +97,15 @@ public class OrderActivity extends AppCompatActivity {
         loadCategories();
         loadAllProducts();
 
-        // Initialize buttons
-        btnHome = findViewById(R.id.btn_home);
-        btnOther = findViewById(R.id.btn_other);
-        btnCart = findViewById(R.id.cart_icon);
-
-        // Set button listeners
-        btnHome.setOnClickListener(view -> {
-            Intent intent = new Intent(OrderActivity.this, MainActivity.class);
-            startActivity(intent);
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            finish();
-        });
+        // Load cart quantity
+        loadCartQuantity();
 
         btnCart.setOnClickListener(view -> {
             Intent intent = new Intent(OrderActivity.this, CartActivity.class);
-            intent.putExtra("token", authToken); // Truyền token
             startActivity(intent);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             finish();
         });
-
-        btnOther.setOnClickListener(view -> {
-            Intent intent = new Intent(OrderActivity.this, OtherActivity.class);
-            startActivity(intent);
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            finish();
-        });
-
-        // Load cart quantity
-        loadCartQuantity();
 
         // Thêm TextWatcher để xử lý tìm kiếm
         searchEditText.addTextChangedListener(new TextWatcher() {
@@ -158,6 +130,11 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.order;
+    }
+
     private void loadCategories() {
         categoryCall = RetrofitClient.getApiService(this).getCategories();
         categoryCall.enqueue(new Callback<List<Category>>() {
@@ -171,7 +148,6 @@ public class OrderActivity extends AppCompatActivity {
                         Log.d(TAG, "Loaded " + categoryList.size() + " categories");
                         categoryRecyclerView.setVisibility(View.VISIBLE);
 
-                        // Load products of the first category
                         if (!categoryList.isEmpty()) {
                             currentCategoryIndex = 0;
                             loadProductsForNextCategory();

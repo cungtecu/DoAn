@@ -681,7 +681,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                             String safeSelectedSize = selectedSize != null && selectedSize.length() >= 23 ? selectedSize.substring(0, 23) : selectedSize;
                             String toastMessage = "Đã thêm " + quantity + " " + safeProductName + " (Kích thước: " + safeSelectedSize + ", Giá: " + NumberFormat.getNumberInstance(new Locale("vi", "VN")).format(displayPrice) + " VNĐ) vào giỏ hàng";
                             Toast.makeText(ProductDetailActivity.this, toastMessage, Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(ProductDetailActivity.this, CartActivity.class));
+                            startActivity(new Intent(ProductDetailActivity.this, OrderActivity.class));
                             finish();
                         } else {
                             Log.e(TAG, "Failed to add to cart, code: " + response.code());

@@ -125,7 +125,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginBottom="18dp"
                             android:gravity="center"
                             android:text="0"
                             android:textColor="@color/blackgreen"
@@ -170,18 +171,18 @@
     <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/bottom_navigation"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/blackgreen"
-        android:gravity="center"
         android:orientation="horizontal"
+        android:background="@color/blackgreen"
+        android:weightSum="5"
         android:padding="5dp"
-        android:weightSum="3">
+        android:gravity="center">
 
         <ImageButton
             android:id="@+id/btn_home"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/blackgreen"
@@ -189,53 +190,45 @@
             android:focusable="true"
             android:padding="14dp"
             android:src="@drawable/ic_home" />
-
         <ImageButton
-            android:id="@+id/btn_placeholder_1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@color/blackgreen"
             android:clickable="true"
             android:focusable="true"
             android:padding="14dp"
-            android:src="@android:drawable/ic_menu_help"
-            android:visibility="gone" />
+            />
 
         <ImageButton
             android:id="@+id/cartIcon"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/blackgreen"
-            android:clickable="true"
-            android:contentDescription="Cart Icon"
-            android:focusable="true"
             android:padding="10dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_cart" />
-
+            android:background="@color/blackgreen"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_cart"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="Cart Icon"
+            android:scaleType="centerInside"/>
         <ImageButton
-            android:id="@+id/btn_placeholder_2"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@color/blackgreen"
             android:clickable="true"
             android:focusable="true"
             android:padding="14dp"
-            android:src="@android:drawable/ic_menu_help"
-            android:visibility="gone" />
-
+            />
         <ImageButton
             android:id="@+id/btn_other"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:padding="14dp"
             android:background="@color/blackgreen"
             android:clickable="true"
             android:focusable="true"
-            android:padding="14dp"
-            android:src="@drawable/ic_other" />
+            android:src="@drawable/ic_other"/>
     </LinearLayout>
 </RelativeLayout>

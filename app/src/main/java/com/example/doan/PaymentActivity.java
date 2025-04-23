@@ -384,3 +384,67 @@
 //        }
 //    }
 //}
+package com.example.doan;
+
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+//
+//import android.content.Intent;
+//import android.content.SharedPreferences;
+//import android.graphics.Color;
+//import android.os.Bundle;
+//import android.util.Log;
+//import android.view.View;
+//import android.widget.Button;
+//import android.widget.CheckBox;
+//import android.widget.ImageView;
+//import android.widget.TableLayout;
+//import android.widget.TableRow;
+//import android.widget.TextView;
+//import android.widget.Toast;
+//import androidx.appcompat.app.AlertDialog;
+//import androidx.appcompat.app.AppCompatActivity;
+//import com.example.doan.api.RetrofitClient;
+//import com.example.doan.models.LoyaltyPointDTO;
+//import com.example.doan.models.OrderConfirmRequest;
+//import com.example.doan.models.OrderDetailResponse;
+//import com.example.doan.models.OrderResponse;
+//import org.threeten.bp.LocalDateTime;
+//import retrofit2.Call;
+//import retrofit2.Callback;
+//import retrofit2.Response;
+//import java.io.IOException;
+//import java.text.NumberFormat;
+//import java.util.List;
+//import java.util.Locale;
+//
+public class PaymentActivity extends AppCompatActivity {
+//
+//    private static final String TAG = "PaymentActivity";
+//    private static final String PREFS_NAME = "MyAppPrefs";
+//    private static final int SIGNIN_REQUEST_CODE = 1002;
+//    private TextView tvAddedAt, tvTotalPriceTemp, tvSalePrice, tvTotalPrice, tvPoints, dripsPoints;
+//    private TableLayout productListTable;
+//    private Button btnOrderCart;
+//    private ImageView btnBack;
+//    private TextView btnAddProduct;
+//    private CheckBox cbUsePoints;
+//    private Call<OrderResponse> orderCall;
+//    private Call<List<LoyaltyPointDTO>> loyaltyPointCall;
+//    private String orderId;
+//    private String selectedPaymentMethod = "CASH";
+//    private double totalPrice = 0;
+//    private int availableDrips = 0;
+//    private int usedDrips = 0;
+//    private boolean isDripsUsed = false;
+//    private int userId;
+//
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_payment);
+
+    }
+}

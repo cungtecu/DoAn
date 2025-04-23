@@ -107,7 +107,8 @@ public class CartActivity extends AppCompatActivity {
             }
             if (isLoggedIn()) {
                 checkout();
-            } else {
+            }
+            else {
                 redirectToSignin();
             }
         });
@@ -331,7 +332,7 @@ public class CartActivity extends AppCompatActivity {
         NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(0);
-        totalPriceTextView.setText("Tổng Tạm Tính: " + numberFormat.format(totalPrice) + " VNĐ");
+        totalPriceTextView.setText( numberFormat.format(totalPrice) + " VNĐ");
     }
 
     private void checkout() {
@@ -349,7 +350,7 @@ public class CartActivity extends AppCompatActivity {
                         cartItems.clear();
                         cartAdapter.notifyDataSetChanged();
                         updateTotalPriceAndQuantity();
-                        Intent intent = new Intent(CartActivity.this, MainActivity.class);
+                        Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
                         intent.putExtra("orderId", order.getId());
                         startActivity(intent);
                         finish();
