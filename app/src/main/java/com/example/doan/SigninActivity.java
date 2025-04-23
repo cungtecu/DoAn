@@ -24,6 +24,7 @@ import java.io.IOException;
 public class SigninActivity extends AppCompatActivity {
 
     private static final String TAG = "SigninActivity";
+    private static final String PREFS_NAME = "MyAppPrefs";
     private EditText edtPhone, edtPassword;
     private ImageView btnTogglePassword;
     private TextView txtForgetPassword, txtSignup, btnSignin;
@@ -95,16 +96,17 @@ public class SigninActivity extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
-                    Log.d(TAG, "Đăng nhập thành công: token=" + loginResponse.getToken());
+                    Log.d(TAG, "Đăng nhập thành công: token=" + loginResponse.getToken() + ", phone=" + loginResponse.getPhone());
                     Toast.makeText(SigninActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
 
-                    // Lưu token vào SharedPreferences
-                    SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                    // Lưu token và phone vào SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("token", loginResponse.getToken());
+                    editor.putString("phone", loginResponse.getPhone());
                     editor.apply();
 
-                    // Chuyển sang OrderActivity
+                    // Chuyển sang MainActivity
                     Intent intent = new Intent(SigninActivity.this, MainActivity.class);
                     intent.putExtra("token", loginResponse.getToken());
                     intent.putExtra("phone", loginResponse.getPhone());
@@ -121,7 +123,7 @@ public class SigninActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 btnSignin.setEnabled(true);
                 Log.e(TAG, "Lỗi kết nối: " + t.getMessage());
-                Toast.makeText(SigninActivity.this, "Lỗi kết nối. Vui lòng kiểm tra mạng!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SigninActivity.this, "Lỗi kết nối: " + t.getMessage() + ". Vui lòng kiểm tra mạng!", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -130,14 +132,16 @@ public class SigninActivity extends AppCompatActivity {
         try {
             String errorBody = response.errorBody() != null ? response.errorBody().string() : "Không có thông tin lỗi";
             Log.e(TAG, "Đăng nhập thất bại: " + response.code() + " - " + errorBody);
-            if (response.code() == 401) {
+            if (errorBody.contains("ERR_NGROK_8012")) {
+                Toast.makeText(this, "Không thể kết nối đến server. Vui lòng yêu cầu bạn mình kiểm tra Spring Boot và ngrok!", Toast.LENGTH_LONG).show();
+            } else if (response.code() == 401) {
                 Toast.makeText(this, "Sai số điện thoại hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Đăng nhập thất bại: " + errorBody, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Đăng nhập thất bại: " + errorBody, Toast.LENGTH_LONG).show();
             }
         } catch (IOException e) {
             Log.e(TAG, "Lỗi parse lỗi: " + e.getMessage());
-            Toast.makeText(this, "Lỗi không xác định. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Lỗi không xác định. Vui lòng thử lại!", Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -38,11 +38,11 @@ public class ProductDetailActivity extends AppCompatActivity {
     private String authToken;
     private Call<Product> productCall;
     private Call<CartDTO> addToCartCall;
-    private Call<User> userCall; // Thêm Call để lấy userId
+    private Call<User> userCall;
     private boolean isImageZoomed = false;
     private double basePrice;
     private double displayPrice;
-    private Integer userId; // Thêm biến để lưu userId
+    private Integer userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +93,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             return;
         }
 
-        // Lấy userId ngay khi activity khởi tạo
         fetchUserId();
 
-        // Kiểm tra đăng nhập trước khi tải sản phẩm
         if (isLoggedIn()) {
             loadProductFromApi(productId);
         } else {
@@ -318,7 +316,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             Log.d(TAG, "selectedSize: " + selectedSize + ", length: " + (selectedSize != null ? selectedSize.length() : "null"));
 
             CartAddRequest request = new CartAddRequest();
-            request.setUserId(userId); // Thêm userId vào request
+            request.setUserId(userId);
             request.setProductId(product.getId());
             request.setQuantity(quantity);
             request.setSize(selectedSize);
@@ -330,10 +328,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                     if (!isFinishing()) {
                         if (response.isSuccessful() && response.body() != null) {
                             CartDTO cart = response.body();
-                            String safeProductName = product.getName() != null && product.getName().length() >= 23 ? product.getName().substring(0, 23) : product.getName();
-                            String safeSelectedSize = selectedSize != null && selectedSize.length() >= 23 ? selectedSize.substring(0, 23) : selectedSize;
-                            String toastMessage = "Đã thêm " + quantity + " " + safeProductName + " (Kích thước: " + safeSelectedSize + ", Giá: " + NumberFormat.getNumberInstance(new Locale("vi", "VN")).format(displayPrice) + " VNĐ) vào giỏ hàng";
-                            Toast.makeText(ProductDetailActivity.this, toastMessage, Toast.LENGTH_LONG).show();
                             startActivity(new Intent(ProductDetailActivity.this, CartActivity.class));
                             finish();
                         } else {

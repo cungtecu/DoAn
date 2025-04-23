@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +21,7 @@ import com.example.doan.models.CartDTO;
 import com.example.doan.models.CartItem;
 import com.example.doan.models.CartItemDTO;
 import com.example.doan.models.CartUpdateRequest;
-import com.example.doan.models.OrderResponse;
+import com.example.doan.models.CheckoutResponse;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -40,10 +42,11 @@ public class CartActivity extends AppCompatActivity {
     private TextView totalPriceTextView;
     private Button checkoutButton;
     private ImageButton btnCancel;
+    private ProgressBar progressBar;
 
     private String authToken;
     private Call<CartDTO> cartCall;
-    private Call<OrderResponse> checkoutCall;
+    private Call<CheckoutResponse> checkoutCall;
     private Call<Void> removeCall;
 
     @Override
@@ -63,6 +66,7 @@ public class CartActivity extends AppCompatActivity {
         totalPriceTextView = findViewById(R.id.total_price);
         checkoutButton = findViewById(R.id.btn_checkout);
         btnCancel = findViewById(R.id.btn_cancel);
+        progressBar = findViewById(R.id.progress_bar);
 
         if (cartRecyclerView == null) {
             Log.e(TAG, "RecyclerView not found in layout");
@@ -100,13 +104,24 @@ public class CartActivity extends AppCompatActivity {
             redirectToSignin();
         }
 
+        // Kiểm tra trạng thái thanh toán
+        String paymentStatus = getIntent().getStringExtra("payment_status");
+        if ("success".equals(paymentStatus)) {
+            Toast.makeText(this, "Thanh toán thành công!", Toast.LENGTH_LONG).show();
+            loadCartItems(); // Làm mới giỏ hàng
+        } else if ("failed".equals(paymentStatus)) {
+            Toast.makeText(this, "Thanh toán thất bại!", Toast.LENGTH_LONG).show();
+        }
+
         checkoutButton.setOnClickListener(v -> {
+            Log.d(TAG, "Nút Thanh toán được nhấn");
             if (cartItems.isEmpty()) {
                 Toast.makeText(this, "Giỏ hàng trống!", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (isLoggedIn()) {
-                checkout();
+                Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
+                startActivity(intent);
             } else {
                 redirectToSignin();
             }
@@ -119,9 +134,19 @@ public class CartActivity extends AppCompatActivity {
             finish();
         });
 
-        YoYo.with(Techniques.FadeIn)
-                .duration(700)
-                .playOn(cartRecyclerView);
+        // Tạm thời tắt animation để kiểm tra ANR
+        // YoYo.with(Techniques.FadeIn)
+        //     .duration(700)
+        //     .playOn(cartRecyclerView);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Làm mới giỏ hàng khi quay lại từ OrderSuccessActivity
+        if (isLoggedIn()) {
+            loadCartItems();
+        }
     }
 
     private boolean isLoggedIn() {
@@ -274,7 +299,7 @@ public class CartActivity extends AppCompatActivity {
 
         int position = cartItems.indexOf(item);
         if (position == -1) {
-            Log.e(TAG, "Item not found in cartItems list: " + item.getProductId());
+            Log.e(TAG, "ItemAGC not found in cartItems list: " + item.getProductId());
             Toast.makeText(this, "Không thể xóa sản phẩm: Không tìm thấy trong giỏ hàng", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -289,7 +314,6 @@ public class CartActivity extends AppCompatActivity {
                         cartAdapter.notifyItemRemoved(position);
                         cartAdapter.notifyItemRangeChanged(position, cartItems.size());
                         updateTotalPriceAndQuantity();
-                        Toast.makeText(CartActivity.this, "Đã xóa sản phẩm khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
                     } else {
                         Log.e(TAG, "Failed to remove cart item, code: " + response.code());
                         try {
@@ -335,24 +359,37 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void checkout() {
+        Log.d(TAG, "Bắt đầu quá trình checkout");
         CartCheckoutRequest request = new CartCheckoutRequest();
-        request.setPaymentMethod("CASH");
+        request.setPaymentMethod("VNPAY");
+
+        // Hiển thị ProgressBar
+        progressBar.setVisibility(View.VISIBLE);
+        checkoutButton.setEnabled(false); // Vô hiệu hóa nút để tránh nhấn liên tục
 
         checkoutCall = RetrofitClient.getApiService(this).checkout(request);
-        checkoutCall.enqueue(new Callback<OrderResponse>() {
+        checkoutCall.enqueue(new Callback<CheckoutResponse>() {
             @Override
-            public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+            public void onResponse(Call<CheckoutResponse> call, Response<CheckoutResponse> response) {
+                // Ẩn ProgressBar
+                progressBar.setVisibility(View.GONE);
+                checkoutButton.setEnabled(true);
+
                 if (!isFinishing()) {
+                    Log.d(TAG, "Nhận phản hồi từ API checkout, code: " + response.code());
                     if (response.isSuccessful() && response.body() != null) {
-                        OrderResponse order = response.body();
-                        Toast.makeText(CartActivity.this, "Đặt hàng thành công! Mã đơn hàng: " + order.getId(), Toast.LENGTH_LONG).show();
-                        cartItems.clear();
-                        cartAdapter.notifyDataSetChanged();
-                        updateTotalPriceAndQuantity();
-                        Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
-                        intent.putExtra("orderId", order.getId());
-                        startActivity(intent);
-                        finish();
+                        CheckoutResponse checkoutResponse = response.body();
+                        String paymentUrl = checkoutResponse.getPaymentUrl();
+                        Log.d(TAG, "Payment URL: " + paymentUrl);
+                        if (paymentUrl != null) {
+                            Toast.makeText(CartActivity.this, "Đang chuyển hướng đến trang thanh toán...", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
+                            intent.putExtra("payment_url", paymentUrl);
+                            startActivity(intent);
+                        } else {
+                            Log.e(TAG, "Payment URL là null");
+                            Toast.makeText(CartActivity.this, "Không nhận được URL thanh toán!", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Log.e(TAG, "Failed to checkout, code: " + response.code());
                         try {
@@ -364,19 +401,23 @@ public class CartActivity extends AppCompatActivity {
                                 Toast.makeText(CartActivity.this, "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
                                 redirectToSignin();
                             } else {
-                                Toast.makeText(CartActivity.this, "Không thể đặt hàng: " + errorBody, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CartActivity.this, "Không thể thanh toán: " + errorBody, Toast.LENGTH_SHORT).show();
                             }
                         } catch (IOException e) {
                             Log.e(TAG, "Error parsing error body: " + e.getMessage());
-                            Toast.makeText(CartActivity.this, "Lỗi không xác định khi đặt hàng", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CartActivity.this, "Lỗi không xác định khi thanh toán", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<OrderResponse> call, Throwable t) {
+            public void onFailure(Call<CheckoutResponse> call, Throwable t) {
                 if (!call.isCanceled() && !isFinishing()) {
+                    // Ẩn ProgressBar
+                    progressBar.setVisibility(View.GONE);
+                    checkoutButton.setEnabled(true);
+
                     Log.e(TAG, "Error during checkout: " + t.getMessage());
                     Toast.makeText(CartActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }

@@ -84,7 +84,7 @@ public interface ApiService {
     Call<Void> removeFromCart(@Header("Authorization") String token, @Query("productId") int productId);
 
     @POST("api/cart/checkout")
-    Call<OrderResponse> checkout(@Body CartCheckoutRequest request);
+    Call<CheckoutResponse> checkout(@Body CartCheckoutRequest request);
 
     @POST("api/cart/add")
     Call<CartDTO> addToCart(@Body CartAddRequest request);

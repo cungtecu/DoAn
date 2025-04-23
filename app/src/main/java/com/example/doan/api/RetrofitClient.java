@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import com.example.doan.BuildConfig;
 import java.util.concurrent.TimeUnit;
 import java.io.IOException;
 import okhttp3.OkHttpClient;
@@ -35,9 +36,7 @@ public class RetrofitClient {
                         String token = prefs.getString("token", null);
                         Log.d(TAG, "Interceptor: Token = " + token);
                         Request.Builder requestBuilder = originalRequest.newBuilder();
-                        // Xóa header Authorization cũ để tránh trùng lặp
                         requestBuilder.removeHeader("Authorization");
-                        // Bỏ qua kiểm tra token cho endpoint đăng nhập
                         if (!originalRequest.url().toString().endsWith("/api/users/login")) {
                             if (token != null && !token.isEmpty()) {
                                 String authHeader = "Bearer " + token;
@@ -60,8 +59,10 @@ public class RetrofitClient {
                     .addInterceptor(logging)
                     .build();
 
+            // Thêm log để kiểm tra base URL
+            Log.d(TAG, "Base URL: " + BuildConfig.BASE_URL);
             retrofitWithGson = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:9090/")
+                    .baseUrl(BuildConfig.BASE_URL)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
@@ -85,7 +86,6 @@ public class RetrofitClient {
                         String token = prefs.getString("token", null);
                         Log.d(TAG, "Interceptor: Token = " + token);
                         Request.Builder requestBuilder = originalRequest.newBuilder();
-                        // Xóa header Authorization cũ để tránh trùng lặp
                         requestBuilder.removeHeader("Authorization");
                         if (token != null && !token.isEmpty()) {
                             String authHeader = "Bearer " + token;
@@ -93,7 +93,6 @@ public class RetrofitClient {
                             Log.d(TAG, "Interceptor: Added Authorization = " + authHeader);
                         } else {
                             Log.w(TAG, "Interceptor: No token found in SharedPreferences");
-                            // Chuyển người dùng về màn hình đăng nhập nếu token không tồn tại
                             if (context != null) {
                                 Intent intent = new Intent(context, com.example.doan.SigninActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -108,8 +107,10 @@ public class RetrofitClient {
                     .addInterceptor(logging)
                     .build();
 
+            // Thêm log để kiểm tra base URL
+            Log.d(TAG, "Base URL: " + BuildConfig.BASE_URL);
             retrofitForText = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:9090/")
+                    .baseUrl(BuildConfig.BASE_URL)
                     .client(okHttpClient)
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())

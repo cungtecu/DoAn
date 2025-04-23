@@ -1,19 +1,17 @@
 package com.example.doan.models;
 
-import org.threeten.bp.LocalDateTime;
 import java.util.List;
 
 public class OrderResponse {
     private Integer id;
     private Integer userId;
     private String userName;
-    private double totalPrice; // Chuyển BigDecimal thành double cho client
+    private double totalPrice;
     private String status;
-    private LocalDateTime orderDate; // LocalDateTime có thể cần xử lý đặc biệt nếu API trả về dạng chuỗi
+    private String orderDate;
     private List<OrderDetailResponse> orderDetails;
-//    private List<PaymentsDTO> payments;
+    private List<PaymentResponse> payments;
 
-    // Getters và Setters
     public Integer getId() {
         return id;
     }
@@ -54,11 +52,11 @@ public class OrderResponse {
         this.status = status;
     }
 
-    public LocalDateTime getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDateTime orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -70,11 +68,11 @@ public class OrderResponse {
         this.orderDetails = orderDetails;
     }
 
-   /* public List<PaymentsDTO> getPayments() {
+    public List<PaymentResponse> getPayments() {
         return payments;
     }
 
-    public void setPayments(List<PaymentsDTO> payments) {
+    public void setPayments(List<PaymentResponse> payments) {
         this.payments = payments;
-    }*/
+    }
 }
