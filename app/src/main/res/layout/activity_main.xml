@@ -65,7 +65,6 @@
         android:orientation="horizontal"
         android:background="@color/blackgreen"
         android:weightSum="5"
-        android:padding="5dp"
         android:gravity="center">
 
         <ImageButton

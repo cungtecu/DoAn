@@ -62,12 +62,12 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:cardCornerRadius="20dp"
             app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -153,6 +153,55 @@
 
                     <ImageView
                         android:id="@+id/icon_arrow_setting"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/arrow_right" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/his_order_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:paddingBottom="12dp"
+                    android:text="Đơn hàng"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/btn_his_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/text_view_background"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/icon_his_oder"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_his_oder" />
+
+                    <TextView
+                        android:id="@+id/txt_his_oder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_toEndOf="@id/icon_his_oder"
+                        android:text="Lịch sử đơn hàng"
+                        android:textColor="@color/brown"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/icon_arrow_his_oder"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_alignParentEnd="true"
@@ -247,55 +296,6 @@
                         android:src="@drawable/arrow_right" />
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/his_order_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:paddingBottom="12dp"
-                    android:text="Đơn hàng"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <RelativeLayout
-                    android:id="@+id/btn_his_order"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/text_view_background"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:id="@+id/icon_his_oder"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/icon_his_oder" />
-
-                    <TextView
-                        android:id="@+id/txt_his_oder"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="16dp"
-                        android:layout_toEndOf="@id/icon_his_oder"
-                        android:text="Lịch sử đơn hàng"
-                        android:textColor="@color/brown"
-                        android:textSize="16sp" />
-
-                    <ImageView
-                        android:id="@+id/icon_arrow_his_oder"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/arrow_right" />
-                </RelativeLayout>
 
                 <!-- Logout Button -->
                 <Button
@@ -323,7 +323,6 @@
         android:background="@color/blackgreen"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="5dp"
         android:weightSum="5">
 
         <ImageButton

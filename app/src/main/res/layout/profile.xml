@@ -14,8 +14,8 @@
 
             <ImageView
                 android:id="@+id/btn_back"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/back" />
 
@@ -34,8 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/header_background"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -65,6 +64,7 @@
                         android:drawableLeft="@drawable/medal1"
                         android:drawablePadding="5dp"
                         android:textStyle="bold"
+                        android:gravity="center"
                         android:layout_gravity="center"
                         android:text="DRIPS:"
                         android:textSize="20sp" />
@@ -87,13 +87,15 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardElevation="2dp">
+                android:layout_height="700dp"
+                app:cardElevation="2dp"
+                app:cardCornerRadius="20dp">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@drawable/round_top">
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -103,6 +105,7 @@
                             android:layout_height="wrap_content"
                             android:text="Thông Người Dùng"
                             android:gravity="center"
+                            android:layout_marginBottom="8dp"
                             android:paddingBottom="10dp"
                             android:textColor="@color/brown"
                             android:textSize="24sp"
@@ -123,12 +126,14 @@
                         android:layout_height="wrap_content"
                         android:text="Tên người dùng"
                         android:textSize="16sp"
-                        android:textColor="@color/brown"/>
+                        android:textColor="@color/silver"/>
                     <TextView
                         android:id="@+id/txtprofile_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
+                        android:textSize="20dp"
+                        android:textColor="@color/blackgreen"
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
@@ -136,12 +141,14 @@
                         android:layout_height="wrap_content"
                         android:text="Email"
                         android:textSize="16sp"
-                        android:textColor="@color/brown"/>
+                        android:textColor="@color/silver"/>
                     <TextView
                         android:id="@+id/txtprofile_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
+                        android:textSize="20dp"
+                        android:textColor="@color/blackgreen"
                         android:layout_marginBottom="8dp"/>
 
                     <TextView
@@ -149,12 +156,14 @@
                         android:layout_height="wrap_content"
                         android:text="Số Điện Thoại"
                         android:textSize="16sp"
-                        android:textColor="@color/brown"/>
+                        android:textColor="@color/silver"/>
                     <TextView
                         android:id="@+id/txtprofile_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
+                        android:textSize="20dp"
+                        android:textColor="@color/blackgreen"
                         android:layout_marginBottom="8dp"/>
 
                 </LinearLayout>
