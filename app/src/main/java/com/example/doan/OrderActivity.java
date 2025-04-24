@@ -100,10 +100,17 @@ public class OrderActivity extends BaseActivity {
         // Load cart quantity
         loadCartQuantity();
 
+//        btnCart.setOnClickListener(view -> {
+//            Intent intent = new Intent(OrderActivity.this, CartActivity.class);
+//            startActivity(intent);
+//            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+//            finish();
+//        });
+
         btnCart.setOnClickListener(view -> {
             Intent intent = new Intent(OrderActivity.this, CartActivity.class);
             startActivity(intent);
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            overridePendingTransition(R.anim.slide_up, R.anim.no_change);
             finish();
         });
 
