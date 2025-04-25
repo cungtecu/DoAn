@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.doan.api.RetrofitClient;
 import com.example.doan.models.OrderResponse;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class HistoryOrderActivity extends AppCompatActivity {
                         Collections.sort(orderList, new Comparator<OrderResponse>() {
                             @Override
                             public int compare(OrderResponse o1, OrderResponse o2) {
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                                 try {
                                     Date date1 = dateFormat.parse(o1.getOrderDate());
                                     Date date2 = dateFormat.parse(o2.getOrderDate());

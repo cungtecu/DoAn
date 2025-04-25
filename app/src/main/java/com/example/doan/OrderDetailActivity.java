@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +12,10 @@ import com.example.doan.api.RetrofitClient;
 import com.example.doan.models.OrderDetailResponse;
 import com.example.doan.models.OrderResponse;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,8 +24,7 @@ import retrofit2.Response;
 public class OrderDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "OrderDetailActivity";
-    private TextView tvOrderId, tvOrderDate, tvTotalPrice, tvDripsPoints, tvUsedPoints;
-    private TableLayout tableLayout;
+    private TextView tvOrderId, tvOrderDate, tvTotalPrice, tvDripsPoints, tvUsedPoints, tvProductList;
     private ImageView btnBack;
     private Call<OrderResponse> orderCall;
 
@@ -38,7 +38,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         tvTotalPrice = findViewById(R.id.tv_total_price);
         tvDripsPoints = findViewById(R.id.drips_points);
         tvUsedPoints = findViewById(R.id.tv_used_points);
-        tableLayout = findViewById(R.id.table_layout);
+        tvProductList = findViewById(R.id.tv_product_list);
         btnBack = findViewById(R.id.btn_back);
 
         int orderId = getIntent().getIntExtra("orderId", 0);
@@ -97,44 +97,45 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private void displayOrderDetails(OrderResponse order) {
         tvOrderId.setText(String.valueOf(order.getId()));
-        tvOrderDate.setText(order.getOrderDate());
+
+        // Định dạng lại ngày đặt hàng
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+            Date date = inputFormat.parse(order.getOrderDate());
+            tvOrderDate.setText(outputFormat.format(date));
+        } catch (Exception e) {
+            Log.e(TAG, "Error parsing date: " + e.getMessage());
+            tvOrderDate.setText(order.getOrderDate());
+        }
+
         tvTotalPrice.setText(String.format("%,d VNĐ", (long) order.getTotalPrice()));
 
-        tvUsedPoints.setText(String.valueOf(order.getUsedPoints() != null ? order.getUsedPoints() : 0));
-        int dripsPoints = order.getEarnedPoints() != null ? order.getEarnedPoints() : 0;
+        // Tính điểm Drips (1,000 VNĐ = 1 điểm)
+        double totalPrice = order.getTotalPrice();
+        int dripsPoints = (int) (totalPrice / 1000); // 110,000 / 1,000 = 110 điểm
         tvDripsPoints.setText("+" + dripsPoints);
 
+        // Điểm đã sử dụng (nếu không có từ API, mặc định là 0)
+        int usedPoints = order.getUsedPoints() != null ? order.getUsedPoints() : 0;
+        tvUsedPoints.setText(String.valueOf(usedPoints));
+
+        // Hiển thị danh sách sản phẩm trong TextView
         List<OrderDetailResponse> details = order.getOrderDetails();
         if (details != null && !details.isEmpty()) {
+            StringBuilder productList = new StringBuilder();
             for (OrderDetailResponse detail : details) {
-                TableRow row = new TableRow(this);
-
-                TextView tvName = new TextView(this);
-                tvName.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
-                tvName.setText(detail.getProductName());
-                tvName.setTextColor(getResources().getColor(android.R.color.black));
-                tvName.setTextSize(16);
-
-                TextView tvQuantity = new TextView(this);
-                tvQuantity.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
-                tvQuantity.setText(String.valueOf(detail.getQuantity()));
-                tvQuantity.setTextColor(getResources().getColor(android.R.color.black));
-                tvQuantity.setTextSize(16);
-                tvQuantity.setGravity(android.view.Gravity.CENTER);
-
-                TextView tvPrice = new TextView(this);
-                tvPrice.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
-                tvPrice.setText(String.format("%,d VNĐ", (long) detail.getItemTotalPrice()));
-                tvPrice.setTextColor(getResources().getColor(android.R.color.black));
-                tvPrice.setTextSize(16);
-                tvPrice.setGravity(android.view.Gravity.END);
-
-                row.addView(tvName);
-                row.addView(tvQuantity);
-                row.addView(tvPrice);
-
-                tableLayout.addView(row);
+                productList.append(detail.getProductName())
+                        .append(" x")
+                        .append(detail.getQuantity())
+                        .append(", ");
             }
+            if (productList.length() > 2) {
+                productList.setLength(productList.length() - 2);
+            }
+            tvProductList.setText(productList.toString());
+        } else {
+            tvProductList.setText("Không có sản phẩm");
         }
     }
 
