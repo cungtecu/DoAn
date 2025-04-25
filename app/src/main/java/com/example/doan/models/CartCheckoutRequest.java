@@ -1,15 +1,10 @@
 package com.example.doan.models;
 
 public class CartCheckoutRequest {
-    private Integer id;
     private String paymentMethod;
+    private String deliveryTime; // Thêm field mới
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public CartCheckoutRequest() {
     }
 
     public String getPaymentMethod() {
@@ -18,5 +13,13 @@ public class CartCheckoutRequest {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public String getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(String deliveryTime) {
+        this.deliveryTime = deliveryTime;
     }
 }

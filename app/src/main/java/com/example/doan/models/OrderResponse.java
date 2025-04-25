@@ -10,7 +10,12 @@ public class OrderResponse {
     private String status;
     private String orderDate;
     private List<OrderDetailResponse> orderDetails;
-    private List<PaymentResponse> payments;
+    private Integer userPoints;
+    private Integer earnedPoints;
+    private Integer usedPoints;
+
+    public OrderResponse() {
+    }
 
     public Integer getId() {
         return id;
@@ -68,11 +73,27 @@ public class OrderResponse {
         this.orderDetails = orderDetails;
     }
 
-    public List<PaymentResponse> getPayments() {
-        return payments;
+    public Integer getUserPoints() {
+        return userPoints;
     }
 
-    public void setPayments(List<PaymentResponse> payments) {
-        this.payments = payments;
+    public void setUserPoints(Integer userPoints) {
+        this.userPoints = userPoints;
+    }
+
+    public Integer getEarnedPoints() {
+        return earnedPoints;
+    }
+
+    public void setEarnedPoints(Integer earnedPoints) {
+        this.earnedPoints = earnedPoints;
+    }
+
+    public Integer getUsedPoints() {
+        return usedPoints;
+    }
+
+    public void setUsedPoints(Integer usedPoints) {
+        this.usedPoints = usedPoints;
     }
 }

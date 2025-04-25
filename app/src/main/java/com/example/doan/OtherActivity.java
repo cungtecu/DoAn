@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.doan.api.RetrofitClient;
@@ -20,9 +21,10 @@ import java.io.IOException;
 public class OtherActivity extends AppCompatActivity {
 
     private static final String TAG = "OtherActivity";
-    private RelativeLayout btnProfile, btnSetting, btnPolicy, btnTerms;
+    private RelativeLayout btnProfile, btnSetting, btnPolicy, btnTerms, btnHisOrder;
     private Button btnLogout;
     private ImageButton btnHome, cartIcon, btnOther;
+    private TextView dripsPointsTextView; // Thêm TextView để hiển thị điểm DRIPS
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +37,20 @@ public class OtherActivity extends AppCompatActivity {
             btnSetting = findViewById(R.id.btn_setting);
             btnPolicy = findViewById(R.id.btn_policy);
             btnTerms = findViewById(R.id.btn_terms);
+            btnHisOrder = findViewById(R.id.btn_his_order);
             btnLogout = findViewById(R.id.btn_logout);
             btnHome = findViewById(R.id.btn_home);
             cartIcon = findViewById(R.id.cartIcon);
             btnOther = findViewById(R.id.btn_other);
+            dripsPointsTextView = findViewById(R.id.drips_points); // Ánh xạ TextView drips_points
         } catch (Exception e) {
             Log.e(TAG, "Lỗi ánh xạ view: " + e.getMessage());
             Toast.makeText(this, "Lỗi giao diện. Vui lòng kiểm tra layout!", Toast.LENGTH_LONG).show();
             return;
         }
+
+        // Lấy điểm DRIPS ngay khi khởi tạo màn hình
+        fetchUserPoints();
 
         // Xử lý sự kiện nhấn btn_profile (Hồ Sơ)
         if (btnProfile != null) {
@@ -110,6 +117,24 @@ public class OtherActivity extends AppCompatActivity {
             Toast.makeText(this, "Lỗi: Không tìm thấy nút Điều khoản dịch vụ", Toast.LENGTH_SHORT).show();
         }
 
+        // Xử lý sự kiện nhấn btn_his_order (Lịch sử đơn hàng)
+        if (btnHisOrder != null) {
+            btnHisOrder.setOnClickListener(v -> {
+                Log.d(TAG, "Nhấn nút Lịch sử đơn hàng");
+                try {
+                    Intent intent = new Intent(OtherActivity.this, HistoryOrderActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                } catch (Exception e) {
+                    Log.e(TAG, "Lỗi khi chuyển sang HistoryOrderActivity: " + e.getMessage());
+                    Toast.makeText(this, "Lỗi: Không thể mở Lịch sử đơn hàng", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Log.e(TAG, "btn_his_order không được tìm thấy trong layout");
+            Toast.makeText(this, "Lỗi: Không tìm thấy nút Lịch sử đơn hàng", Toast.LENGTH_SHORT).show();
+        }
+
         // Xử lý sự kiện nhấn btn_logout (Đăng Xuất)
         if (btnLogout != null) {
             btnLogout.setOnClickListener(v -> {
@@ -117,6 +142,7 @@ public class OtherActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.remove("token");
+                editor.remove("userId");
                 editor.apply();
                 Toast.makeText(OtherActivity.this, "Đã đăng xuất!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(OtherActivity.this, SigninActivity.class);
@@ -179,6 +205,67 @@ public class OtherActivity extends AppCompatActivity {
         }
     }
 
+    private void fetchUserPoints() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", null);
+
+        Log.d(TAG, "Gửi yêu cầu lấy thông tin người dùng để lấy điểm DRIPS với token: " + token);
+        if (token == null || token.isEmpty()) {
+            Toast.makeText(this, "Token không hợp lệ. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
+            Intent signinIntent = new Intent(OtherActivity.this, SigninActivity.class);
+            signinIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(signinIntent);
+            finish();
+            return;
+        }
+
+        RetrofitClient.getApiService(this).getCurrentUser(token).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                Log.d(TAG, "Mã phản hồi: " + response.code() + ", URL: " + call.request().url());
+                if (response.isSuccessful()) {
+                    User user = response.body();
+                    if (user != null && user.getPoints() != null) {
+                        Log.d(TAG, "Điểm DRIPS: " + user.getPoints());
+                        dripsPointsTextView.setText(String.valueOf(user.getPoints())); // Cập nhật điểm DRIPS
+                    } else {
+                        Log.e(TAG, "Dữ liệu người dùng không có điểm DRIPS");
+                        dripsPointsTextView.setText("0");
+                    }
+                } else {
+                    String errorBody = "";
+                    try {
+                        errorBody = response.errorBody() != null ? response.errorBody().string() : "Không có thông tin lỗi";
+                    } catch (IOException e) {
+                        Log.e(TAG, "Lỗi parse error body: " + e.getMessage());
+                    }
+                    Log.e(TAG, "Lấy thông tin thất bại, mã lỗi: " + response.code() + ", Error body: " + errorBody);
+                    dripsPointsTextView.setText("0");
+                    if (response.code() == 401) {
+                        Toast.makeText(OtherActivity.this, "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove("token");
+                        editor.remove("userId");
+                        editor.apply();
+                        Intent signinIntent = new Intent(OtherActivity.this, SigninActivity.class);
+                        signinIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(signinIntent);
+                        finish();
+                    } else {
+                        Toast.makeText(OtherActivity.this, "Lỗi: " + errorBody, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e(TAG, "Lỗi kết nối: " + t.getMessage());
+                Toast.makeText(OtherActivity.this, "Lỗi kết nối. Vui lòng kiểm tra mạng!", Toast.LENGTH_SHORT).show();
+                dripsPointsTextView.setText("0");
+            }
+        });
+    }
+
     private void fetchUserProfile() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String token = sharedPreferences.getString("token", null);
@@ -236,6 +323,7 @@ public class OtherActivity extends AppCompatActivity {
                         Toast.makeText(OtherActivity.this, "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.remove("token");
+                        editor.remove("userId");
                         editor.apply();
                         Intent signinIntent = new Intent(OtherActivity.this, SigninActivity.class);
                         signinIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

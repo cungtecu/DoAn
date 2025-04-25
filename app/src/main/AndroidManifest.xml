@@ -32,7 +32,6 @@
             </intent-filter>
         </activity>
 
-
         <activity android:name=".SigninActivity" android:exported="true" />
         <activity android:name=".OrderActivity" android:exported="true" />
         <activity android:name=".MainActivity" android:exported="true" />
@@ -49,6 +48,8 @@
         <activity android:name=".ChangePasswordActivity" android:exported="true" />
         <activity android:name=".PaymentWebviewActivity" />
         <activity android:name=".OrderSuccessActivity" />
+        <activity android:name=".HistoryOrderActivity" android:exported="false" />
+        <activity android:name=".OrderDetailActivity" android:exported="false" />
     </application>
 
 </manifest>

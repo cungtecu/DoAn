@@ -45,6 +45,17 @@
         android:layout_marginBottom="16dp"/>
 
     <Button
+        android:id="@+id/btn_view_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_button"
+        android:text="Xem lịch sử đơn hàng"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
         android:id="@+id/btn_continue_shopping"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.doan.api.RetrofitClient;
 import com.example.doan.models.LoginRequest;
 import com.example.doan.models.LoginResponse;
+import com.example.doan.models.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,29 +92,25 @@ public class SigninActivity extends AppCompatActivity {
         RetrofitClient.getApiService(this).loginUser(loginRequest).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                progressBar.setVisibility(View.GONE);
-                btnSignin.setEnabled(true);
-
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
-                    Log.d(TAG, "Đăng nhập thành công: token=" + loginResponse.getToken() + ", phone=" + loginResponse.getPhone());
-                    Toast.makeText(SigninActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                    String token = loginResponse.getToken();
+                    String phone = loginResponse.getPhone();
+
+                    Log.d(TAG, "Đăng nhập thành công: token=" + token + ", phone=" + phone);
 
                     // Lưu token và phone vào SharedPreferences
                     SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("token", loginResponse.getToken());
-                    editor.putString("phone", loginResponse.getPhone());
+                    editor.putString("token", token);
+                    editor.putString("phone", phone);
                     editor.apply();
 
-                    // Chuyển sang MainActivity
-                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-                    intent.putExtra("token", loginResponse.getToken());
-                    intent.putExtra("phone", loginResponse.getPhone());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    // Gọi API để lấy userId
+                    fetchUserId(token, phone);
                 } else {
+                    progressBar.setVisibility(View.GONE);
+                    btnSignin.setEnabled(true);
                     handleLoginError(response);
                 }
             }
@@ -124,6 +121,51 @@ public class SigninActivity extends AppCompatActivity {
                 btnSignin.setEnabled(true);
                 Log.e(TAG, "Lỗi kết nối: " + t.getMessage());
                 Toast.makeText(SigninActivity.this, "Lỗi kết nối: " + t.getMessage() + ". Vui lòng kiểm tra mạng!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void fetchUserId(String token, String phone) {
+        RetrofitClient.getApiService(this).getCurrentUser("Bearer " + token).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                progressBar.setVisibility(View.GONE);
+                btnSignin.setEnabled(true);
+
+                if (response.isSuccessful() && response.body() != null) {
+                    User user = response.body();
+                    int userId = user.getId();
+
+                    Log.d(TAG, "Lấy userId thành công: userId=" + userId);
+
+                    // Lưu userId vào SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("userId", userId);
+                    editor.apply();
+
+                    Toast.makeText(SigninActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+
+                    // Chuyển sang MainActivity
+                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                    intent.putExtra("token", token);
+                    intent.putExtra("phone", phone);
+                    intent.putExtra("userId", userId);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Log.e(TAG, "Không thể lấy userId: " + response.code());
+                    Toast.makeText(SigninActivity.this, "Không thể lấy thông tin người dùng!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                btnSignin.setEnabled(true);
+                Log.e(TAG, "Lỗi khi lấy userId: " + t.getMessage());
+                Toast.makeText(SigninActivity.this, "Lỗi khi lấy thông tin người dùng: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

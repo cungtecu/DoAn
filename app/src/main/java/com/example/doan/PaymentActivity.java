@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ public class PaymentActivity extends AppCompatActivity {
     private Button btnOrderCart;
     private ImageView btnBack;
     private CheckBox isUsePoints;
+    private RadioGroup rgDeliveryTime;
     private Call<CartDTO> cartCall;
     private Call<CheckoutResponse> checkoutCall;
     private double totalPrice = 0;
@@ -55,6 +57,7 @@ public class PaymentActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btn_back);
         isUsePoints = findViewById(R.id.is_use_points);
         btnAddProduct = findViewById(R.id.btn_add_product);
+        rgDeliveryTime = findViewById(R.id.rg_delivery_time);
 
         // Thiết lập ngày tạo đơn
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
@@ -65,6 +68,13 @@ public class PaymentActivity extends AppCompatActivity {
         if ("failed".equals(paymentStatus)) {
             Toast.makeText(this, "Thanh toán thất bại! Vui lòng thử lại.", Toast.LENGTH_LONG).show();
         }
+
+        // Kích hoạt nút Thanh toán khi chọn thời gian giao hàng
+        rgDeliveryTime.setOnCheckedChangeListener((group, checkedId) -> {
+            if (totalPrice > 0) {
+                btnOrderCart.setEnabled(true);
+            }
+        });
 
         // Gọi API để lấy dữ liệu giỏ hàng
         loadCartItems();
@@ -78,6 +88,10 @@ public class PaymentActivity extends AppCompatActivity {
         btnOrderCart.setOnClickListener(v -> {
             if (totalPrice <= 0) {
                 Toast.makeText(this, "Không có sản phẩm để thanh toán!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (rgDeliveryTime.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, "Vui lòng chọn thời gian giao hàng!", Toast.LENGTH_SHORT).show();
                 return;
             }
             checkout();
@@ -141,6 +155,12 @@ public class PaymentActivity extends AppCompatActivity {
                         productList.removeAllViews(); // Xóa danh sách sản phẩm cũ
                         totalPrice = 0;
 
+                        if (response.body().getCartItems() == null || response.body().getCartItems().isEmpty()) {
+                            Toast.makeText(PaymentActivity.this, "Giỏ hàng trống! Vui lòng thêm sản phẩm.", Toast.LENGTH_LONG).show();
+                            btnOrderCart.setEnabled(false);
+                            return;
+                        }
+
                         for (CartItemDTO itemDTO : response.body().getCartItems()) {
                             // Tạo một hàng mới cho mỗi sản phẩm
                             TableRow row = new TableRow(PaymentActivity.this);
@@ -191,6 +211,7 @@ public class PaymentActivity extends AppCompatActivity {
                     } else {
                         Log.e(TAG, "Failed to load cart, code: " + response.code());
                         Toast.makeText(PaymentActivity.this, "Không thể tải dữ liệu giỏ hàng!", Toast.LENGTH_SHORT).show();
+                        btnOrderCart.setEnabled(false);
                     }
                 }
             }
@@ -200,6 +221,7 @@ public class PaymentActivity extends AppCompatActivity {
                 if (!call.isCanceled() && !isFinishing()) {
                     Log.e(TAG, "Error loading cart: " + t.getMessage());
                     Toast.makeText(PaymentActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    btnOrderCart.setEnabled(false);
                 }
             }
         });
@@ -221,15 +243,31 @@ public class PaymentActivity extends AppCompatActivity {
 
         // Drips dự kiến (giả sử 1 VNĐ = 1 Drip, sau khi giảm giá)
         int expectedDrips = (int) finalPrice;
-        tvDripsPoints.setText("Drips dự kiến: " + expectedDrips);
+        tvDripsPoints.setText(String.valueOf(expectedDrips));
 
         // Drips đã sử dụng
-        tvPoints.setText("Drips đã sử dụng: " + usedDrips);
+        tvPoints.setText(String.valueOf(usedDrips));
+    }
+
+    private String getSelectedDeliveryTime() {
+        int checkedId = rgDeliveryTime.getCheckedRadioButtonId();
+        if (checkedId == R.id.time_20p) {
+            return "20 minutes";
+        } else if (checkedId == R.id.time_30p) {
+            return "30 minutes";
+        } else if (checkedId == R.id.time_40p) {
+            return "40 minutes";
+        }
+        return null;
     }
 
     private void checkout() {
         CartCheckoutRequest request = new CartCheckoutRequest();
         request.setPaymentMethod("VNPAY");
+        String deliveryTime = getSelectedDeliveryTime();
+        if (deliveryTime != null) {
+            request.setDeliveryTime(deliveryTime);
+        }
 
         checkoutCall = RetrofitClient.getApiService(this).checkout(request);
         checkoutCall.enqueue(new Callback<CheckoutResponse>() {
@@ -238,12 +276,14 @@ public class PaymentActivity extends AppCompatActivity {
                 if (!isFinishing()) {
                     if (response.isSuccessful() && response.body() != null) {
                         String paymentUrl = response.body().getPaymentUrl();
+                        int orderId = response.body().getOrder().getId();
                         if (paymentUrl != null) {
                             // Chuyển sang giao diện thanh toán VNPay
                             Intent intent = new Intent(PaymentActivity.this, PaymentWebviewActivity.class);
                             intent.putExtra("payment_url", paymentUrl);
                             intent.putExtra("total_price", totalPrice - discount); // Truyền tổng giá sau khi giảm
                             intent.putExtra("used_drips", usedDrips); // Truyền số điểm đã sử dụng
+                            intent.putExtra("orderId", orderId);
                             startActivity(intent);
                         } else {
                             Toast.makeText(PaymentActivity.this, "Không nhận được URL thanh toán!", Toast.LENGTH_SHORT).show();

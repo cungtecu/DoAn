@@ -29,11 +29,11 @@ android {
                 "proguard-rules.pro"
             )
             // URL ngrok mới
-            buildConfigField("String", "BASE_URL", "\"https://aca6-14-161-191-138.ngrok-free.app/\"")
+            buildConfigField("String", "BASE_URL", "\"https://233b-113-166-132-1.ngrok-free.app/\"")
         }
         getByName("debug") {
             // URL ngrok mới
-            buildConfigField("String", "BASE_URL", "\"https://aca6-14-161-191-138.ngrok-free.app/\"")
+            buildConfigField("String", "BASE_URL", "\"https://233b-113-166-132-1.ngrok-free.app/\"")
         }
     }
 

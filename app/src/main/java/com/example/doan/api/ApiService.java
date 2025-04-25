@@ -88,4 +88,10 @@ public interface ApiService {
 
     @POST("api/cart/add")
     Call<CartDTO> addToCart(@Body CartAddRequest request);
+
+    @GET("/api/orders/user/{userId}")
+    Call<List<OrderResponse>> getUserOrders(@Header("Authorization") String token, @Path("userId") int userId);
+
+    @GET("/api/orders/{id}")
+    Call<OrderResponse> getOrderById(@Header("Authorization") String token, @Path("id") int orderId);
 }
