@@ -8,7 +8,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -44,7 +43,6 @@ public class OrderActivity extends BaseActivity {
     private Call<List<Product>> allProductsCall;
     private Call<CartDTO> cartCall;
     private TextView quantityText;
-
     private ImageView btnCart;
     private int currentCategoryIndex = 0;
     private boolean isSearching = false;
@@ -100,17 +98,9 @@ public class OrderActivity extends BaseActivity {
         // Load cart quantity
         loadCartQuantity();
 
-//        btnCart.setOnClickListener(view -> {
-//            Intent intent = new Intent(OrderActivity.this, CartActivity.class);
-//            startActivity(intent);
-//            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-//            finish();
-//        });
-
         btnCart.setOnClickListener(view -> {
             Intent intent = new Intent(OrderActivity.this, CartActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.slide_up, R.anim.no_change);
             finish();
         });
 
@@ -158,6 +148,8 @@ public class OrderActivity extends BaseActivity {
                         if (!categoryList.isEmpty()) {
                             currentCategoryIndex = 0;
                             loadProductsForNextCategory();
+                            // Đảm bảo category đầu tiên được phóng to
+                            categoryAdapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(OrderActivity.this, "Không có danh mục nào để hiển thị", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
@@ -217,6 +209,14 @@ public class OrderActivity extends BaseActivity {
     }
 
     private void loadProductsByCategory(int categoryId) {
+        // Cập nhật currentCategoryIndex dựa trên categoryId
+        for (int i = 0; i < categoryList.size(); i++) {
+            if (categoryList.get(i).getId() == categoryId) {
+                currentCategoryIndex = i;
+                break;
+            }
+        }
+
         productByCategoryCall = RetrofitClient.getApiService(this).getProductsByCategory(categoryId);
         productByCategoryCall.enqueue(new Callback<List<Product>>() {
             @Override

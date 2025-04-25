@@ -116,7 +116,6 @@ public class CartActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(v -> {
             Intent intent = new Intent(CartActivity.this, OrderActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.no_change, R.anim.slide_down);
             finish();
         });
 

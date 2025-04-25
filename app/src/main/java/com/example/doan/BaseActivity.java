@@ -100,7 +100,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(this, activityClass);
         intent.putExtra("token", getSharedPreferences("MyAppPrefs", MODE_PRIVATE).getString("token", null));
         startActivity(intent);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        overridePendingTransition(R.anim.no_change, R.anim.no_change);
         finish();
     }
 

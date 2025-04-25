@@ -160,33 +160,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Thanh Toán"
-                    android:textSize="16sp"
-                    android:textColor="@color/brown"
-                    android:textStyle="bold"
                     android:layout_marginTop="16dp"
-                    android:gravity="center"
                     android:paddingBottom="10dp"/>
-                <TableRow>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Phương thức:"
-                        android:textColor="@color/brown"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_payment_method"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="payment"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-                </TableRow>
                 <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
@@ -211,7 +187,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Drips dự kiến:"
+                        android:text="Drips tích luỹ:"
                         android:textColor="@color/brown"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -223,7 +199,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:text="point_drips"
+                        android:text="+ point_drips"
                         android:textColor="@color/brown"
                         android:textSize="16sp" />
                 </TableRow>
