@@ -124,4 +124,7 @@ dependencies {
 
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("org.projectlombok:lombok:1.18.34")
+
+    //thu viện vẽ biểu đồ trong fragment_revenue
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
